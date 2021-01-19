@@ -1,12 +1,15 @@
 import TwitchPlayer from './TwitchPlayer';
 import DonationButtons from './Buttons';
 
+//import loadable from '@loadable/component'
+//const TwitchPlayer = loadable(() => import("./TwitchPlayer"));
+
 export default function PlayerDonate({parent}) {
     const ChannelName = "azul21";
 
     return (
         <div className="row justify-content-center mt-4">
-        <TwitchPlayer ChannelName={ChannelName} parent={parent}></TwitchPlayer>
+         <TwitchPlayer ChannelName={ChannelName} parent={parent}></TwitchPlayer>
           <div className="mt-4 text-center">
             <div>
               <blockquote className="blockquote mandali">

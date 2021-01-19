@@ -1,0 +1,10 @@
+.header2 {
+    background: #36304a;
+    color: white;
+    height: 25px;
+    width: 100%;
+  }
+
+  .none {
+      cursor: none;
+  }

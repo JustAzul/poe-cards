@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import PlayerDonate from '../PlayerDonate';
+import PlayerDonate from './PlayerDonate';
 //import Nav from '../Navbar';
 
-const Layout = ({children, parent, title = "poe.cards"}) => {
+const Layout = ({children, parent, title = "poe.cards", margintop = false}) => {
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
     return (
@@ -13,7 +13,7 @@ const Layout = ({children, parent, title = "poe.cards"}) => {
                 <link rel="icon" href="/images/InventoryIcon.png"></link>
             </Head>
             
-            <main className="container">
+            <main className={`container ${margintop ? "mt-5" : ""}`}>
                 <PlayerDonate parent={parent}></PlayerDonate>
                 {children}
             </main>
