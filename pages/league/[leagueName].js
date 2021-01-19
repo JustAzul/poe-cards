@@ -9,7 +9,7 @@ const League = () => {
   return ( <>
        
         <Layout parent="localhost" title={leagueName}>            
-            main
+            <Nav></Nav>
         </Layout>
       </>
   );

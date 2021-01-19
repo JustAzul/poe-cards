@@ -16,7 +16,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
 
                     <thead>
                         <tr className="row100 head">
-                            <th onMouseEnter={() => SetMouseOver("c1")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c1" ? " hov-column-head-ver1": ""}`}>League</th>
+                            <th onMouseEnter={() => SetMouseOver("c1")} onMouseLeave={() => SetMouseOver("")} className={`column100 column1${state === "c1" ? " hov-column-head-ver1": ""}`}>League</th>
                             <th onMouseEnter={() => SetMouseOver("c2")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c2" ? " hov-column-head-ver1": ""}`}>End At</th>
                             <th onMouseEnter={() => SetMouseOver("c3")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c3" ? " hov-column-head-ver1": ""}`}>Days Left</th>
                             <th onMouseEnter={() => SetMouseOver("c4")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c4" ? " hov-column-head-ver1": ""}`}>Ladder</th>
@@ -28,7 +28,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
                             return (
                                 <tr className="row100">
                                     <Link href={`/league/${Name}`}>
-                                        <td onMouseEnter={() => SetMouseOver("c1")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c1" ? " hov-column-ver1": ""}`}><a>{Name}</a></td>
+                                        <td onMouseEnter={() => SetMouseOver("c1")} onMouseLeave={() => SetMouseOver("")} className={`column100 column1${state === "c1" ? " hov-column-ver1": ""}`}><a>{Name}</a></td>
                                     </Link>
 
                                     <Link href={`/league/${Name}`}>
@@ -40,7 +40,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
                                     </Link>
 
                                     <Link href={Ladder}>
-                                        <td onMouseEnter={() => SetMouseOver("c4")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c4" ? " hov-column-ver1": ""}`}><a target="_BLANK">Link</a></td>
+                                        <td onMouseEnter={() => SetMouseOver("c4")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c4" ? " hov-column-ver1": ""} ${styles.link}`}><a className={styles.link} target="_BLANK">Link</a></td>
                                     </Link>
                                 </tr>
                             );

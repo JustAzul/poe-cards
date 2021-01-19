@@ -47,6 +47,9 @@ td:hover {
     width: 130px;
     padding-left: 25px;
 }
+.column100 a {
+    color: cornflowerblue;
+}
 
 .column100.column1 {
     width: 265px;

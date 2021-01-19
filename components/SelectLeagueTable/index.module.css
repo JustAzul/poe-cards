@@ -1,5 +1,9 @@
 .table {
-    width: 50%;
+  /*   width: 50%; */
     margin-left: auto;
     margin-right: auto;
+}
+
+.link:hover a {
+    color:rgb(72, 34, 133);
 }

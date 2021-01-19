@@ -21,7 +21,7 @@ export async function getServerSideProps() {
 
     const o = {
       Name: "Standard "+ i,
-      EndAt: "December 7, 2025",
+      EndAt: "00/00/00",
       DaysLeft: 0,
       Ladder: "#"
     };

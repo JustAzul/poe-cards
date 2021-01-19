@@ -18,7 +18,7 @@ const Layout = ({children, parent, title = "poe.cards"}) => {
                 {children}
             </main>
             
-            <div className="text-center mt-5">
+            <div className="text-center mt-4">
                 <footer className="blockquote-footer">
                     Copyright © <cite title={parent}><Link href="/"><a className="text-decoration-none">{parent}</a></Link></cite> 2019 - {CurrentYear.getFullYear()}. Powered by <cite title="poe.ninja"><Link href="https://poe.ninja/"><a className="text-decoration-none" target="_BLANK">poe.ninja</a></Link></cite>, Developed by <cite
                     title="Azul"><Link href={DevURL}><a className="text-decoration-none" target="_BLANK">Azul</a></Link></cite>.
