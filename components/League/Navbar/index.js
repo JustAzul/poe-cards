@@ -23,7 +23,7 @@ export default function Navbar() {
 
                 <div className="row col-sm ml-1">
                     <Image className={styles.image} src="/images/MirrorKalandra.png" width={24} height={24} />
-                    <div className="ml-1">Mirror Value: <span className="pl-1 mr-2">999999c</span></div> (999 ex)
+                    <div className="ml-1">Mirror Value: <span className="pl-1 mr-2">999 ex</span></div>
                 </div>
 
             </div>
