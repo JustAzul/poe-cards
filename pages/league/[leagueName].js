@@ -7,7 +7,7 @@ import Nav from '../../components/League/Navbar';
 import LeagueComponent from '../../components/League';
 import LoaderComponent from '../../components/Loader';
 
-const League = ({host, Cookies, isSocketConnected, SocketIO, CardsArray}) => {
+const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
   
   const router = useRouter();
@@ -85,14 +85,11 @@ export async function getServerSideProps({req}) {
   const parseCookies = req => cookie.parse(req ? req.headers.cookie || "" : document.cookie);
   const CookieData = parseCookies(req);
 
-  const host = req['headers']['host'] || "localhost";
-  
-  const CardsArray = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];  
+  const host = req['headers']['host'] || "localhost";  
 
   return {
     props: {
       host,
-      CardsArray,
       Cookies: CookieData && CookieData
     }
   }
