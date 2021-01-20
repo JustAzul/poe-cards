@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PlayerDonate from './PlayerDonate';
 //import Nav from '../Navbar';
 
-const Layout = ({children, parent, title = "poe.cards", margintop = false}) => {
+const Layout = ({children, parent, title = "poe.cards", margintop = false, IgnorePlayer = false}) => {
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
     return (
@@ -14,9 +14,7 @@ const Layout = ({children, parent, title = "poe.cards", margintop = false}) => {
             </Head>
             
             <main className={`${margintop ? "container-fluid mt-5" : "container"}`}>
-                <div className="container">
-                    <PlayerDonate parent={parent}></PlayerDonate>
-                </div>
+                {IgnorePlayer ? "" : <div className="container"><PlayerDonate parent={parent}></PlayerDonate></div>}
                 {children}
             </main>
             
