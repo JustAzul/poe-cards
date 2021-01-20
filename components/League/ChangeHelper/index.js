@@ -145,7 +145,7 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
                         
                         <div className="form-group mb-2">
                             <label className="user-select-none">Change:</label>
-                            <input ref={ChangeRef} value={`${Change}c`} min={0} type="text"  className={`form-control-sm text-center mr-2 ml-2 ${styles['change']}`} readOnly></input>
+                            <input ref={ChangeRef} value={`${Change || 0}c`} min={0} type="text"  className={`form-control-sm text-center mr-2 ml-2 ${styles['change']}`} readOnly></input>
                         </div>
                         
                         <div className={`p-0 m-0 pb-1 ${styles.chaosvalue}`}>

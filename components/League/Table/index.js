@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import TableHead from './thead.js';
 import TableBody from './tbody.js';
 
-export default function Table({Items, NavbarHeight}) {
+export default function Table({Items, NavbarHeight, leagueName}) {
     const [toHover, setToHover] = useState("");
     const [isSticky, setSticky] = useState(false);
     
@@ -31,7 +31,7 @@ export default function Table({Items, NavbarHeight}) {
                 </thead>                 
             
                 <tbody>
-                    <TableBody toHover={toHover} setToHover={setToHover} Items={Items}></TableBody>
+                    <TableBody leagueName={leagueName} toHover={toHover} setToHover={setToHover} Items={Items}></TableBody>
                 </tbody>
         </table> 
     );
