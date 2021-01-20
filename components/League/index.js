@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SplitedValues from './SplitedExalted';
 import ChangeHelper from './ChangeHelper';
 import TableView from './Table';
+import Spinner from '../Spinner';
 
 const moment = require('moment');
 
@@ -33,7 +34,7 @@ export default function League({Cookies, leagueName, CurrencyValues, SplitsArray
             
             <div className="row justify-content-md-center pt-3 pb-3">
                 <div className="table100 ver1 user-select-none">
-                    <TableView leagueName={leagueName} NavbarHeight={NavbarHeight} Items={CardsTable}></TableView>
+                    {CardsTable.length === 0 ? <Spinner></Spinner> : <TableView leagueName={leagueName} NavbarHeight={NavbarHeight} Items={CardsTable}></TableView>} 
                 </div>
             </div>
         </>        
