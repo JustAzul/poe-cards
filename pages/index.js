@@ -1,19 +1,28 @@
 import Layout from '../components/Layout';
 import SelectLeagueTable from '../components/SelectLeagueTable';
+import Spinner from '../components/Spinner';
 
-function Home({parent, LeagueDetails}) {
+function Home({host, LeagueDetails, isSocketConnected, SocketIO}) {
+
+  const LeagueTableLoader = () => (
+    <div className="text-center mt-5 mb-5">
+      <Spinner></Spinner>
+    </div>
+  );
+  
   return (
     <div>
-    <Layout parent={parent} title="Pick a League">
-      <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>
+    <Layout parent={host} title="Pick a League">
+      {isSocketConnected === false ? <LeagueTableLoader></LeagueTableLoader>: <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>}
     </Layout>
     </div>  
   );
 };
 
-export async function getServerSideProps() {
-
-  const parent = "localhost";
+export async function getServerSideProps({req}) {
+  
+  const host = req['headers']['host'] || "localhost";
+  
   let LeagueDetails = [];
 
   for(let i = 0; i < 4; i++) {
@@ -30,7 +39,7 @@ export async function getServerSideProps() {
 
   return {
       props: {
-          parent,
+        host,
           LeagueDetails
       }
   };

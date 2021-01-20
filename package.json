@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@loadable/component": "^5.14.1",
     "bootstrap": "^4.6.0",
     "cookie": "^0.4.1",
+    "express": "^4.17.1",
     "next": "10.0.5",
     "react": "17.0.1",
     "react-bootstrap": "^1.4.3",
@@ -19,6 +20,8 @@
     "react-sticky": "^6.0.3",
     "react-sticky-el": "^2.0.5",
     "react-stickynode": "^3.0.4",
-    "reactstrap": "^8.9.0"
+    "reactstrap": "^8.9.0",
+    "socket.io": "^3.1.0",
+    "socket.io-client": "^3.1.0"
   }
 }

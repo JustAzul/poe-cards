@@ -5,21 +5,16 @@ import cookie from "cookie";
 import Layout from '../../components/Layout';
 import Nav from '../../components/League/Navbar';
 import LeagueComponent from '../../components/League';
+import LoaderComponent from '../../components/Loader';
 
-const League = ({Cookies, SplitsArray, CardsArray, CurrencyValues}) => {
+const League = ({host, Cookies, isSocketConnected, SocketIO, SplitsArray, CardsArray, CurrencyValues}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
   
   const router = useRouter();
   const { leagueName } = router.query;
 
-  useEffect(()=> {
-    
-  });
-  
-  return ( 
-    <>
-      <Layout margintop={true} parent="localhost" title={`${leagueName} League`}>            
-        
+  const Page = () => ( 
+  <Layout parent={host} margintop={true} parent="localhost" title={`${leagueName} League`}>  
         <Nav 
             CurrencyValues={CurrencyValues} 
             UpdateHeigh={setNavbarHeight}>
@@ -33,8 +28,14 @@ const League = ({Cookies, SplitsArray, CardsArray, CurrencyValues}) => {
               CurrencyValues={CurrencyValues}
               SplitsArray={SplitsArray}>
           </LeagueComponent>
+    </Layout>
+  );
 
-      </Layout>
+  const Loader = () => (<LoaderComponent></LoaderComponent>);
+  
+  return (
+    <>
+      {isSocketConnected ? Page() : Loader()}
     </>
   );
 }
@@ -43,6 +44,8 @@ export async function getServerSideProps({req}) {
 
   const parseCookies = req => cookie.parse(req ? req.headers.cookie || "" : document.cookie);
   const CookieData = parseCookies(req);
+
+  const host = req['headers']['host'] || "localhost";
   
   const GenerateSplitsArray = async (Value = 100) => {
     let arr = [];
@@ -63,6 +66,7 @@ export async function getServerSideProps({req}) {
 
   return {
     props: {
+      host,
       SplitsArray,
       CardsArray,
       CurrencyValues,
