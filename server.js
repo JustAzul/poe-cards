@@ -18,7 +18,7 @@ const {readJSON, Log} = require('azul-tools');
 const DB = require("./server/components/database.js");
 const helper = require("./server/components/helper.js");
 
-const ServerPort = 80;
+const ServerPort = 2469;
 
 let TableData = {};
 let LeaguesData = {};
