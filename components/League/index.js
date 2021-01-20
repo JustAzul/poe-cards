@@ -31,7 +31,7 @@ export default function League({Cookies, leagueName, CurrencyValues, SplitsArray
             
             <div className="row justify-content-md-center pt-3 pb-3">
                 <div className="table100 ver1 user-select-none">
-                    <TableView leagueName={leagueName} NavbarHeight={NavbarHeight} Items={CardsArray}></TableView>
+                    <TableView NavbarHeight={NavbarHeight} Items={CardsArray}></TableView>
                 </div>
             </div>
         </>        

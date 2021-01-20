@@ -10,7 +10,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
             <div className="table100 ver1 user-select-none">
                 <table className={styles.table}>
 
-                    <thead key="thead_select_league">
+                    <thead>
                         <tr className="row100 head">
                             <th onMouseOver={() => SetMouseOver("c1")} onMouseLeave={() => SetMouseOver("")} className={`column100 column1${state === "c1" ? " hov-column-head-ver1": ""}`}>League</th>
                             <th onMouseOver={() => SetMouseOver("c2")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c2" ? " hov-column-head-ver1": ""}`}>End At</th>
@@ -19,7 +19,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
                         </tr>
                     </thead>
 
-                    <tbody key="tbody_select_league">
+                    <tbody>
                         {LeagueDetails.map(({Name, EndAt, DaysLeft, Ladder}) => {
                             return (
                                 <tr className="row100 click">
