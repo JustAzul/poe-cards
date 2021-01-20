@@ -3,14 +3,14 @@ import Link from 'next/link';
 import PlayerDonate from './PlayerDonate';
 //import Nav from '../Navbar';
 
-const Layout = ({children, parent, title = "poe.cards", margintop = false, IgnorePlayer = false}) => {
+const Layout = ({children, parent, title = "poe.cards", margintop = false, IgnorePlayer = false, GoogleShit = false}) => {
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
     return (
         <>
             <Head>
                 <title>{title}</title>
-                <link rel="icon" href="/images/InventoryIcon.png"></link>
+                <link rel="icon" href="/images/InventoryIcon.png"></link>                               
             </Head>
             
             <main className={`${margintop ? "container-fluid mt-5" : "container"}`}>
