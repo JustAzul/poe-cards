@@ -7,11 +7,50 @@ import Nav from '../../components/League/Navbar';
 import LeagueComponent from '../../components/League';
 import LoaderComponent from '../../components/Loader';
 
-const League = ({host, Cookies, isSocketConnected, SocketIO, SplitsArray, CardsArray, CurrencyValues}) => {
+const League = ({host, Cookies, isSocketConnected, SocketIO, CardsArray}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
   
   const router = useRouter();
   const { leagueName } = router.query;
+
+  const [LeagueDetails, setLeagueDetails] = useState({});
+
+  const HandleListData = (League, LeagueResult) => {
+    if(League == leagueName) setLeagueDetails(LeagueResult);
+  };
+
+  useEffect(() => {
+    if (SocketIO) {
+      SocketIO.emit("getLeagueDetails", leagueName);
+      SocketIO.on("LeagueDetails", HandleListData);
+    }
+
+    return () => {
+      try {
+        SocketIO.off("LeagueDetails", HandleListData);
+      } catch (err) {}
+    };
+
+  }, [SocketIO]);
+
+  const {ExaltValue, DivineValue, AnullValue, /* MirrorValue, */ XMirrorValue, LastUpdated, Table} = LeagueDetails['details'] || {};
+
+  console.log(Table);
+
+  const CurrencyValues = {
+    'Exalted': ExaltValue,
+    'Divine': DivineValue,
+    'Annul': AnullValue,
+    'Mirror': XMirrorValue
+  };
+
+  const GenerateSplitsArray = (Value = 100) => {
+    let arr = [];
+    for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
+    return arr;
+  };
+
+  const SplitsArray = GenerateSplitsArray(ExaltValue);
 
   const Page = () => ( 
   <Layout parent={host} margintop={true} parent="localhost" title={`${leagueName} League`}>  
@@ -23,8 +62,9 @@ const League = ({host, Cookies, isSocketConnected, SocketIO, SplitsArray, CardsA
           <LeagueComponent
               leagueName={leagueName}
               Cookies={Cookies}
+              LastUpdated={LastUpdated}
               NavbarHeight={NavbarHeight} 
-              CardsArray={CardsArray} 
+              CardsTable={Table || []} 
               CurrencyValues={CurrencyValues}
               SplitsArray={SplitsArray}>
           </LeagueComponent>
@@ -47,29 +87,12 @@ export async function getServerSideProps({req}) {
 
   const host = req['headers']['host'] || "localhost";
   
-  const GenerateSplitsArray = async (Value = 100) => {
-    let arr = [];
-    for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
-    return arr;
-  };
-  
-  const CardsArray = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-  
-  let CurrencyValues = {
-    'Exalted': 999,
-    'Divine': 99,
-    'Annul': 99,
-    'Mirror': 999
-  };
-  
-  const SplitsArray = await GenerateSplitsArray(CurrencyValues["Exalted"]);
+  const CardsArray = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];  
 
   return {
     props: {
       host,
-      SplitsArray,
       CardsArray,
-      CurrencyValues,
       Cookies: CookieData && CookieData
     }
   }

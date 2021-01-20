@@ -2,7 +2,8 @@ import styles from './index.module.css';
 import Image from 'next/image';
 
 export default function DivCard({CardDetails}) {
-    const isCorrupted = true;
+    
+    const {CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass} = CardDetails['Details'];
 
     const GenerateCorruptedText = () => (
         <>
@@ -16,7 +17,7 @@ export default function DivCard({CardDetails}) {
             
             <span className={styles['divicard-art']}>
                 <Image
-                    src={`https://web.poecdn.com/image/divination-card/TheWorldEater.png`}
+                    src={`https://web.poecdn.com/image/divination-card/${artFilename}.png`}
                     width={200}
                     height={140}
                 >                    
@@ -31,18 +32,18 @@ export default function DivCard({CardDetails}) {
                 ></Image>
             </span>
 
-            <span className={styles['divicard-header']}>Card Name</span>
-            <span className={styles['divicard-stack']}>99</span>
+            <span className={styles['divicard-header']}>{CardName}</span>
+            <span className={styles['divicard-stack']}>{CardStack}</span>
 
             <span className={styles['divicard-reward']}>
                 <span>
-                    <span className={`itemclass-00`}>RewardName</span>
+                    <span className={`itemclass-${rewardClass}`}>{RewardName}</span>
                     {isCorrupted ? GenerateCorruptedText() : ``}
                 </span>
             </span>
 
             <span className={`${styles['divicard-flavour']} ${styles['text-color']} ${styles['-flavour']}`}>
-                <span>Flavour</span>
+                <span>{Flavour}</span>
             </span>
 
         </span>

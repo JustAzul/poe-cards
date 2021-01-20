@@ -1,8 +1,28 @@
 import Layout from '../components/Layout';
 import SelectLeagueTable from '../components/SelectLeagueTable';
 import Spinner from '../components/Spinner';
+import {useEffect, useState} from 'react';
 
-function Home({host, LeagueDetails, isSocketConnected, SocketIO}) {
+function Home({host, isSocketConnected, SocketIO}) {
+  const [LeagueDetails, setLeagueDetails] = useState({});
+
+  const HandleListData = data => {
+    setLeagueDetails(data);
+  };
+
+  useEffect(() => {
+    if (SocketIO) {
+      SocketIO.emit("getLeagueList");
+      SocketIO.on("LeagueListData", HandleListData);
+    }
+
+    return () => {
+      try {
+        SocketIO.off("LeagueListData", HandleListData);
+      } catch (err) {}
+    };
+
+  }, [SocketIO]);
 
   const LeagueTableLoader = () => (
     <div className="text-center mt-5 mb-5">
@@ -22,25 +42,10 @@ function Home({host, LeagueDetails, isSocketConnected, SocketIO}) {
 export async function getServerSideProps({req}) {
   
   const host = req['headers']['host'] || "localhost";
-  
-  let LeagueDetails = [];
-
-  for(let i = 0; i < 4; i++) {
-
-    const o = {
-      Name: "Standard "+ i,
-      EndAt: "00/00/00",
-      DaysLeft: 0,
-      Ladder: "#"
-    };
-
-    LeagueDetails.push(o);
-  }
 
   return {
       props: {
-        host,
-          LeagueDetails
+        host
       }
   };
 }

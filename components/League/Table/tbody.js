@@ -1,4 +1,4 @@
-//import styles from './index.module.css';
+import styles from './index.module.css';
 import Image from 'next/image';
 import {OverlayTrigger} from 'react-bootstrap';
 import {useRef, useState} from 'react';
@@ -38,20 +38,20 @@ export default function thead({setToHover, toHover, Items}) {
         </div>
     );
     
-    return Items.map( Item => {
+    return Items.map( ({Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice}) => {
         return (
-            <OverlayTrigger overlay={GenDivCard()} target={target.current} placement="left">
-                <tr ref={target} onMouseOver={() => setShow(true)} onMouseOut={() => setShow(false)} className="row100">
-                    <td onMouseOver={() => setToHover("c1")} onMouseOut={() => setToHover("")} title="Card Name" className={`column100 column1 click${toHover === "c1" ? " hov-column-ver1" : ""}`}>{cardIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c2")} onMouseOut={() => setToHover("")} title="cardname Stack Size" className={`column100${toHover === "c2" ? " hov-column-ver1" : ""}`}>lore</td>
-                    <td onMouseOver={() => setToHover("c3")} onMouseOut={() => setToHover("")} title="cardname Chaos Price" className={`column100 click${toHover === "c3" ? " hov-column-ver1" : ""}`}>{chaosIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c4")} onMouseOut={() => setToHover("")} title="cardname Exalted Price" className={`column100 click${toHover === "c4" ? " hov-column-ver1" : ""}`}>{exIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c5")} onMouseOut={() => setToHover("")} title="cardname Stacked Chaos Value" className={`column100${toHover === "c5" ? " hov-column-ver1" : ""}`}>{chaosIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c6")} onMouseOut={() => setToHover("")} title="cardname Stacked Exalted Value" className={`column100${toHover === "c6" ? " hov-column-ver1" : ""}`}>{exIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c7")} onMouseOut={() => setToHover("")} title="cardname Chaos Value" className={`column100 click${toHover === "c7" ? " hov-column-ver1" : ""}`}>{chaosIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c8")} onMouseOut={() => setToHover("")} title="cardname Exalted Value" className={`column100 click${toHover === "c8" ? " hov-column-ver1" : ""}`}>{exIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c9")} onMouseOut={() => setToHover("")} title="Chaos Profit" className={`column100${toHover === "c9" ? " hov-column-ver1" : ""}`}>{chaosIMG()}lore</td>
-                    <td onMouseOver={() => setToHover("c10")} onMouseOut={() => setToHover("")} title="Exalted Profit" className={`column100${toHover === "c10" ? " hov-column-ver1" : ""}`}>{exIMG()}lore</td>
+            <OverlayTrigger overlay={GenDivCard(Card)} target={target.current} placement="left">
+                <tr ref={target} onMouseOver={() => setShow(true)} onMouseOut={() => setShow(false)} className={`row100`}>
+                    <td onMouseOver={() => setToHover("c1")} onMouseOut={() => setToHover("")} title="Card Name" className={`column100 column1 click${toHover === "c1" ? " hov-column-ver1" : ""}${isCurrency ? ` ${styles['currency']}` : ""}`}>{cardIMG()}{Card['name']}</td>
+                    <td onMouseOver={() => setToHover("c2")} onMouseOut={() => setToHover("")} title={`${Card['name']} Stack Size`} className={`column100${toHover === "c2" ? " hov-column-ver1" : ""}`}>{Card['stack']}</td>
+                    <td onMouseOver={() => setToHover("c3")} onMouseOut={() => setToHover("")} title={`${Card['name']} Chaos Price`} className={`column100 click${toHover === "c3" ? " hov-column-ver1" : ""}`}>{chaosIMG()}{Card['chaosprice']}</td>
+                    <td onMouseOver={() => setToHover("c4")} onMouseOut={() => setToHover("")} title={`${Card['name']} Exalted Price`} className={`column100 click${toHover === "c4" ? " hov-column-ver1" : ""}`}>{exIMG()}{Card['exaltedprice']}</td>
+                    <td onMouseOver={() => setToHover("c5")} onMouseOut={() => setToHover("")} title={`${Card['name']} Stacked Chaos Value`} className={`column100${toHover === "c5" ? " hov-column-ver1" : ""}`}>{chaosIMG()}{setchaosprice}</td>
+                    <td onMouseOver={() => setToHover("c6")} onMouseOut={() => setToHover("")} title={`${Card['name']} Stacked Exalted Value`} className={`column100${toHover === "c6" ? " hov-column-ver1" : ""}`}>{exIMG()}{setexprice}</td>
+                    <td onMouseOver={() => setToHover("c7")} onMouseOut={() => setToHover("")} title={`${Card['name']} Chaos Value`} className={`column100 click${toHover === "c7" ? " hov-column-ver1" : ""}`}>{chaosIMG()}{Reward['chaosprice']}</td>
+                    <td onMouseOver={() => setToHover("c8")} onMouseOut={() => setToHover("")} title={`${Card['name']} Exalted Value`} className={`column100 click${toHover === "c8" ? " hov-column-ver1" : ""}`}>{exIMG()}{Reward['exaltedprice']}</td>
+                    <td onMouseOver={() => setToHover("c9")} onMouseOut={() => setToHover("")} title="Chaos Profit" className={`column100${toHover === "c9" ? " hov-column-ver1" : ""}`}>{chaosIMG()}{chaosprofit}</td>
+                    <td onMouseOver={() => setToHover("c10")} onMouseOut={() => setToHover("")} title="Exalted Profit" className={`column100${toHover === "c10" ? " hov-column-ver1" : ""}`}>{exIMG()}{exprofit}</td>
                     
                 </tr>
              </OverlayTrigger >

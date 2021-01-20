@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import styles from './index.module.css';
 
+const moment = require('moment');
+
 export default function SelectLeagueTable({LeagueDetails}) {
     const [state, SetMouseOver] = useState("");
 
@@ -20,7 +22,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
                     </thead>
 
                     <tbody>
-                        {LeagueDetails.map(({Name, EndAt, DaysLeft, Ladder}) => {
+                        {Object.values(LeagueDetails).map(({leagueName:Name, endAt:EndAt, DaysLeft, ladder:Ladder}) => {
                             return (
                                 <tr className="row100 click">
                                     <Link href={`/league/${Name}`}>
@@ -28,7 +30,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
                                     </Link>
 
                                     <Link href={`/league/${Name}`}>
-                                        <td onMouseOver={() => SetMouseOver("c2")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c2" ? " hov-column-ver1": ""}`}><a>{EndAt}</a></td>
+                                        <td onMouseOver={() => SetMouseOver("c2")} onMouseLeave={() => SetMouseOver("")} className={`column100${state === "c2" ? " hov-column-ver1": ""}`}><a>{EndAt ? moment(EndAt).format("D MMM, YYYY") : "?"}</a></td>
                                     </Link>
 
                                     <Link href={`/league/${Name}`}>

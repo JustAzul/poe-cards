@@ -52,17 +52,7 @@ function MyApp({ Component, pageProps }) {
     }
 })
 
-  useEffect(() => {
-    if (SocketIO) {
-      SocketIO.emit("LeagueSelect", "cu depilado");
-
-      SocketIO.on("ping", data => {
-        console.log("pong:", data);
-      });
-    }
-
-  }, [SocketIO]);
-  return (
+return (
     <CookiesProvider>
       {isLoading ? <Loader></Loader> : <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} />}
     </CookiesProvider>
