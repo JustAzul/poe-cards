@@ -35,7 +35,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
 
   const {ExaltValue, DivineValue, AnullValue, /* MirrorValue, */ XMirrorValue, LastUpdated, Table} = LeagueDetails['details'] || {};
 
-  console.log(Table);
+  //console.log(Table);
 
   const CurrencyValues = {
     'Exalted': ExaltValue,
@@ -53,7 +53,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
   const SplitsArray = GenerateSplitsArray(ExaltValue);
 
   const Page = () => ( 
-  <Layout parent={host} margintop={true} parent="localhost" title={`${leagueName} League`}>  
+  <Layout parent={host} margintop={true} title={`${leagueName} League`}>  
         <Nav 
             CurrencyValues={CurrencyValues} 
             UpdateHeigh={setNavbarHeight}>
@@ -85,7 +85,8 @@ export async function getServerSideProps({req}) {
   const parseCookies = req => cookie.parse(req ? req.headers.cookie || "" : document.cookie);
   const CookieData = parseCookies(req);
 
-  const host = req['headers']['host'] || "localhost";  
+  const headers = req['headers'];
+  const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";
 
   return {
     props: {

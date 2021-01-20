@@ -33,15 +33,16 @@ function Home({host, isSocketConnected, SocketIO}) {
   return (
     <div>
     <Layout parent={host} title="Pick a League">
-      {isSocketConnected === false ? <LeagueTableLoader></LeagueTableLoader>: <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>}
+      {(isSocketConnected === false) ? <LeagueTableLoader></LeagueTableLoader>: Object.values(LeagueDetails).length === 0 ? <LeagueTableLoader></LeagueTableLoader> : <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>}
     </Layout>
     </div>  
   );
 };
 
 export async function getServerSideProps({req}) {
-  
-  const host = req['headers']['host'] || "localhost";
+
+  const headers = req['headers'];
+  const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";
 
   return {
       props: {
