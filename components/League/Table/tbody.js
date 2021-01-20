@@ -30,7 +30,7 @@ export default function thead({setToHover, toHover, Items}) {
     return Items.map( () => {
         return (
             <tr className="row100">
-                <td onMouseOver={() => setToHover("c1")} onMouseOut={() => setToHover("")} title="Card Name" className={`column100 click${toHover === "c1" ? " hov-column-ver1" : ""}`}>{cardIMG()}lore</td>
+                <td onMouseOver={() => setToHover("c1")} onMouseOut={() => setToHover("")} title="Card Name" className={`column100 column1 click${toHover === "c1" ? " hov-column-ver1" : ""}`}>{cardIMG()}lore</td>
                 <td onMouseOver={() => setToHover("c2")} onMouseOut={() => setToHover("")} title="cardname Stack Size" className={`column100${toHover === "c2" ? " hov-column-ver1" : ""}`}>lore</td>
                 <td onMouseOver={() => setToHover("c3")} onMouseOut={() => setToHover("")} title="cardname Chaos Price" className={`column100 click${toHover === "c3" ? " hov-column-ver1" : ""}`}>{chaosIMG()}lore</td>
                 <td onMouseOver={() => setToHover("c4")} onMouseOut={() => setToHover("")} title="cardname Exalted Price" className={`column100 click${toHover === "c4" ? " hov-column-ver1" : ""}`}>{exIMG()}lore</td>

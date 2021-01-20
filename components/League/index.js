@@ -4,7 +4,7 @@ import SplitedValues from './SplitedExalted';
 import ChangeHelper from './ChangeHelper';
 import TableView from './Table';
 
-export default function League({SplitsArray, CardsArray, NavbarHeight}) {
+export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsArray, NavbarHeight}) {
 
     const [boxHeight, setBoxHeight] = useState(Number);
     
@@ -18,14 +18,14 @@ export default function League({SplitsArray, CardsArray, NavbarHeight}) {
                     </div>
 
                     <div className="col-sm mt-2">
-                        <ChangeHelper setBoxHeight={setBoxHeight}></ChangeHelper>
+                        <ChangeHelper leagueName={leagueName} Cookies={Cookies} ExaltedValue={CurrencyValues['Exalted']} setBoxHeight={setBoxHeight}></ChangeHelper>
                     </div>
 
                 </div>
             </div>
             
             <div className="text-center pt-3 mandali user-select-none">
-                - NavbarHeight: {NavbarHeight},  boxHeight: {boxHeight} - 
+            - Last updated a minute ago - 
             </div>
 
             

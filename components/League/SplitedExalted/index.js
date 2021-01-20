@@ -25,7 +25,7 @@ export default function SplitedExalted({SplitsArray = [], boxHeight}) {
                             return (
                                 <tr>
                                     <td onMouseOver={()=> setRow(i+1)} onMouseLeave={()=> setRow("")} className={`border column100 user-select-none${row == (i+1) ? " hov-column-ver1" : ""}`}>0.{i+1}</td>
-                                    <td onMouseOver={()=> setRow(i+1)} onMouseLeave={()=> setRow("")} className={`border column100${row == (i+1) ? " hov-column-ver1" : ""}`}>{parseInt(Value)}</td>
+                                    <td onMouseOver={()=> setRow(i+1)} onMouseLeave={()=> setRow("")} className={`border column100${row == (i+1) ? " hov-column-ver1" : ""}`}>{Math.round(Value)}</td>
                                 </tr>
                             );
                         })}
