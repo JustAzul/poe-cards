@@ -3,13 +3,13 @@ import Link from 'next/link';
 import PlayerDonate from './PlayerDonate';
 //import Nav from '../Navbar';
 
-const Layout = ({children, parent, title = "poe.cards", margintop = false, IgnorePlayer = false, GoogleShit = false}) => {
+const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
     return (
         <>
             <Head>
-                <title>{title}</title>
+                <title>{title == "" ? parent : title}</title>
                 <link rel="icon" href="/images/InventoryIcon.png"></link>                               
             </Head>
             
