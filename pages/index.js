@@ -1,6 +1,5 @@
 import Layout from '../components/Layout';
 import SelectLeagueTable from '../components/SelectLeagueTable';
-//import Footer from '../components/Footer';
 
 function Home({parent, LeagueDetails}) {
   return (

@@ -1,5 +1,5 @@
 import '../public/assets/css/util.css';
-import '../styles/bootstrap-4.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../public/assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../public/assets/css/Mandali-font.css';
 import '../public/assets/css/main.css';
