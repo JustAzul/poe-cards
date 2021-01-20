@@ -13,12 +13,14 @@ const Layout = ({children, parent, title = "poe.cards", margintop = false}) => {
                 <link rel="icon" href="/images/InventoryIcon.png"></link>
             </Head>
             
-            <main className={`container ${margintop ? "mt-5" : ""}`}>
-                <PlayerDonate parent={parent}></PlayerDonate>
+            <main className={`${margintop ? "container-fluid mt-5" : "container"}`}>
+                <div className="container">
+                    <PlayerDonate parent={parent}></PlayerDonate>
+                </div>
                 {children}
             </main>
             
-            <div className="text-center mt-4">
+            <div className="text-center mt-2 pb-3">
                 <footer className="blockquote-footer">
                     Copyright © <cite title={parent}><Link href="/"><a className="text-decoration-none">{parent}</a></Link></cite> 2019 - {CurrentYear.getFullYear()}. Powered by <cite title="poe.ninja"><Link href="https://poe.ninja/"><a className="text-decoration-none" target="_BLANK">poe.ninja</a></Link></cite>, Developed by <cite
                     title="Azul"><Link href={DevURL}><a className="text-decoration-none" target="_BLANK">Azul</a></Link></cite>.

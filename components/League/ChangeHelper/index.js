@@ -1,14 +1,33 @@
 import SplitedExaltedStyles from '../SplitedExalted/index.module.css';
+import {useEffect, useRef} from 'react';
 import styles from './index.module.css';
 
-export default function ChangeHelper() {
+export default function ChangeHelper({setBoxHeight}) {
+    
+    const Element = useRef(null);
+
+    const HandleElement = () => {
+        if (Element.current) {
+            const {height} = Element.current.getBoundingClientRect();
+            setBoxHeight(height);
+        }
+    };
+
+    useEffect(() => {
+        HandleElement();
+        window.addEventListener("resize", HandleElement);
+        return () => {
+            window.removeEventListener('resize', () => HandleElement);
+          };
+    }, [Element]);
+    
     return (
         <>
             <div className={`pl-2 pr-2 text-center user-select-none ${SplitedExaltedStyles.header2}`}>
-                Change Helper
+                Change Helper 
             </div>
 
-            <div className={`mt-2 border ${styles['bg-white']}`}>
+            <div ref={Element} className={`mt-2 border ${styles['bg-white']}`}>
                 <div className="container">
                     <div className="row p-2 pt-1 justify-content-center text-center">
                         
@@ -29,7 +48,7 @@ export default function ChangeHelper() {
                         
                         <div className="form-group mb-2">
                             <label className="user-select-none">Change:</label>
-                            <input defaultValue={0} min={0} readOnly={true} type="text" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input /* disabled={true} */ defaultValue={'0c'} min={0} type="text" className="form-control-sm text-center mr-2 ml-2" readOnly></input>
                         </div>
                         
                         <div className={`p-0 m-0 pb-1 ${styles.chaosvalue}`}>

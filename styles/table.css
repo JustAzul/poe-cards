@@ -39,9 +39,9 @@ td {
     padding-right: 10px;
 }
 
-td:hover {
+/* td:hover {
     cursor: pointer;
-}
+} */
 
 .column100 {
     width: 130px;

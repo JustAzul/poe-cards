@@ -11,3 +11,16 @@ body {
 .pointer {
     cursor: pointer;
 }
+
+.click:hover {
+    cursor: pointer;
+  }
+
+.sticky-wrapper {
+    position: relative;
+}
+
+.sticky .sticky-inner {
+    position: fixed;
+    z-index: 100;
+}

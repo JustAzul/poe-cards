@@ -1,20 +1,24 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Layout from '../../components/Layout';
 import Nav from '../../components/League/Navbar';
-import LeagueC from '../../components/League';
+import LeagueComponent from '../../components/League';
 
 const League = ({SplitsArray}) => {
   const router = useRouter();
   const { leagueName } = router.query;
 
-  return ( <>
-       
-        <Layout margintop={true} parent="localhost" title={`${leagueName} League`}>            
-            <Nav></Nav>
-            <LeagueC SplitsArray={SplitsArray}></LeagueC>
-        </Layout>
+  const [NavbarHeight, setNavbarHeight] = useState(40);
 
-      </>
+  const CardsArray = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+
+  return ( 
+    <>
+      <Layout margintop={true} parent="localhost" title={`${leagueName} League`}>            
+          <Nav UpdateHeigh={setNavbarHeight}></Nav>
+          <LeagueComponent NavbarHeight={NavbarHeight} CardsArray={CardsArray} SplitsArray={SplitsArray}></LeagueComponent>
+      </Layout>
+    </>
   );
 }
 

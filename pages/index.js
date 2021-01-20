@@ -2,10 +2,10 @@ import Layout from '../components/Layout';
 import SelectLeagueTable from '../components/SelectLeagueTable';
 //import Footer from '../components/Footer';
 
-function Home({parent, LeagueDetails, ttv}) {
+function Home({parent, LeagueDetails}) {
   return (
     <div>
-    <Layout ttv={ttv} parent={parent} title="Pick a League">
+    <Layout parent={parent} title="Pick a League">
       <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>
     </Layout>
     </div>  
