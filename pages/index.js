@@ -1,14 +1,20 @@
 import Layout from '../components/Layout';
-import SelectLeagueTable from '../components/SelectLeagueTable';
+import Dynamic from 'next/dynamic';
 import Spinner from '../components/Spinner';
 import {useEffect, useState} from 'react';
 
-function Home({host, isSocketConnected, SocketIO}) {
+const LeagueTableLoader = () => (
+  <div className="mt-5 mb-5">
+    <Spinner/>
+  </div>
+);
+
+const SelectLeagueTable = Dynamic(() => import('../components/Table'), {loading: () => LeagueTableLoader()});
+
+function Home({host, SocketIO}) {
   const [LeagueDetails, setLeagueDetails] = useState({});
 
-  const HandleListData = data => {
-    setLeagueDetails(data);
-  };
+  const HandleListData = data => setLeagueDetails(data);
 
   useEffect(() => {
     if (SocketIO) {
@@ -23,19 +29,11 @@ function Home({host, isSocketConnected, SocketIO}) {
     };
 
   }, [SocketIO]);
-
-  const LeagueTableLoader = () => (
-    <div className="text-center mt-5 mb-5">
-      <Spinner></Spinner>
-    </div>
-  );
   
   return (
-    <div>
     <Layout parent={host} title="Pick a League">
-      {(isSocketConnected === false) ? <LeagueTableLoader></LeagueTableLoader>: Object.values(LeagueDetails).length === 0 ? <LeagueTableLoader></LeagueTableLoader> : <SelectLeagueTable LeagueDetails={LeagueDetails}></SelectLeagueTable>}
+      {Object.values(LeagueDetails).length === 0 ? <LeagueTableLoader /> : <SelectLeagueTable LeagueDetails={LeagueDetails} />}
     </Layout>
-    </div>  
   );
 };
 

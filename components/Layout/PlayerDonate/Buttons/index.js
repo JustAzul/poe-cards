@@ -9,10 +9,11 @@ function DonateSection({ChannelName = "a"}) {
                 <a className="m-1" target="_BLANK">
                     <Image 
                         className={styles.image}
-                        src="https://img.shields.io/badge/Paypal-Donate-yellow.svg"
+                        src="/images/Paypal-Donate-yellow.svg"
                         alt="Paypal Donate"
                         width={96}
                         height={20}
+                        priority
                     />
                 </a>
             </Link>
@@ -20,10 +21,11 @@ function DonateSection({ChannelName = "a"}) {
                 <a className="m-2" target="_BLANK">
                     <Image 
                         className={styles.image}
-                        src="https://img.shields.io/badge/Steam-Donate-yellow.svg"
+                        src="/images/Steam-Donate-yellow.svg"
                         alt="Steam Donate"
                         width={94}
                         height={20}
+                        priority
                     />
                 </a>
             </Link>            
@@ -31,10 +33,11 @@ function DonateSection({ChannelName = "a"}) {
                 <a className="m-1" target="_BLANK">
                     <Image 
                         className={styles.image}
-                        src="https://img.shields.io/badge/Twitch-Subscribe-blue.svg"
+                        src="/images/Twitch-Subscribe-blue.svg"
                         alt="Twitch Subscribe"
                         width={108}
                         height={20}
+                        priority
                     />
                 </a>
             </Link>

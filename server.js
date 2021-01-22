@@ -11,14 +11,14 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const moment = require("moment");
-const fs = require('graceful-fs');
+const {duration} = require("moment");
+const {watch} = require('graceful-fs');
 const {readJSON, Log} = require('azul-tools');
 
 const DB = require("./server/components/database.js");
 const helper = require("./server/components/helper.js");
 
-const ServerPort = 2469;
+const ServerPort = process.env.PORT || 80;
 
 let TableData = {};
 let LeaguesData = {};
@@ -27,7 +27,7 @@ let Cards = require("./server/data/Cards.json");
 let CurrencyCards = require("./server/data/CurrencyCards.json");
 
 // *Auto reloading Cards.json if needed.
-fs.watch("./server/data/Cards.json", async eventType => {
+watch("./server/data/Cards.json", async eventType => {
     if (eventType != 'change') return;
     const newFileData = await readJSON("./server/data/Cards.json");
     if (Object.entries(newFileData).length === 0) return;
@@ -35,7 +35,7 @@ fs.watch("./server/data/Cards.json", async eventType => {
 });
 
 // *Auto reloading CurrencyCards.json if needed.
-fs.watch("./server/data/CurrencyCards.json", async eventType => {
+watch("./server/data/CurrencyCards.json", async eventType => {
     if (eventType != 'change') return;
     const newFileData = await readJSON("./server/data/CurrencyCards.json");
     if (Object.entries(newFileData).length === 0) return;
@@ -280,38 +280,26 @@ async function Update() {
 }
 
 process.nextTick(async () => {
-    const UpdateInterval = moment.duration(5, "minutes");
+    const UpdateInterval = duration(5, "minutes");
     
-    await Promise.all([Update(), nextApp.prepare()]);;
-
-    Log.Debug(`Timer Started!`);
-
-    setInterval(() => {
-        Update();
-    }, UpdateInterval);
-
+    await Promise.all([Update(), nextApp.prepare()]);
+    
+    if (!dev) {
+        setInterval(() => Update(), UpdateInterval);
+        Log.Debug(`Timer Started!`);
+    }
+    
     app.get("*", nextHandler);
-
-    Server.listen(ServerPort, () => {
-        Log(`Listening on ${ServerPort}`);
-    });
+    Server.listen(ServerPort, () => Log(`Listening on ${ServerPort}`));
 
 });
 
 IO.on("connection", Socket => {
-    /* 
-    const {headers} = Socket['handshake'];
-    console.log('ref:', headers['referer']); 
-    */
+    
     Log(`[${Socket['id']}] New Connection!`);
 
-    const HandleListData = () => {
-        Socket.emit("LeagueListData", LeaguesData) ;
-    };
-    
-    const HandleLeagueDetails = league => {
-        SendSocketData(league, Socket);
-    };
+    const HandleListData = () => Socket.emit("LeagueListData", LeaguesData);    
+    const HandleLeagueDetails = league => SendSocketData(league, Socket);
 
     Socket.on("getLeagueList", HandleListData);
     Socket.on("getLeagueDetails", HandleLeagueDetails);
@@ -320,7 +308,6 @@ IO.on("connection", Socket => {
         Log(`[${Socket['id']}] Disconnected`);
         Socket.off("getLeagueList", HandleListData);
         Socket.off("getLeagueDetails", HandleLeagueDetails);
-    })
+    });
 
-    //Socket.emit("ping", "cu depilado");
 });

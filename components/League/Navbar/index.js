@@ -1,6 +1,7 @@
-import Image from 'next/image';
-import {useEffect, useRef } from 'react';
+
 import styles from './index.module.css';
+import {useEffect, useRef } from 'react';
+import Currency from './Currency';
 
 export default function Navbar({CurrencyValues, UpdateHeigh}) {    
     const Element = useRef(null);
@@ -22,27 +23,23 @@ export default function Navbar({CurrencyValues, UpdateHeigh}) {
 
     return (
         <div id="header" ref={Element} className="navbar navbar-dark bg-dark fixed-top mandali">
-            <div className="container" style={{color:"white"}}>
+            <div className={`container ${styles['font-class']}`} >
 
-                <div className="row col-sm ml-1 text-center">
-                    <Image className={styles.image} src="/images/ExaltedOrb.png" width={24} height={24} />
-                    <div className="ml-1">Exalted Value: <span className="pl-1">{CurrencyValues["Exalted"]}c</span></div>
-                </div>
+                <Currency img="ExaltedOrb">
+                    Exalted Value: <span className="pl-1">{CurrencyValues["Exalted"]}c</span>
+                </Currency>
 
-                <div className="row col-sm ml-1">
-                    <Image className={styles.image} src="/images/DivineOrb.png" width={24} height={24} />
-                    <div className="ml-1">Divine Value: <span className="pl-1">{CurrencyValues["Divine"]}c</span></div>
-                </div>
+                <Currency img="DivineOrb">
+                    Divine Value: <span className="pl-1">{CurrencyValues["Divine"]}c</span>
+                </Currency>
 
-                <div className="row col-sm ml-1">
-                    <Image className={styles.image} src="/images/AnnullOrb.png" width={24} height={24} />
-                    <div className="ml-1">Annul Value: <span className="pl-1">{CurrencyValues["Annul"]}c</span></div>
-                </div>                
+                <Currency img="AnnulOrb">
+                    Annul Value: <span className="pl-1">{CurrencyValues["Annul"]}c</span>
+                </Currency>                
 
-                <div className="row col-sm ml-1">
-                    <Image className={styles.image} src="/images/MirrorKalandra.png" width={24} height={24} />
-                    <div className="ml-1">Mirror Value: <span className="pl-1 mr-2">{CurrencyValues["Mirror"]} ex</span></div>
-                </div>
+                <Currency img="MirrorKalandra">
+                    Mirror Value: <span className="pl-1 mr-2">{CurrencyValues["Mirror"]} ex</span>
+                </Currency>
 
             </div>
         </div> 

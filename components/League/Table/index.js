@@ -1,7 +1,7 @@
-//import styles from './index.module.css';
 import { useState, useEffect, useRef } from 'react';
-import TableHead from './thead.js';
-import TableBody from './tbody.js';
+import TableWrapper from '../../Table/Wrapper';
+import TableHead from './THead.js';
+import TableBody from './Tbody/index.js';
 
 export default function Table({Items, NavbarHeight, leagueName}) {
     const [toHover, setToHover] = useState("");
@@ -25,7 +25,7 @@ export default function Table({Items, NavbarHeight, leagueName}) {
       }, [ref]);
     
     return (
-        <table>
+        <TableWrapper>
                 <thead ref={ref} className={`sticky-wrapper${isSticky ? ' sticky' : ''}`}>
                     <TableHead NavbarHeight={NavbarHeight} ShouldSticky={isSticky} toHover={toHover} setToHover={setToHover}></TableHead>
                 </thead>                 
@@ -33,6 +33,6 @@ export default function Table({Items, NavbarHeight, leagueName}) {
                 <tbody>
                     <TableBody leagueName={leagueName} toHover={toHover} setToHover={setToHover} Items={Items}></TableBody>
                 </tbody>
-        </table> 
+        </TableWrapper> 
     );
 }

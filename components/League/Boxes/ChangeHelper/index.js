@@ -1,7 +1,8 @@
-import SplitedExaltedStyles from '../SplitedExalted/index.module.css';
+import _styles from '../index.module.css';
 import {useEffect, useRef, useState} from 'react';
 import {useCookies} from 'react-cookie';
 import styles from './index.module.css';
+import Head from '../Head.js';
 
 export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}) {
     const [ItemChaosValue, setItemChaosValue] = useState(0);
@@ -120,11 +121,11 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
     
     return (
         <>
-            <div className={`pl-2 pr-2 text-center user-select-none ${SplitedExaltedStyles.header2}`}>
+            <Head>
                 Change Helper 
-            </div>
+            </Head>
 
-            <div ref={BoxElement} className={`mt-2 border ${styles['bg-white']}`}>
+            <div ref={BoxElement} className={`mt-2 border ${_styles['bg-white']}`}>
                 <div className="container">
                     <div className="row p-2 pt-1 justify-content-center text-center">
                         

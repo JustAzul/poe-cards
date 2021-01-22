@@ -1,7 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import PlayerDonate from './PlayerDonate';
-//import Nav from '../Navbar';
+
+import Dynamic from 'next/dynamic';
+import Spinner from '../Spinner';
+
+const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
 const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {
     const CurrentYear = new Date();
@@ -14,7 +17,7 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
             </Head>
             
             <main className={`${margintop ? "container-fluid mt-5" : "container"}`}>
-                {IgnorePlayer ? "" : <div className="container"><PlayerDonate parent={parent}></PlayerDonate></div>}
+                {IgnorePlayer ? "" : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                 {children}
             </main>
             

@@ -8,8 +8,8 @@ function TwitchPlayer({ parent, ChannelName }) {
     const SRC = `https://player.twitch.tv/?channel=${ChannelName}&autoplay=${autoplay}&muted=${muted}&parent=${parent}`;
 
     return (
-        <iframe className={styles.player} src={SRC}></iframe>
+        <iframe className={styles.player} src={SRC} />
     );
 }
 
-export default TwitchPlayer
+export default TwitchPlayer;

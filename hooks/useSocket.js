@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-//const Url = "http://127.0.0.1:4001";
 const socket = io();
 
 export default function useSocket(cb) {

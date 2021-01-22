@@ -4,7 +4,7 @@ import '../public/assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../public/assets/css/Mandali-font.css';
 import '../public/assets/css/main.css';
 import '../styles/globals.css';
-import '../styles/table.css';
+//import '../styles/table.css';
 
 import { CookiesProvider } from "react-cookie";
 import {useEffect, useState} from 'react';
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }) {
 
 return (
     <CookiesProvider>
-      {isLoading ? <Loader></Loader> : <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} />}
+      {isLoading ? <Loader /> : <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} />}
     </CookiesProvider>
   );
 }

@@ -4,6 +4,7 @@ import cookie from "cookie";
 
 import Layout from '../../components/Layout';
 import Nav from '../../components/League/Navbar';
+
 import LeagueComponent from '../../components/League';
 import LoaderComponent from '../../components/Loader';
 
@@ -16,13 +17,13 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
   const [LeagueDetails, setLeagueDetails] = useState({});
 
   const HandleListData = (League, LeagueResult) => {
-    if(League == leagueName) setLeagueDetails(LeagueResult);
+    if(League === leagueName) setLeagueDetails(LeagueResult);
   };
 
   useEffect(() => {
     if (SocketIO) {
       SocketIO.emit("getLeagueDetails", leagueName);
-      SocketIO.on("LeagueDetails", HandleListData);
+      SocketIO.on("LeagueDetails", HandleListData);      
     }
 
     return () => {
@@ -33,10 +34,8 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
 
   }, [SocketIO]);
 
-  const {ExaltValue, DivineValue, AnullValue, /* MirrorValue, */ XMirrorValue, LastUpdated, Table} = LeagueDetails['details'] || {};
-
-  //console.log(Table);
-
+  const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated, Table} = LeagueDetails['details'] || {};
+  
   const CurrencyValues = {
     'Exalted': ExaltValue,
     'Divine': DivineValue,
@@ -66,16 +65,14 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
               NavbarHeight={NavbarHeight} 
               CardsTable={Table || []} 
               CurrencyValues={CurrencyValues}
-              SplitsArray={SplitsArray}>
-          </LeagueComponent>
+              SplitsArray={SplitsArray} 
+              />
     </Layout>
   );
 
-  const Loader = () => (<LoaderComponent></LoaderComponent>);
-  
   return (
     <>
-      {isSocketConnected ? Page() : Loader()}
+      {isSocketConnected ? Page() : <LoaderComponent />}
     </>
   );
 }
