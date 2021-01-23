@@ -49,11 +49,11 @@ export default function Tr({setToHover, toHover, Details, doSearch}) {
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{setexprice}</span>
                     </Td>
 
-                    <Td Click={doSearch} SearchString={Reward['name']} setTitle={`${Card['name']} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" >
+                    <Td Click={doSearch} SearchString={Reward['name']} setTitle={`${Reward['name']} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" >
                         {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(Reward['chaosprice'])}</span>
                     </Td>
 
-                    <Td Click={doSearch} Currency="exalted" SearchString={Reward['name']} setTitle={`${Card['name']} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" >
+                    <Td Click={doSearch} Currency="exalted" SearchString={Reward['name']} setTitle={`${Reward['name']} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" >
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{Reward['exaltedprice']}</span>
                     </Td>
 
