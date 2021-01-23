@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@loadable/component": "^5.14.1",
+    "azul-tools": "^1.2.6",
     "bootstrap": "^4.6.0",
     "cookie": "^0.4.1",
     "express": "^4.17.1",
