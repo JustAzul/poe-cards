@@ -9,7 +9,7 @@ import Spinner from '../../../Spinner';
 const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
 const formatNumber = require('../../../../hooks/formatNumber');
 
-export default function Tr({setToHover, toHover, Details}) {
+export default function Tr({setToHover, toHover, Details, doSearch}) {
     const {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice} = Details;
     
     const GenDivCard = CardDetails => (
@@ -22,7 +22,7 @@ export default function Tr({setToHover, toHover, Details}) {
     <OverlayTrigger overlay={GenDivCard(Card)} placement="left">
         <tr className={TableStyles['row100']}>
 
-                    <Td setTitle="Divination Card Name" Class={`click${isCurrency ? ` ${styles['currency']}` : ""}`} SetMouseOver={setToHover} KeyState={toHover} _Key="c1" >
+                    <Td Click={doSearch} SearchString={Card['name']} setTitle="Divination Card Name" Class={`click${isCurrency ? ` ${styles['currency']}` : ""}`} SetMouseOver={setToHover} KeyState={toHover} _Key="c1" >
                         {<Img artFileName="InventoryIcon" />}
                         <span className="ml-2">
                             {Card['name']}
@@ -33,11 +33,11 @@ export default function Tr({setToHover, toHover, Details}) {
                         <span className="ml-3">{Card['stack']}</span>
                     </Td>
 
-                    <Td setTitle={`${Card['name']} Chaos Price`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c3" >
+                    <Td Click={doSearch} SearchString={Card['name']} setTitle={`${Card['name']} Chaos Price`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c3" >
                         {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(Card['chaosprice'])}</span>
                     </Td>
 
-                    <Td setTitle={`${Card['name']} Exalted Price`} SetMouseOver={setToHover} KeyState={toHover} _Key="c4" >
+                    <Td Click={doSearch} Currency="exalted" SearchString={Card['name']} setTitle={`${Card['name']} Exalted Price`} SetMouseOver={setToHover} Class="click" KeyState={toHover} _Key="c4" >
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{Card['exaltedprice']}</span>
                     </Td>
 
@@ -49,11 +49,11 @@ export default function Tr({setToHover, toHover, Details}) {
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{setexprice}</span>
                     </Td>
 
-                    <Td setTitle={`${Card['name']} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" >
+                    <Td Click={doSearch} SearchString={Reward['name']} setTitle={`${Card['name']} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" >
                         {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(Reward['chaosprice'])}</span>
                     </Td>
 
-                    <Td setTitle={`${Card['name']} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" >
+                    <Td Click={doSearch} Currency="exalted" SearchString={Reward['name']} setTitle={`${Card['name']} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" >
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{Reward['exaltedprice']}</span>
                     </Td>
 

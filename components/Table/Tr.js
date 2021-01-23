@@ -3,7 +3,7 @@ import Td from './Td';
 
 const moment = require('moment');
 
-export default function Tr({SetMouseOver, state, leagueName:Name, endAt:EndAt, DaysLeft, ladder:Ladder}) {
+export default function Tr({SetMouseOver, state, leagueName:Name, endAt:EndAt, DaysLeft, ladder:Ladder, NewTab}) {
     const MaxDaysLeft = 30 * 6;
 
     return (
@@ -20,7 +20,7 @@ export default function Tr({SetMouseOver, state, leagueName:Name, endAt:EndAt, D
                 {DaysLeft === 0 ? (Name === "Standard" || Name === "Hardcore" ? "?" : 0) : DaysLeft > MaxDaysLeft ? "?" : DaysLeft}
             </Td> 
             
-            <Td Class={styles.link} SetMouseOver={SetMouseOver} KeyState={state} _Key="c4" Href={Ladder}>
+            <Td Click={NewTab} SearchString={Ladder} Class={styles.link} SetMouseOver={SetMouseOver} KeyState={state} _Key="c4">
                 <span>[Link]</span>
             </Td>                                        
 
