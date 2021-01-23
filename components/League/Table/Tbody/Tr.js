@@ -61,7 +61,7 @@ export default function Tr({setToHover, toHover, Details, doSearch}) {
                         {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(chaosprofit)}</span>
                     </Td>
 
-                    <Td setTitle={`Exalted Profit`} SetMouseOver={setToHover} KeyState={toHover} _Key="c9" >
+                    <Td setTitle={`Exalted Profit`} SetMouseOver={setToHover} KeyState={toHover} _Key="c10" >
                         {<Img artFileName="ExaltedOrb" />}<span className="ml-2">{exprofit}</span>
                     </Td>
          </tr>
