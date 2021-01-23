@@ -43,7 +43,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
     'Mirror': XMirrorValue
   };
 
-  const GenerateSplitsArray = (Value = 100) => {
+  const GenerateSplitsArray = Value => {
     let arr = [];
     for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
     return arr;
@@ -61,7 +61,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
           <LeagueComponent
               leagueName={leagueName}
               Cookies={Cookies}
-              LastUpdated={LastUpdated}
+              LastUpdatedDate={LastUpdated}
               NavbarHeight={NavbarHeight} 
               CardsTable={Table || []} 
               CurrencyValues={CurrencyValues}
