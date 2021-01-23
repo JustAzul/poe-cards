@@ -6,7 +6,7 @@ import {OverlayTrigger} from 'react-bootstrap';
 import Dynamic from 'next/dynamic';
 import Spinner from '../../../Spinner';
 
-const DivCard = Dynamic(()=> import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
+const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
 
 export default function Tr({setToHover, toHover, Details}) {
     const {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice} = Details;

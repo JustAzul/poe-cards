@@ -8,7 +8,7 @@ export default function CardFlavour({Flavour}) {
         if (Size) {
             try {
                 const SizeValue = parseInt(Size[0].split(":")[1]);
-                console.log('SizeValue', SizeValue);
+                //console.log('SizeValue', SizeValue);
                 
                 const NewStyle = {
                     "font-size": `${parseInt(SizeValue/2.9)}px`
