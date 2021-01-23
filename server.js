@@ -282,7 +282,9 @@ async function Update() {
 process.nextTick(async () => {
     const UpdateInterval = duration(5, "minutes");
     
-    await Promise.all([Update(), nextApp.prepare()]);
+    //await Promise.all([Update(), nextApp.prepare()]);
+    await nextApp.prepare();
+    Update();
     
     if (!dev) {
         setInterval(() => Update(), UpdateInterval);
