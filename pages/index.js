@@ -4,7 +4,7 @@ import Spinner from '../components/Spinner';
 import {useEffect, useState} from 'react';
 
 const LeagueTableLoader = () => (
-  <div className="mt-5 mb-5">
+  <div className="text-center mt-5 mb-5">
     <Spinner/>
   </div>
 );
