@@ -7,7 +7,7 @@ const SplitedValues = Dynamic(() => import('./Boxes/SplitedExalted'), {loading: 
 const ChangeHelper = Dynamic(() => import('./Boxes/ChangeHelper'), {loading: () => <Spinner/>});
 const TableView = Dynamic(() => import('./Table'), {loading: () => <Spinner/>});
 
-export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdated: LastUpdatedDate, NavbarHeight}) {
+export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight}) {
 
     const [boxHeight, setBoxHeight] = useState(Number);
     
@@ -17,11 +17,11 @@ export default function League({Cookies, leagueName, CurrencyValues, SplitsArray
                 <div className="row mandali">
 
                     <div className="col-sm mt-2 text-center">
-                        <SplitedValues boxHeight={boxHeight} SplitsArray={SplitsArray}/>
+                    {CurrencyValues['Exalted'] ? <SplitedValues boxHeight={boxHeight} SplitsArray={SplitsArray}/> : <Spinner/>}
                     </div>
 
                     <div className="col-sm mt-2 text-center">
-                        <ChangeHelper leagueName={leagueName} Cookies={Cookies} ExaltedValue={CurrencyValues['Exalted']} setBoxHeight={setBoxHeight}/>
+                       {CurrencyValues['Exalted'] ? <ChangeHelper leagueName={leagueName} Cookies={Cookies} ExaltedValue={CurrencyValues['Exalted']} setBoxHeight={setBoxHeight}/> : <Spinner/>}
                     </div>
 
                 </div>
