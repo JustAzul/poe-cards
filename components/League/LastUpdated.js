@@ -10,7 +10,7 @@ export default function LastUpdated({LastUpdatedDate}) {
         setText(moment(LastUpdatedDate).fromNow());
         const Interval = setInterval(() => {
             setText(moment(LastUpdatedDate).fromNow());
-        }, moment.duration(60, 'seconds'));
+        }, moment.duration(30, 'seconds'));
 
         return () => {
             clearInterval(Interval);
