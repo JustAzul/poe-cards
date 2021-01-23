@@ -4,6 +4,8 @@ import {useCookies} from 'react-cookie';
 import styles from './index.module.css';
 import Head from '../Head.js';
 
+const formatNumber = require('../../../../hooks/formatNumber');
+
 export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}) {
     const [ItemChaosValue, setItemChaosValue] = useState(0);
 
@@ -52,7 +54,7 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
     }, [ItemChaosPrice, Amount]);
 
     useEffect(()=>{
-        setChange((ExaltedValue * ExaltedPayment) - ItemChaosValue);
+        setChange(formatNumber((ExaltedValue * ExaltedPayment) - ItemChaosValue));
     }, [ItemChaosValue, ExaltedPayment]);
 
     useEffect(() => {

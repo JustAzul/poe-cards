@@ -7,6 +7,7 @@ import Dynamic from 'next/dynamic';
 import Spinner from '../../../Spinner';
 
 const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
+const formatNumber = require('../../../../hooks/formatNumber');
 
 export default function Tr({setToHover, toHover, Details}) {
     const {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice} = Details;
@@ -33,7 +34,7 @@ export default function Tr({setToHover, toHover, Details}) {
                     </Td>
 
                     <Td setTitle={`${Card['name']} Chaos Price`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c3" >
-                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{Card['chaosprice']}</span>
+                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(Card['chaosprice'])}</span>
                     </Td>
 
                     <Td setTitle={`${Card['name']} Exalted Price`} SetMouseOver={setToHover} KeyState={toHover} _Key="c4" >
@@ -41,7 +42,7 @@ export default function Tr({setToHover, toHover, Details}) {
                     </Td>
 
                     <Td setTitle={`${Card['name']} Stacked Chaos Value`} SetMouseOver={setToHover} KeyState={toHover} _Key="c5" >
-                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{setchaosprice}</span>
+                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(setchaosprice)}</span>
                     </Td>
 
                     <Td setTitle={`${Card['name']} Stacked Exalted Value`} SetMouseOver={setToHover} KeyState={toHover} _Key="c6" >
@@ -49,7 +50,7 @@ export default function Tr({setToHover, toHover, Details}) {
                     </Td>
 
                     <Td setTitle={`${Card['name']} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" >
-                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{Reward['chaosprice']}</span>
+                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(Reward['chaosprice'])}</span>
                     </Td>
 
                     <Td setTitle={`${Card['name']} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" >
@@ -57,7 +58,7 @@ export default function Tr({setToHover, toHover, Details}) {
                     </Td>
 
                     <Td setTitle={`Chaos Profit`} SetMouseOver={setToHover} KeyState={toHover} _Key="c9" >
-                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{chaosprofit}</span>
+                        {<Img artFileName="ChaosOrb" />}<span className="ml-2">{formatNumber(chaosprofit)}</span>
                     </Td>
 
                     <Td setTitle={`Exalted Profit`} SetMouseOver={setToHover} KeyState={toHover} _Key="c9" >
