@@ -41,12 +41,15 @@ async function RequestLeagues() {
         if (typeof body.filter !== 'function') throw new Error("Malformed Response");
 
         let data = body.filter(details => details.id.indexOf("SSF") == -1); //Removing SSF Leagues
-        data = data.filter(details => details.realm == "pc"); //Picking pc leagues
+        data = data.filter(details => details.realm === "pc"); //Picking pc leagues
+        data = data.filter(details => details.id !== "Hardcore"); //Removing Hardcore League
 
         let _leagues = {};
 
         for (let i in data) {
             const league = data[i];
+
+            //if(league === "Hardcore") continue;
 
             const o = {
                 leagueName: league.id,

@@ -267,6 +267,7 @@ async function Update() {
 
     for (let leagueName in Leagues) {
 
+        //if(leagueName === "Hardcore") continue;
         await DB.UpdateLeagueDatabase(leagueName);
 
         const Exalt = await DB.GetCurrencyValue(leagueName, "Exalted Orb");
