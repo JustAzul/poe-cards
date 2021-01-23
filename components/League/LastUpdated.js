@@ -1,10 +1,26 @@
 import TextLoader from '../TextLoader';
+import {useEffect, useState} from 'react';
+
 const moment = require('moment');
 
-export default function LastUpdated({LastUpdatedDate}) {
+export default function LastUpdated({LastUpdatedDate}) {    
+    const [Text, setText] = useState();
+    
+    useEffect(() => {
+        setText(moment(LastUpdatedDate).fromNow());
+        const Interval = setInterval(() => {
+            setText(moment(LastUpdatedDate).fromNow());
+        }, moment.duration(60, 'seconds'));
+
+        return () => {
+            clearInterval(Interval);
+        };
+        
+    }, [Text, LastUpdatedDate]);
+
     return (
         <div className={`text-center mandali user-select-none ${LastUpdatedDate ? "mt-3" : "mb-2"}`}>
-             {LastUpdatedDate ? `- Last updated ${moment(LastUpdatedDate).fromNow()} -` : <TextLoader>...</TextLoader>}
+             {LastUpdatedDate ? `- Last updated ${Text} -` : <TextLoader>...</TextLoader>}
          </div>
     );
 }
