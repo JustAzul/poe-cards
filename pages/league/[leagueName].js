@@ -8,8 +8,11 @@ import Nav from '../../components/League/Navbar';
 import LeagueComponent from '../../components/League';
 import LoaderComponent from '../../components/Loader';
 
+import LeagueError from '../_error';
+
 const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
+  const [LeagueExist, setLeagueExist] = useState(false);
   
   const router = useRouter();
   const { leagueName } = router.query;
@@ -17,7 +20,11 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
   const [LeagueDetails, setLeagueDetails] = useState({});
 
   const HandleListData = (League, LeagueResult) => {
-    if(League === leagueName) setLeagueDetails(LeagueResult);
+    if(League === leagueName) {
+      const { success, details } = LeagueResult;
+      setLeagueDetails(details);
+      setLeagueExist(success);
+    }
   };
 
   useEffect(() => {
@@ -34,7 +41,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
 
   }, [SocketIO]);
 
-  const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated, Table} = LeagueDetails['details'] || {};
+  const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated, Table} = LeagueDetails || {};
   
   const CurrencyValues = {
     'Exalted': ExaltValue,
@@ -72,7 +79,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
 
   return (
     <>
-      {isSocketConnected ? Page() : <LoaderComponent />}
+      {isSocketConnected ? (LeagueExist ? Page() : <LeagueError statusCode={404} leagueError={true} />) : <LoaderComponent />}
     </>
   );
 }
