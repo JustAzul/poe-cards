@@ -14,6 +14,7 @@ function DonateSection({ChannelName = "a"}) {
                         width={96}
                         height={20}
                         priority
+                        loading="eager"                        
                     />
                 </a>
             </Link>
@@ -26,6 +27,7 @@ function DonateSection({ChannelName = "a"}) {
                         width={94}
                         height={20}
                         priority
+                        loading="eager"
                     />
                 </a>
             </Link>            
@@ -38,6 +40,7 @@ function DonateSection({ChannelName = "a"}) {
                         width={108}
                         height={20}
                         priority
+                        loading="eager"
                     />
                 </a>
             </Link>
