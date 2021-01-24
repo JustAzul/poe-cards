@@ -10,9 +10,10 @@ import LoaderComponent from '../../components/Loader';
 
 import LeagueError from '../_error';
 
-const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
+const League = ({host, Cookies, SocketIO}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
   const [LeagueExist, setLeagueExist] = useState(false);
+  const [ReceivedLeagueData, setReceivedLeagueData] = useState(false);
   
   const router = useRouter();
   const { leagueName } = router.query;
@@ -24,6 +25,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
       const { success, details } = LeagueResult;
       setLeagueDetails(details);
       setLeagueExist(success);
+      setReceivedLeagueData(true);
     }
   };
 
@@ -79,7 +81,7 @@ const League = ({host, Cookies, isSocketConnected, SocketIO}) => {
 
   return (
     <>
-      {isSocketConnected ? (LeagueExist ? Page() : <LeagueError statusCode={404} leagueError={true} />) : <LoaderComponent />}
+      {ReceivedLeagueData ? (LeagueExist ? Page() : <LeagueError statusCode={404} leagueError={true} />) : <LoaderComponent />}
     </>
   );
 }
