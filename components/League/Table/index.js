@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import TableWrapper from '../../Table/Wrapper';
-import TableHead from './THead.js';
-import TableBody from './Tbody/index.js';
+import TableHead from './THead';
+import TableBody from './Tbody';
 
 export default function Table({Items, NavbarHeight, leagueName}) {
     const [toHover, setToHover] = useState("");
