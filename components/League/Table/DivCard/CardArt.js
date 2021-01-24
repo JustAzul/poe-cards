@@ -8,7 +8,6 @@ export default function CardArt({artFilename}) {
                 src={`https://web.poecdn.com/image/divination-card/${artFilename}.png`}
                 width={200}
                 height={140}
-                priority
             />
         </span>
     );
