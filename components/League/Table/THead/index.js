@@ -1,4 +1,4 @@
-import TableStyles from '../../Table/index.module.css';
+import TableStyles from '../../../Table/index.module.css';
 import Th from '../../../Table/Th';
 
 export default function thead({setToHover, toHover, ShouldSticky: isSticky, NavbarHeight}) {
