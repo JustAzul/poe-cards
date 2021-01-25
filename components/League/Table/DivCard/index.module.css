@@ -103,25 +103,3 @@
   .text-color.-corrupted {
     color: #d20000;
   }
-  
-  .popover {
-    border: 0px solid rgba(0, 0, 0, 0);
-    background-color: rgba(0, 0, 0, 0);
-  }
-  
-  .popover .arrow {
-    display: none;
-  }
-  
-  .popover-header {
-    background-color: rgba(0, 0, 0, 0);
-    color:rgba(0, 0, 0, 0);
-    padding:0px 0px;
-    margin-bottom: 0;
-    border: 0px solid rgba(0, 0, 0, 0);
-    border-radius: 0;
-  }
-  
-  .popover-body {
-    display: none;
-  }

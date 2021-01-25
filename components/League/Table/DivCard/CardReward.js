@@ -12,7 +12,7 @@ export default function CardReward({RewardName, rewardClass, isCorrupted}) {
     return (
         <span className={styles['divicard-reward']}>
                 <span>
-                    <span className={`itemclass-${rewardClass}`}>{RewardName}</span>
+                    <span className={`${styles[`itemclass-${rewardClass}`]}`}>{RewardName}</span>
                     {isCorrupted ? GenerateCorruptedText() : ``}
                 </span>
             </span>
