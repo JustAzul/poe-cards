@@ -3,7 +3,7 @@ import styles from '../components/error.module.css';
 
 function Error({ statusCode, leagueError = false }) {
   
-  if(statusCode === 404) {
+  if(statusCode === 404 || statusCode === 200) {
     return ( 
       <div className={`${styles['notfound-2']} user-select-none`}>
         <div className={styles['notfound']}>
