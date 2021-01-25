@@ -35,7 +35,7 @@ function Home({host, SocketIO}) {
 export async function getServerSideProps({req}) {
 
   const headers = req['headers'];
-  const host = headers['x-forwarded-server'] || headers['host'] || "https://justazul.xyz";
+  const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";
 
   return {
       props: {
