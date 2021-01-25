@@ -2,13 +2,16 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import cookie from "cookie";
 
-import Layout from '../../components/Layout';
+import Dynamic from 'next/dynamic';
+
+import CentralSpinner from '../../components/CentralSpinner';
+import PageLoader from '../../components/Loader';
+
+const Layout = Dynamic(() => import('../../components/Layout'), {loading: () => <CentralSpinner />});
 import Nav from '../../components/League/Navbar';
 
-import LeagueComponent from '../../components/League';
-import LoaderComponent from '../../components/Loader';
-
-import LeagueError from '../_error';
+const LeagueComponent = Dynamic(() => import('../../components/League'), {loading: () => <CentralSpinner />});
+const LeagueError = Dynamic(() => import('../_error'), {loading: () => <PageLoader />});
 
 const League = ({host, Cookies, SocketIO}) => {
   const [NavbarHeight, setNavbarHeight] = useState(40);
@@ -60,13 +63,9 @@ const League = ({host, Cookies, SocketIO}) => {
 
   const SplitsArray = GenerateSplitsArray(ExaltValue);
 
-  const Page = () => ( 
+  const toRender = () => ( 
   <Layout parent={host} margintop={true} title={`${leagueName} League`}>  
-        <Nav 
-            CurrencyValues={CurrencyValues} 
-            UpdateHeigh={setNavbarHeight}>
-        </Nav>
-
+        <Nav CurrencyValues={CurrencyValues} UpdateHeigh={setNavbarHeight} />
           <LeagueComponent
               leagueName={leagueName}
               Cookies={Cookies}
@@ -81,7 +80,7 @@ const League = ({host, Cookies, SocketIO}) => {
 
   return (
     <>
-      {ReceivedLeagueData ? (LeagueExist ? Page() : <LeagueError statusCode={404} leagueError={true} />) : <LoaderComponent />}
+      {ReceivedLeagueData ? (LeagueExist ? toRender() : <LeagueError statusCode={404} leagueError={true} />) : <PageLoader />}
     </>
   );
 }
@@ -92,7 +91,7 @@ export async function getServerSideProps({req}) {
   const CookieData = parseCookies(req);
 
   const headers = req['headers'];
-  const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";
+  const host = headers['x-forwarded-server'] || headers['host'] || "https://justazul.xyz";
 
   return {
     props: {

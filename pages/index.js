@@ -1,15 +1,10 @@
-import Layout from '../components/Layout';
 import Dynamic from 'next/dynamic';
-import Spinner from '../components/Spinner';
+import CentralSpinner from '../components/CentralSpinner';
+
+const Layout = Dynamic(() => import('../components/Layout'), {loading: () => <CentralSpinner />});
+const SelectLeagueTable = Dynamic(() => import('../components/Table'), {loading: () => <CentralSpinner />});
+
 import {useEffect, useState} from 'react';
-
-const LeagueTableLoader = () => (
-  <div className="text-center mt-5 mb-5">
-    <Spinner/>
-  </div>
-);
-
-const SelectLeagueTable = Dynamic(() => import('../components/Table'), {loading: () => LeagueTableLoader()});
 
 function Home({host, SocketIO}) {
   const [LeagueDetails, setLeagueDetails] = useState({});
@@ -32,7 +27,7 @@ function Home({host, SocketIO}) {
   
   return (
     <Layout parent={host} title="Pick a League">
-      {Object.values(LeagueDetails).length === 0 ? <LeagueTableLoader /> : <SelectLeagueTable LeagueDetails={LeagueDetails} />}
+      {Object.values(LeagueDetails).length === 0 ? <CentralSpinner /> : <SelectLeagueTable LeagueDetails={LeagueDetails} />}
     </Layout>
   );
 };
@@ -40,7 +35,7 @@ function Home({host, SocketIO}) {
 export async function getServerSideProps({req}) {
 
   const headers = req['headers'];
-  const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";
+  const host = headers['x-forwarded-server'] || headers['host'] || "https://justazul.xyz";
 
   return {
       props: {

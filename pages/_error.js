@@ -24,7 +24,7 @@ function Error({ statusCode, leagueError = false }) {
   }
 
   return (
-    <p>
+    <p className="text-center m-auto">
       {statusCode
         ? `An error ${statusCode} occurred on server.`
         : 'An error occurred on client.'}

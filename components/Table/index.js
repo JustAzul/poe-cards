@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import Dynamic from 'next/dynamic';
 import styles from './index.module.css';
 
-import HiddenForm from '../HiddenForm';
+const HiddenForm = Dynamic(() => import('../HiddenForm'));
 import TableWrapper from './Wrapper';
 import Th from './Th';
 import Tr from './Tr';
