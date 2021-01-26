@@ -1,8 +1,7 @@
 import {useRef, useEffect, useState} from 'react';
-import Dynamic from 'next/dynamic';
 import Tr from './Tr';
 
-const HiddenForm = Dynamic(() => import('../../../HiddenForm'));
+import HiddenForm from '../../../HiddenForm';
 
 export default function thead({setToHover, toHover, leagueName, Items}) {
 
