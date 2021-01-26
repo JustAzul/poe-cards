@@ -13,7 +13,7 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
         <>
             <Head>
                 <title>{title == "" ? parent : title}</title>
-                <link rel="icon" href="/images/InventoryIcon.png"></link>                               
+                <link rel="icon" href="/images/InventoryIcon.png" />                               
             </Head>
             
             <main className={`${margintop ? "container-fluid mt-5" : "container"}`}>

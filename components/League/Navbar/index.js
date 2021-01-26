@@ -2,6 +2,7 @@
 import styles from './index.module.css';
 import {useEffect, useRef } from 'react';
 import Currency from './Currency';
+import mandali from '../../mandali.module.css';
 
 export default function Navbar({CurrencyValues, UpdateHeigh}) {    
     const Element = useRef(null);
@@ -22,7 +23,7 @@ export default function Navbar({CurrencyValues, UpdateHeigh}) {
     }, [Element]);
 
     return (
-        <div id="header" ref={Element} className="navbar navbar-dark bg-dark fixed-top mandali">
+        <div id="header" ref={Element} className={`navbar navbar-dark bg-dark fixed-top ${mandali['mandali']}`}>
             <div className={`container ${styles['font-class']}`} >
 
                 <Currency img="ExaltedOrb">

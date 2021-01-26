@@ -1,18 +1,4 @@
 /*//////////////////////////////////////////////////////////////////
-[ FONT ]*/
-
-
-@font-face {
-  font-family: Montserrat-Regular;
-  src: url('../public/assets/fonts/montserrat/Montserrat-Regular.ttf');
-}
-
-@font-face {
-  font-family: Montserrat-Medium;
-  src: url('../public/assets/fonts/montserrat/Montserrat-Medium.ttf');
-}
-
-/*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 * {
   margin: 0px;
@@ -83,20 +69,6 @@ input:focus {
 }
 
 /* ------------------------------------ */
-button {
-  outline: none !important;
-  border: none;
-  background: transparent;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
-table {
-  width: 100%;
-  background-color: #fff;
-}
 
 th,
 td {

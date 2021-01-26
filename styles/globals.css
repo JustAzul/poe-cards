@@ -4,18 +4,6 @@ body {
     background: #d1d1d1;
 }
 
-.mandali {
-    font-family: 'Mandali', sans-serif;
-}
-
-.pointer {
-    cursor: pointer;
-}
-
-.click:hover {
-    cursor: pointer;
-}
-
 .sticky-wrapper {
     position: relative;
 }

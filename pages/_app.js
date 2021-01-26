@@ -1,7 +1,5 @@
 import '../styles/util.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../public/assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
-import '../styles/Mandali-font.css';
 import '../styles/main.css';
 import '../styles/globals.css';
 
@@ -45,11 +43,13 @@ function MyApp({ Component, pageProps }) {
     router.events.on('routeChangeError', handleComplete);
 
     return () => {
-        router.events.off('routeChangeStart', handleStart)
-        router.events.off('routeChangeComplete', handleComplete)
-        router.events.off('routeChangeError', handleComplete)
+        try {
+          router.events.off('routeChangeStart', handleStart);
+          router.events.off('routeChangeComplete', handleComplete);
+          router.events.off('routeChangeError', handleComplete);
+        } catch (e) {}
     }
-})
+});
 
 return (
     <CookiesProvider>
@@ -58,4 +58,4 @@ return (
   );
 }
 
-export default MyApp
+export default MyApp;

@@ -1,5 +1,6 @@
 import TextLoader from '../TextLoader';
 import {useEffect, useState} from 'react';
+import mandali from '../mandali.module.css';
 
 const moment = require('moment');
 
@@ -19,7 +20,7 @@ export default function LastUpdated({LastUpdatedDate}) {
     }, [Text, LastUpdatedDate]);
 
     return (
-        <div className={`text-center mandali user-select-none ${LastUpdatedDate ? "mt-3" : "mb-2"}`}>
+        <div className={`text-center ${mandali['mandali']} user-select-none ${LastUpdatedDate ? "mt-3" : "mb-2"}`}>
              {LastUpdatedDate ? `- Last updated ${Text} -` : <TextLoader>...</TextLoader>}
          </div>
     );

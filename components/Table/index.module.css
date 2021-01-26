@@ -9,6 +9,16 @@
   transition: all 0.4s;
 } */
 
+@font-face {
+  font-family: Montserrat-Regular;
+  src: url('/fonts/Montserrat-Regular.ttf');
+}
+
+@font-face {
+  font-family: Montserrat-Medium;
+  src: url('/fonts/Montserrat-Medium.ttf');
+}
+
 .link span {
   color: cornflowerblue;
 }
@@ -108,6 +118,7 @@
   font-size: 14px;
   color: #808080;
   line-height: 1.4;
+  background-color: #fff;
 }
 
 .table100.ver1 th {

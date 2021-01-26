@@ -14,7 +14,7 @@ export default function SplitedExalted({SplitsArray = [], boxHeight}) {
         </Head>
 
         <div className={`${TableStyles['table100']} ${TableStyles['ver1']} pt-2`}>
-            <table style={{height: boxHeight}} className={styles['bg-white']}>
+            <table style={{height: boxHeight, width: "100%"}} className={styles['bg-white']}>
                 <thead>
                     <tr className={`${TableStyles['head']}`}>
                         <th className={`${TableStyles['column100']} user-select-none`}>Split</th>

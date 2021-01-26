@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Spinner from '../Spinner';
 import LastUpdated from './LastUpdated';
 
+import mandali from '../mandali.module.css';
+
 const SplitedValues = Dynamic(() => import('./Boxes/SplitedExalted'), {loading: () => <Spinner/>});
 const ChangeHelper = Dynamic(() => import('./Boxes/ChangeHelper'), {loading: () => <Spinner/>});
 const TableView = Dynamic(() => import('./Table'), {loading: () => <Spinner/>});
@@ -14,7 +16,7 @@ export default function League({Cookies, leagueName, CurrencyValues, SplitsArray
     return (
         <>
             <div className="container">
-                <div className="row mandali">
+                <div className={`row ${mandali['mandali']}`}>
 
                     <div className="col-sm mt-2 text-center">
                     {CurrencyValues['Exalted'] ? <SplitedValues boxHeight={boxHeight} SplitsArray={SplitsArray}/> : <Spinner/>}
