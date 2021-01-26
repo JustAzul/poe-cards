@@ -9,7 +9,6 @@ export default function CardFrame() {
                 width={220}
                 height={334}
                 priority={true}
-                loading={"eager"}
             />
         </span>
     );

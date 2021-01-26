@@ -6,8 +6,6 @@ export default function Img({artFileName}) {
             src={`/images/${artFileName}.png`}
             width={24}
             height={24}
-            priority={true} 
-            loading="eager"
         />
     );
 }
