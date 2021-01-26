@@ -13,7 +13,7 @@ function DonateSection({ChannelName = "a"}) {
                         alt="Paypal Donate"
                         width={96}
                         height={20}
-                        priority
+                        priority={true}
                         loading="eager"                        
                     />
                 </a>
@@ -26,7 +26,7 @@ function DonateSection({ChannelName = "a"}) {
                         alt="Steam Donate"
                         width={94}
                         height={20}
-                        priority
+                        priority={true}
                         loading="eager"
                     />
                 </a>
@@ -39,7 +39,7 @@ function DonateSection({ChannelName = "a"}) {
                         alt="Twitch Subscribe"
                         width={108}
                         height={20}
-                        priority
+                        priority={true}
                         loading="eager"
                     />
                 </a>

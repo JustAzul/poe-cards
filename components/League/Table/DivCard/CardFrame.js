@@ -8,7 +8,7 @@ export default function CardFrame() {
                 src={`/images/cardbg.png`}
                 width={220}
                 height={334}
-                priority
+                priority={true}
                 loading={"eager"}
             />
         </span>
