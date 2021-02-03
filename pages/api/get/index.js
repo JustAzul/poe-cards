@@ -6,10 +6,10 @@ import Datastore from 'nedb';
 import { GetCurrencyValue, GenerateFlipTable } from './components/Helper';
 import { RequestCurrencyOverview, RequestItemOverview } from './components/PoeNinjaFetch';
 
+import List from './data/FetchList';
+
 export default async function(req, res) {
     const { query } = req;
-
-    const List = JSON.parse(query['list']);
     const League = query['league'];
     
     res.statusCode = 200;
