@@ -3,8 +3,8 @@ import { sleep } from 'azul-tools';
 import { duration } from 'moment';
 import Datastore from 'nedb';
 
-import { GetCurrencyValue, GenerateFlipTable } from './Helper';
-import { RequestCurrencyOverview, RequestItemOverview } from './PoeNinjaFetch';
+import { GetCurrencyValue, GenerateFlipTable } from './components/Helper';
+import { RequestCurrencyOverview, RequestItemOverview } from './components/PoeNinjaFetch';
 
 export default async function(req, res) {
     const { query } = req;

@@ -1,5 +1,5 @@
-import CurrencyCards from './CurrencyCards';
-import Cards from './Cards';
+import CurrencyCards from '../data/CurrencyCards';
+import Cards from '../data/Cards';
 
 import { GetItemOverview } from './PoeNinjaFetch';
 
