@@ -139,7 +139,7 @@ async function GenerateCurrencyCardsTableRowJson(Data, LeagueExaltedValue, Detai
     const ChaosProfit = parseInt(RewardChaosValue - ItemSetChaosValue);
     const ExaltedProfit = (RewardExaltedValue - ItemSetExaltedValue);
 
-    o = CardData;
+    let o = CardData;
     o.chaosValue = parseInt(CardData.chaosValue);
     o.exaltedValue = parseFloat(CardExaltedPrice.toFixed(2));
     o.ItemSetChaosValue = ItemSetChaosValue;
