@@ -8,10 +8,10 @@ import {useEffect, useState} from 'react';
 import useSocket from "../hooks/useSocket";
 
 import { motion } from 'framer-motion';
-
+import router from 'next/router';
 import Loader from '../components/Loader';
 
-function MyApp({ Component, pageProps, router }) {  
+function MyApp({ Component, pageProps }) {  
   const SocketIO = useSocket();  
 
   const [isLoading, setLoading] = useState(false);
