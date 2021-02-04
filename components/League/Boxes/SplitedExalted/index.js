@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Head from '../Head.js';
 import Row from './Row';
 
+import { motion } from 'framer-motion';
+
 export default function SplitedExalted({SplitsArray = [], boxHeight}) {
     const [row, setRow] = useState("");
     
     return (
-        <>
+        <motion.div initial={{opacity:0}} animate={{opacity: 1}}>
         <Head>
             Exalted Splited Values
         </Head>
@@ -32,6 +34,6 @@ export default function SplitedExalted({SplitsArray = [], boxHeight}) {
                 </tbody>
             </table>
         </div>
-        </>
+        </motion.div>
     );
 }

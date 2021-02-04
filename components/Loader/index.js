@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import styles from './index.module.css';
 
+import { motion } from 'framer-motion';
+
 export default function Loader({title = "poe.cards"}) {
     return (
-        <>
+        <motion.div initial={{opacity: 0}} animate={{opacity:1}}>
 
         <Head>
             <title>{title}</title>
@@ -19,6 +21,6 @@ export default function Loader({title = "poe.cards"}) {
             </div>
         </div>
 
-        </>        
+        </motion.div>
     );
 };

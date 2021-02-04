@@ -4,6 +4,8 @@ import {useCookies} from 'react-cookie';
 import styles from './index.module.css';
 import Head from '../Head.js';
 
+import { motion } from 'framer-motion';
+
 const formatNumber = require('../../../../hooks/formatNumber');
 
 export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}) {
@@ -122,7 +124,7 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
     }, [BoxElement]);
     
     return (
-        <>
+        <motion.div initial={{opacity:0}} animate={{opacity: 1}}>
             <Head>
                 Change Helper 
             </Head>
@@ -158,6 +160,6 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
                     </div>
                 </div>
             </div>
-        </>
+        </motion.div>
     );
 }
