@@ -7,8 +7,7 @@ import { CookiesProvider } from "react-cookie";
 import {useEffect, useState} from 'react';
 import useSocket from "../hooks/useSocket";
 
-import { motion } from 'framer-motion';
-
+//import { motion } from 'framer-motion';
 import Loader from '../components/Loader';
 
 function MyApp({ Component, pageProps, router }) {  
@@ -42,7 +41,7 @@ function MyApp({ Component, pageProps, router }) {
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
     router.events.on('routeChangeError', handleComplete);
-    
+
     return () => {
       try {
         router.events.off('routeChangeStart', handleStart);
@@ -50,24 +49,13 @@ function MyApp({ Component, pageProps, router }) {
         router.events.off('routeChangeError', handleComplete);
       } catch (e) {}
     }
-});
+  }, [router.asPath]);
 
-  const AnimationVariants = {
-    pageInitial: {
-      opacity: 0
-    },
-    pageAnimate: {
-      opacity: 1
-    }
-  };
-
-return (
-    <CookiesProvider>
-      <motion.div key={router['route']} initial="pageInitial" animate="pageAnimate" variants={AnimationVariants}>
-        {isLoading ? <Loader /> : <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} />}
-      </motion.div>      
-    </CookiesProvider>
-  );
+  return (
+    <>
+      {isLoading ? <Loader /> : <CookiesProvider> <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> </CookiesProvider>}
+    </>
+    );
 }
 
 export default MyApp;

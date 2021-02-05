@@ -1,5 +1,4 @@
-import Dynamic from 'next/dynamic';
-const Spinner = Dynamic(() => import('../Spinner'), {loading: () => <>{`Please wait..`}</>});
+import Spinner from '../Spinner';
 
 export default function CentralSpinner() {
     return (
