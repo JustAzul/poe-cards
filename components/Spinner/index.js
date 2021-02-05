@@ -1,6 +1,6 @@
 import styles from './index.module.css';
 
-import { motion } from 'framer-motion';
+import Transition from '../Transition';
 
 export default function Spinner() {
     const transition = {
@@ -17,5 +17,5 @@ export default function Spinner() {
         transition
     };
 
-    return <motion.div initial={start} animate={end} className={styles['loading']} />;
+    return <Transition styles={styles['loading']} />;
 }

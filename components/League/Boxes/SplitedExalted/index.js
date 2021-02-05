@@ -4,36 +4,36 @@ import { useState } from 'react';
 import Head from '../Head.js';
 import Row from './Row';
 
-import { motion } from 'framer-motion';
+import Transition from '../../../Transition';
 
 export default function SplitedExalted({SplitsArray = [], boxHeight}) {
     const [row, setRow] = useState("");
     
     return (
-        <motion.div initial={{opacity:0}} animate={{opacity: 1}}>
-        <Head>
-            Exalted Splited Values
-        </Head>
+        <Transition>
+            <Head>
+                Exalted Splited Values
+            </Head>
 
-        <div className={`${TableStyles['table100']} ${TableStyles['ver1']} pt-2`}>
-            <table style={{height: boxHeight, width: "100%"}} className={styles['bg-white']}>
-                <thead>
-                    <tr className={`${TableStyles['head']}`}>
-                        <th className={`${TableStyles['column100']} user-select-none`}>Split</th>
-                        <th className={`${TableStyles['column100']} user-select-none`}>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 
-                        {SplitsArray.map((Value, i) => {
-                            return (
-                                <Row setRow={setRow} row={row} i={i} Value={Value}/>
-                            );
-                        })}
+            <div className={`${TableStyles['table100']} ${TableStyles['ver1']} pt-2`}>
+                <table style={{height: boxHeight, width: "100%"}} className={styles['bg-white']}>
+                    <thead>
+                        <tr className={`${TableStyles['head']}`}>
+                            <th className={`${TableStyles['column100']} user-select-none`}>Split</th>
+                            <th className={`${TableStyles['column100']} user-select-none`}>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     
-                </tbody>
-            </table>
-        </div>
-        </motion.div>
+                            {SplitsArray.map((Value, i) => {
+                                return (
+                                    <Row setRow={setRow} row={row} i={i} Value={Value}/>
+                                );
+                            })}
+                        
+                    </tbody>
+                </table>
+            </div>
+        </Transition>
     );
 }
