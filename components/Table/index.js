@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './index.module.css';
-
+import CentralSpinner from '../CentralSpinner';
 import HiddenForm from '../HiddenForm';
 import TableWrapper from './Wrapper';
 import Th from './Th';
@@ -23,6 +23,8 @@ export default function SelectLeagueTable({LeagueDetails}) {
             HiddenFormRef && HiddenFormRef.submit();
         });
     };
+
+    if(Object.keys(LeagueDetails).length === 0) return <CentralSpinner />;
     
     return (
         <>

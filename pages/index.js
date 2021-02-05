@@ -27,7 +27,7 @@ function Home({host, SocketIO}) {
   
   return (
     <Layout parent={host} title="Pick a League">
-      {Object.values(LeagueDetails).length === 0 ? <CentralSpinner /> : <SelectLeagueTable LeagueDetails={LeagueDetails} />}
+      <SelectLeagueTable LeagueDetails={LeagueDetails} />
     </Layout>
   );
 };
