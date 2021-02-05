@@ -7,7 +7,7 @@ import { CookiesProvider } from "react-cookie";
 import {useEffect, useState} from 'react';
 import useSocket from "../hooks/useSocket";
 
-//import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Loader from '../components/Loader';
 
 function MyApp({ Component, pageProps, router }) {  
@@ -51,9 +51,17 @@ function MyApp({ Component, pageProps, router }) {
     }
   }, [router.asPath]);
 
+  const start = {
+    opacity: 0
+  }
+
+  const end = {
+    opacity: 1
+  }
+
   return (
     <>
-      {isLoading ? <Loader /> : <CookiesProvider> <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> </CookiesProvider>}
+      {isLoading ? <Loader /> : <CookiesProvider> <motion.div initial={start} animate={end} exit={start}> <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> </motion.div> </CookiesProvider>}
     </>
     );
 }
