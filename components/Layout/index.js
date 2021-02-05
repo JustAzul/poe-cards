@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import Dynamic from 'next/dynamic';
 import Spinner from '../Spinner';
@@ -10,6 +11,14 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
 
+    const start = {
+        opacity: 0
+    }
+
+    const end = {
+        opacity: 1
+    };
+
     return (
         <>
             <Head>
@@ -17,10 +26,10 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
                 <link rel="icon" href="/images/InventoryIcon.png" />                               
             </Head>
             
-            <div className={`${margintop ? "container-fluid mt-5" : "container"}`}>
+            <motion.div initial={start} animate={end} exit={start} className={`${margintop ? "container-fluid mt-5" : "container"}`}>
                 {IgnorePlayer ? "" : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                 {children}
-            </div>
+            </motion.div>
             
             <div className="text-center mt-2 pb-3">
                 <footer className="blockquote-footer">
