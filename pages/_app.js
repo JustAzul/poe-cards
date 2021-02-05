@@ -7,7 +7,7 @@ import { CookiesProvider } from "react-cookie";
 import {useEffect, useState} from 'react';
 import useSocket from "../hooks/useSocket";
 
-import { MotionConfig, ExitFeature, AnimationFeature } from 'framer-motion';
+import { MotionConfig, /* ExitFeature, */ AnimationFeature } from 'framer-motion';
 import Loader from '../components/Loader';
 
 function MyApp({ Component, pageProps, router }) {  
@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps, router }) {
   }, [router.asPath]);
 
   return (
-    <MotionConfig features={[ExitFeature, AnimationFeature]}>
+    <MotionConfig features={[/* ExitFeature, */ AnimationFeature]}>
       {isLoading ? <Loader /> : <CookiesProvider> <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> </CookiesProvider>}
     </MotionConfig>
     );
