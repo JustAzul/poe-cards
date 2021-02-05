@@ -1,7 +1,7 @@
 import Dynamic from 'next/dynamic';
 import CentralSpinner from '../components/CentralSpinner';
 
-const Layout = Dynamic(() => import('../components/Layout'), {loading: () => <CentralSpinner />});
+import Layout from '../components/Layout';
 const SelectLeagueTable = Dynamic(() => import('../components/Table'), {loading: () => <CentralSpinner />});
 
 import {useEffect, useState} from 'react';
