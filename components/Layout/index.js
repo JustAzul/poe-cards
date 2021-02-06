@@ -18,7 +18,7 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
             </Head>
             
             <div className={`${margintop ? "container-fluid mt-5" : "container"}`}>
-                {IgnorePlayer ? "" : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
+                {IgnorePlayer ? null : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                 {children}
             </div>
             

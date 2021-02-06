@@ -12,7 +12,7 @@ const TableView = Dynamic(() => import('./Table'), {loading: () => <Spinner/>});
 export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight}) {
 
     const [boxHeight, setBoxHeight] = useState(Number);
-    
+    console.log(new Date(), 'LeagueTable');
     return (
         <>
             <div className="container">

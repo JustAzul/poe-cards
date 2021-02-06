@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from './index.module.css';
 
 export default function Loader({title = "poe.cards"}) {
+    console.log(new Date(), 'Loader');
     return (
         <>
             <Head>
