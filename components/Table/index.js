@@ -24,7 +24,7 @@ export default function SelectLeagueTable({LeagueDetails}) {
         });
     };
 
-    if(Object.keys(LeagueDetails).length === 0) return <CentralSpinner />;
+    if(!LeagueDetails || Object.keys(LeagueDetails).length === 0) return <CentralSpinner />;
     
     return (
         <>
