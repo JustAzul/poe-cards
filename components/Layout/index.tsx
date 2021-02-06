@@ -9,7 +9,7 @@ const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Sp
 interface Props {
     children: React.ReactNode,
     parent: string,
-    title?: string,
+    title: string,
     margintop?: Boolean,
     IgnorePlayer?: Boolean
 }
@@ -21,7 +21,7 @@ const Layout = ({children, parent, title, margintop = false, IgnorePlayer = fals
     return (
         <>
             <Head>
-                <title>{title ? parent : title}</title>
+                <title>{title}</title>
                 <link rel="icon" href="/images/InventoryIcon.png" />                               
             </Head>
             
