@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Dynamic from 'next/dynamic';
 import Spinner from '../Spinner';
 
+import Transition from '../Transition';
+
 const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
 const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {
@@ -17,10 +19,10 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
                 <link rel="icon" href="/images/InventoryIcon.png" />                               
             </Head>
             
-            <div className={`${margintop ? "container-fluid mt-5" : "container"}`}>
+            <Transition styles={`${margintop ? "container-fluid mt-5" : "container"}`}>
                 {IgnorePlayer ? null : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                 {children}
-            </div>
+            </Transition>
             
             <div className="text-center mt-2 pb-3">
                 <footer className="blockquote-footer">
