@@ -51,9 +51,13 @@ function MyApp({ Component, pageProps, router }) {
     }
   }, [router.asPath]);
 
+  if (isLoading) return <Loader />;
+
   return (
     <MotionConfig features={[/* ExitFeature, */ AnimationFeature]}>
-      {isLoading ? <Loader /> : <CookiesProvider> <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> </CookiesProvider>}
+      <CookiesProvider> 
+        <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} /> 
+      </CookiesProvider>
     </MotionConfig>
     );
 }
