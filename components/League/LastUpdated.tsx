@@ -1,22 +1,25 @@
 import TextLoader from '../TextLoader';
 import {useEffect, useState} from 'react';
 import mandali from '../mandali.module.css';
+//import {Moment} from 'moment'
 
 const moment = require('moment');
 
-export default function LastUpdated({LastUpdatedDate}) {    
+interface Props {
+    LastUpdatedDate: string
+}
+
+export default function LastUpdated({LastUpdatedDate}: Props) {    
     const [Text, setText] = useState();
 
     useEffect(() => {
         setText(moment(LastUpdatedDate).fromNow());
+
         const Interval = setInterval(() => {
             setText(moment(LastUpdatedDate).fromNow());
         }, moment.duration(30, 'seconds'));
 
-        return () => {
-            clearInterval(Interval);
-        };
-        
+        return () => clearInterval(Interval);
     }, [Text, LastUpdatedDate]);
 
     return (

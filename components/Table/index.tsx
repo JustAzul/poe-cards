@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './index.module.css';
 import CentralSpinner from '../CentralSpinner';
 import HiddenForm from '../HiddenForm';
@@ -6,29 +6,30 @@ import TableWrapper from './Wrapper';
 import Th from './Th';
 import Tr from './Tr';
 
-export default function SelectLeagueTable({LeagueDetails}) {
-    const [state, SetMouseOver] = useState("");   
+import type { Leagues, KeyStates } from '../../hooks/interfaces';
 
-    const FormRef = useRef(null);
-    const [TargetHref, setTargetHref] = useState(null);
-    const [HiddenFormRef, setHiddenFormRef] = useState(null);
+interface Props {
+    LeagueDetails: Array<Leagues>
+}
+
+export default function SelectLeagueTable({LeagueDetails}: Props) {
+    const [state, SetMouseOver] = useState<KeyStates>(); 
     
-    useEffect(() => {
-        if(FormRef && FormRef['current']) setHiddenFormRef(FormRef['current']);
-    }, [FormRef]);
-
-    const NewTab = (href = "") => {
+    const [TargetHref, setTargetHref] = useState<string>("");
+    const [HiddenFormRef, setHiddenFormRef] = useState<HTMLFormElement>();
+    
+    const NewTab = (href: string) => {
         setTargetHref(href);
         process.nextTick(() => {
             HiddenFormRef && HiddenFormRef.submit();
         });
     };
 
-    if(!LeagueDetails || Object.keys(LeagueDetails).length === 0) return <CentralSpinner />;
+    if(!LeagueDetails || LeagueDetails.length === 0) return <CentralSpinner />;
     
     return (
         <>
-        <HiddenForm SearchString={TargetHref} Href={TargetHref} FormRef={FormRef} METHOD="GET" />
+        <HiddenForm SearchString={TargetHref} Href={TargetHref} setFormRef={setHiddenFormRef} METHOD="GET" />
         <div className="row justify-content-md-center mt-3 mb-3">
             <TableWrapper>
                 <thead>
@@ -52,9 +53,9 @@ export default function SelectLeagueTable({LeagueDetails}) {
                         </thead>
 
                         <tbody>
-                            {Object.values(LeagueDetails).map(({leagueName:Name, endAt:EndAt, DaysLeft, ladder:Ladder}, i) => {
+                            {LeagueDetails.map( ( {leagueName, endAt, DaysLeft, ladder} ) => {
                                 return (
-                                    <Tr NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={Name} endAt={EndAt} DaysLeft={DaysLeft} ladder={Ladder} />
+                                    <Tr NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
                                 );
                             })}
                         </tbody>

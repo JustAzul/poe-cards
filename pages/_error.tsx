@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import styles from '../components/error.module.css';
 
-function Error({ statusCode, leagueError = false }) {
+import type { NextPageContext } from 'next';
+
+interface Props {
+  statusCode: Number,
+  leagueError?: Boolean
+};
+
+function Error ({ statusCode, leagueError = false }: Props) {
   
   if(statusCode === 404 || statusCode === 200) {
     return ( 
@@ -32,9 +39,9 @@ function Error({ statusCode, leagueError = false }) {
   )
 }
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  return { statusCode }
+Error.getInitialProps = async ({ res, err }: NextPageContext )  => {
+  const statusCode = res?.statusCode ? res['statusCode'] : err?.statusCode ? err['statusCode'] : 404;
+  return { statusCode };
 }
 
 export default Error;

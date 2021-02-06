@@ -5,7 +5,7 @@ const Transition = Dynamic(import('../Transition'), {loading: () => <div classNa
 
 export default function Spinner() {
 
-    const transition = {
+    const transition: Object = {
         duration: 0.4
     }
 

@@ -1,6 +1,10 @@
 import styles from '../index.module.css';
 
-export default function Wrapper({children}) {
+interface Props {
+    children: React.ReactNode
+}
+
+export default function Wrapper({children}: Props) {
     return (
         <div className={styles['gooey']}>
             {children}

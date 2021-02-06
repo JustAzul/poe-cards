@@ -6,19 +6,27 @@ import Spinner from '../Spinner';
 
 const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
-const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {
-    const CurrentYear = new Date();
-    const DevURL = "https://justazul.xyz";
+interface Props {
+    children: React.ReactNode,
+    parent: string,
+    title?: string,
+    margintop?: Boolean,
+    IgnorePlayer?: Boolean
+}
+
+const Layout = ({children, parent, title, margintop = false, IgnorePlayer = false}: Props) => {
+    const CurrentYear: Date = new Date();
+    const DevURL: string = "https://justazul.xyz";
 
     return (
         <>
             <Head>
-                <title>{title == "" ? parent : title}</title>
+                <title>{title ? parent : title}</title>
                 <link rel="icon" href="/images/InventoryIcon.png" />                               
             </Head>
             
             <div className={`${margintop ? "container-fluid mt-5" : "container"}`}>
-                {IgnorePlayer ? null : <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
+                {!IgnorePlayer && <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                 {children}
             </div>
             

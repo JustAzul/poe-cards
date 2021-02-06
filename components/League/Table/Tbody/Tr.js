@@ -7,7 +7,7 @@ import Dynamic from 'next/dynamic';
 import Spinner from '../../../Spinner';
 
 const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
-const formatNumber = require('../../../../hooks/formatNumber');
+const formatNumber = require('../../../../hooks/formatNumber.ts');
 
 export default function Tr({setToHover, toHover, Details, doSearch}) {
     const {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice} = Details;

@@ -1,4 +1,10 @@
-export default function Inputs({leagueName, Currency, SearchString}) {
+interface Props {
+    leagueName?: string,
+    Currency: string,
+    SearchString: string
+}
+
+export default function Inputs({leagueName, Currency, SearchString}: Props) {
     return (
         <>
             <input type="hidden" name="league" value={leagueName} />

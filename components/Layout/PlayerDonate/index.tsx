@@ -8,8 +8,12 @@ import TextLoader from '../../TextLoader';
 const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), {loading: () => <Spinner />});
 const DonationButtons = Dynamic(() => import('./Buttons'), {loading: () => <TextLoader />});
 
-export default function PlayerDonate({parent}) {
-    const ChannelName = "azul21";
+interface Props {
+  parent: string
+}
+
+export default function PlayerDonate({parent}: Props) {
+    const ChannelName: string = "azul21";
 
     return (
         <div className="row justify-content-center mt-4">

@@ -13,17 +13,27 @@ import Nav from '../../components/League/Navbar';
 const LeagueComponent = Dynamic(() => import('../../components/League'), {loading: () => <CentralSpinner />});
 const LeagueError = Dynamic(() => import('../_error'), {loading: () => <PageLoader />});
 
-const League = ({host, Cookies, SocketIO}) => {
-  const [NavbarHeight, setNavbarHeight] = useState(40);
-  const [LeagueExist, setLeagueExist] = useState(false);
-  const [ReceivedLeagueData, setReceivedLeagueData] = useState(false);
+import type {SocketIoClient} from '../../hooks/useSocket';
+import type {GetServerSideProps} from 'next';
+import type {LeagueDetails, LeagueResult} from '../../hooks/interfaces';
+
+interface Props {
+  host: string,
+  SocketIO: SocketIoClient,
+  Cookies: any
+}
+
+const League = ({host, Cookies, SocketIO}: Props) => {
+  const [NavbarHeight, setNavbarHeight] = useState<Number>(40);
+  const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
+  const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
   
   const router = useRouter();
   const { leagueName } = router.query;
 
-  const [LeagueDetails, setLeagueDetails] = useState({});
+  const [LeagueDetails, setLeagueDetails] = useState<LeagueDetails>();
 
-  const HandleListData = (League, LeagueResult) => {
+  const HandleListData = (League: string, LeagueResult: LeagueResult) => {
     if(League === leagueName) {
       const { success, details } = LeagueResult;
       setLeagueDetails(details);
@@ -55,13 +65,13 @@ const League = ({host, Cookies, SocketIO}) => {
     'Mirror': XMirrorValue
   };
 
-  const GenerateSplitsArray = Value => {
+  const GenerateSplitsArray = (Value: number = 0) => {
     let arr = [];
     for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
     return arr;
   };
 
-  const SplitsArray = GenerateSplitsArray(ExaltValue);
+  const SplitsArray: Array<number> = GenerateSplitsArray(ExaltValue);
 
   const toRender = () => ( 
   <Layout parent={host} margintop={true} title={`${leagueName} League`}>  
@@ -71,7 +81,7 @@ const League = ({host, Cookies, SocketIO}) => {
               Cookies={Cookies}
               LastUpdatedDate={LastUpdated}
               NavbarHeight={NavbarHeight} 
-              CardsTable={Table || []} 
+              CardsTable={Table ?? []} 
               CurrencyValues={CurrencyValues}
               SplitsArray={SplitsArray} 
               />
@@ -85,10 +95,10 @@ const League = ({host, Cookies, SocketIO}) => {
   );
 }
 
-export async function getServerSideProps({req}) {
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
 
-  const parseCookies = req => cookie.parse(req ? req.headers.cookie || "" : document.cookie);
-  const CookieData = parseCookies(req);
+  const parseCookies = () => cookie.parse(req ? req?.headers?.cookie ?? "" : document.cookie);
+  const CookieData = parseCookies();
 
   const headers = req['headers'];
   const host = headers['x-forwarded-server'] || headers['host'] || "poe.cards";

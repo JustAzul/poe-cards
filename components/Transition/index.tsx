@@ -1,6 +1,12 @@
 import { motion } from 'framer-motion';
 
-export default function Transition({transition, children, styles}) {
+interface Props {
+    transition?: Object,
+    styles?: string,
+    children?: React.ReactNode
+}
+
+export default function Transition({transition, children, styles}: Props) {
     const start = {
         opacity: 0,
         transition

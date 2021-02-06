@@ -2,7 +2,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './index.module.css';
 
-function DonateSection({ChannelName = "a"}) {
+interface Props {
+    ChannelName: string
+}
+
+function DonateSection({ChannelName}: Props) {
     return (
         <>
             <Link href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZGFRUQCHW3Y4S&source=url">
@@ -18,7 +22,7 @@ function DonateSection({ChannelName = "a"}) {
                     />
                 </a>
             </Link>
-            <Link alt="Steam Donate" href="https://trade.justazul.xyz/">
+            <Link href="https://trade.justazul.xyz/">
                 <a className="m-2" target="_BLANK">
                     <Image 
                         className={styles.image}

@@ -6,7 +6,7 @@ import Head from '../Head.js';
 
 import Transition from '../../../Transition';
 
-const formatNumber = require('../../../../hooks/formatNumber');
+const formatNumber = require('../../../../hooks/formatNumber.ts');
 
 export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}) {
     const [ItemChaosValue, setItemChaosValue] = useState(0);

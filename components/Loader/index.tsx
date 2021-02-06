@@ -7,9 +7,13 @@ import RawLoader from './RawLoader'
 
 const Transition = Dynamic(import('../Transition'), {loading: () => <LoaderWrapper> <RawLoader /> </LoaderWrapper>});
 
-export default function Loader({title = "poe.cards"}) {
+interface Props {
+    title?: string
+}
+
+export default function Loader({title = "poe.cards"}: Props) {
     
-    const transition = {
+    const transition: Object = {
         duration: 0.4
     }
 

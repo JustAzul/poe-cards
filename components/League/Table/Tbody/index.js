@@ -5,14 +5,9 @@ import HiddenForm from '../../../HiddenForm';
 
 export default function thead({setToHover, toHover, leagueName, Items}) {
 
-    const FormRef = useRef(null);
     const [SearchString, setSearchString] = useState(null);
     const [PoeTradeRef, setPoeTradeRef] = useState(null);
     const [SearchCurrency, setSearchCurrency] = useState("chaos");
-    
-    useEffect(() => {
-        if(FormRef && FormRef['current']) setPoeTradeRef(FormRef['current']);
-    }, [FormRef]);
 
     const doSearch = (toSearch = "", Currency = 'chaos') => {
         setSearchString(toSearch);
@@ -23,7 +18,7 @@ export default function thead({setToHover, toHover, leagueName, Items}) {
     };
     
     return (
-        <>  <HiddenForm Currency={SearchCurrency} PoeTrade={true} FormRef={FormRef} leagueName={leagueName} SearchString={SearchString} />
+        <>  <HiddenForm Currency={SearchCurrency} PoeTrade={true} setFormRef={setPoeTradeRef} leagueName={leagueName} SearchString={SearchString} />
             {Items.map( ({Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice}) => {
                 const Details = {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice};
                 return (
