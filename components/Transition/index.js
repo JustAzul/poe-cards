@@ -11,5 +11,5 @@ export default function Transition({transition, children, styles}) {
         transition
     }
     console.log(new Date(), 'Transition');
-    return <motion.div initial={start} animate={end} className={styles}>{children}</motion.div>;
+    return <motion.div initial={start} animate={end} exit={start} className={styles}>{children}</motion.div>;
 }
