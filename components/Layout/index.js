@@ -20,7 +20,9 @@ const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer =
         return <Spinner />
     }});
 
-    if(TransitionLoading) return <Loader />;
+    console.log('TransitionLoading', typeof TransitionLoading, TransitionLoading);
+
+    //if(TransitionLoading) return <Loader />;
 
     return (
         <>
