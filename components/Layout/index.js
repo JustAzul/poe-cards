@@ -3,14 +3,24 @@ import Link from 'next/link';
 
 import Dynamic from 'next/dynamic';
 import Spinner from '../Spinner';
-//import Loader from '../Loader';
+import Loader from '../Loader';
 
-const Transition = Dynamic(() => import('../Transition'), {loading: () => <Spinner/>});
+import {useStafe} from 'react';
+
 const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
 const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {
     const CurrentYear = new Date();
     const DevURL = "https://justazul.xyz";
+
+    const [TransitionLoading, setTransitionLoading] = useState(false);
+
+    const Transition = Dynamic(() => import('../Transition'), {loading: ({isLoading}) => {
+        setTransitionLoading(isLoading);
+        return <Spinner />
+    }});
+
+    if(TransitionLoading) return <Loader />;
 
     return (
         <>
