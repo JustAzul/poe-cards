@@ -5,7 +5,7 @@ import Dynamic from 'next/dynamic';
 import Spinner from '../Spinner';
 import Loader from '../Loader';
 
-import {useStafe} from 'react';
+import {useState} from 'react';
 
 const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
