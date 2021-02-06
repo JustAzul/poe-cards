@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import Dynamic from 'next/dynamic';
 import Spinner from '../Spinner';
+//import Loader from '../Loader';
 
-import Transition from '../Transition';
-
+const Transition = Dynamic(() => import('../Transition'), {loading: () => <Spinner/>});
 const PlayerDonate = Dynamic(() => import('./PlayerDonate'), {loading: () => <Spinner/>});
 
 const Layout = ({children, parent, title = "", margintop = false, IgnorePlayer = false}) => {

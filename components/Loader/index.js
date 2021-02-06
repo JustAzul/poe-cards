@@ -1,15 +1,18 @@
 import Head from 'next/head';
 import styles from './index.module.css';
+import Dynamic from 'next/dynamic';
 
-import Transition from '../Transition';
+import LoaderWrapper from './RawLoader/Wrapper';
+import RawLoader from './RawLoader'
+
+const Transition = Dynamic(import('../Transition'), {loading: () => <LoaderWrapper> <RawLoader /> </LoaderWrapper>});
 
 export default function Loader({title = "poe.cards"}) {
-    console.log(new Date(), 'Loader');
     
     const transition = {
-        duration: 0.3
+        duration: 0.4
     }
-    
+
     return (
         <>
             <Head>
@@ -18,14 +21,8 @@ export default function Loader({title = "poe.cards"}) {
             </Head>
 
             <Transition transition={transition} styles={styles['gooey']}>
-                <span className={styles['dot']} />
-                <div className={styles['dots']}>
-                    <span />
-                    <span />
-                    <span />
-                </div>
+                <RawLoader />
             </Transition>
         </>
-        
     );
 };
