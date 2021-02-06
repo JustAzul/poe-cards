@@ -6,7 +6,7 @@ const moment = require('moment');
 
 export default function LastUpdated({LastUpdatedDate}) {    
     const [Text, setText] = useState();
-    console.log(new Date(), 'LastUpdated.js');
+
     useEffect(() => {
         setText(moment(LastUpdatedDate).fromNow());
         const Interval = setInterval(() => {

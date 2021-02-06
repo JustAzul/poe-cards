@@ -7,7 +7,7 @@ import mandali from '../../mandali.module.css';
 
 export default function PlayerDonate({parent}) {
     const ChannelName = "azul21";
-    console.log(new Date(), 'PlayerDonate');
+
     return (
         <div className="row justify-content-center mt-4">
          <TwitchPlayer ChannelName={ChannelName} parent={parent}/>

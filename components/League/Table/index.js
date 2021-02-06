@@ -23,7 +23,7 @@ export default function Table({Items, NavbarHeight, leagueName}) {
           window.removeEventListener('scroll', () => handleScroll);
         };
       }, [ref]);
-      console.log(new Date(), 'Table');
+
     return (
         <TableWrapper>
                 <thead ref={ref} className={`sticky-wrapper${isSticky ? ' sticky' : ''}`}>

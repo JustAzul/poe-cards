@@ -35,19 +35,16 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
             const {value} = ItemChaosPriceRef['current'];
             setItemChaosPrice(value);
             setItemChaosPriceCookie(`${leagueName}_ItemChaosPrice`, value, DefaultCookieOptions);
-            //console.log('ItemChaosPrice', value);
         },
         Amount: () => {
             const {value} = AmountRef['current'];
             setAmount(value);
             setAmountCookie(`${leagueName}_Amount`, value, DefaultCookieOptions);
-            //console.log('Amount', value);
         },
         ExaltedPayment: () => {
             const {value} = ExaltedPaymentRef['current'];
             setExaltedPayment(value);
             setExaltedPaymentCookie(`${leagueName}_ExaltedPayment`, value, DefaultCookieOptions);
-            //console.log('ExaltedPayment', value);
         }
     };
 
