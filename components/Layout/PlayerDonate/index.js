@@ -1,9 +1,12 @@
-import Dynamic from 'next/dynamic';
-import Loader from '../../Loader';
-const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), {loading: () => <Loader/>});
-import DonationButtons from './Buttons';
-
 import mandali from '../../mandali.module.css';
+
+import Dynamic from 'next/dynamic';
+import Spinner from '../../Spinner';
+
+import TextLoader from '../../TextLoader';
+
+const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), {loading: () => <Spinner />});
+const DonationButtons = Dynamic(() => import('./Buttons'), {loading: () => <TextLoader />});
 
 export default function PlayerDonate({parent}) {
     const ChannelName = "azul21";
