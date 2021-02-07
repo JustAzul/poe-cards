@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import cookie from "cookie";
 
@@ -24,11 +24,11 @@ interface Props {
 }
 
 const League = ({host, Cookies, SocketIO}: Props) => {
-  const [NavbarHeight, setNavbarHeight] = useState<Number>(40);
+  const [NavbarHeight, setNavbarHeight] = useState<number>(40);
   const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
   const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
   
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { leagueName } = router.query;
 
   const [LeagueDetails, setLeagueDetails] = useState<LeagueDetails>();
@@ -56,7 +56,7 @@ const League = ({host, Cookies, SocketIO}: Props) => {
 
   }, [SocketIO]);
 
-  const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated, Table} = LeagueDetails || {};
+  const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = "Never", Table} = LeagueDetails || {};
   
   const CurrencyValues: CurrencyValues = {
     'Exalted': ExaltValue,
@@ -77,7 +77,7 @@ const League = ({host, Cookies, SocketIO}: Props) => {
   <Layout parent={host} margintop={true} title={`${leagueName} League`}>  
         <Nav CurrencyValues={CurrencyValues} UpdateHeigh={setNavbarHeight} />
           <LeagueComponent
-              leagueName={leagueName}
+              leagueName={leagueName?.toString() ?? "undefined"}
               Cookies={Cookies}
               LastUpdatedDate={LastUpdated}
               NavbarHeight={NavbarHeight} 
