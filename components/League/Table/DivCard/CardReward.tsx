@@ -1,8 +1,14 @@
 import styles from './index.module.css';
 
-export default function CardReward({RewardName, rewardClass, isCorrupted}) {
+interface Props {
+    RewardName: string,
+    rewardClass: string,
+    isCorrupted: Boolean
+}
+
+export default function CardReward({RewardName, rewardClass, isCorrupted}: Props) {
     
-    const GenerateCorruptedText = () => (
+    const GenerateCorruptedText: Function = () => (
         <>
             <br></br>
             <span className={`${styles['text-color']} ${styles['-corrupted']}`}>Corrupted</span>

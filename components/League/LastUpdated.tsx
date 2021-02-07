@@ -1,7 +1,6 @@
 import TextLoader from '../TextLoader';
 import {useEffect, useState} from 'react';
 import mandali from '../mandali.module.css';
-//import {Moment} from 'moment'
 
 const moment = require('moment');
 
@@ -10,7 +9,7 @@ interface Props {
 }
 
 export default function LastUpdated({LastUpdatedDate}: Props) {    
-    const [Text, setText] = useState();
+    const [Text, setText] = useState<string>("Never");
 
     useEffect(() => {
         setText(moment(LastUpdatedDate).fromNow());

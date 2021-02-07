@@ -1,6 +1,10 @@
 import Image from 'next/image';
 
-export default function Img({artFileName}) {
+interface Props {
+    artFileName: string
+}
+
+export default function Img({artFileName}: Props) {
     return (
         <Image
             src={`/images/${artFileName}.png`}

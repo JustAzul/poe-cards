@@ -31,7 +31,7 @@ export type CardDetail = {
     exprofit: number,
     isCurrency: Boolean
   };
-  
+
   export type LeagueDetails = {
     ExaltValue: number,
     DivineValue: number,
@@ -54,4 +54,12 @@ export type CardDetail = {
     DaysLeft?: number
   };
 
-  export type KeyStates = "c1" | "c2" | "c3" | "c4" | "c5" | "c6" | "c7" | "c8" | "c9" | "c10";
+  export type CurrencyValues = {
+    Exalted?: number,
+    Divine?: number,
+    Annul?: number,
+    Mirror?: number
+  };
+
+  export type Currency = "chaos" | "exalted";
+  export type KeyStates = "c1" | "c2" | "c3" | "c4" | "c5" | "c6" | "c7" | "c8" | "c9" | "c10" | undefined;

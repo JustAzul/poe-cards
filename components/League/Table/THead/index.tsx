@@ -1,14 +1,24 @@
+import { CSSProperties } from 'react';
 import TableStyles from '../../../Table/index.module.css';
 import Th from '../../../Table/Th';
 
-export default function thead({setToHover, toHover, ShouldSticky: isSticky, NavbarHeight}) {
+import type {KeyStates} from '../../../../hooks/interfaces';
+
+interface Props {
+    NavbarHeight: number,
+    setToHover: Function,
+    ShouldSticky: Boolean,
+    toHover: KeyStates
+}
+
+export default function thead({setToHover, toHover, ShouldSticky, NavbarHeight}: Props) {
     
-    const StickyStyle = {
-        'top': `${NavbarHeight}px`
+    const StickyStyle: CSSProperties = {
+        top: `${NavbarHeight}px`
     };
 
     return (
-        <tr style={isSticky ? StickyStyle : {}} className={`${TableStyles['row100']} ${TableStyles['head']} sticky-inner`}>
+        <tr style={ShouldSticky ? StickyStyle : {}} className={`${TableStyles['row100']} ${TableStyles['head']} sticky-inner`}>
             
             <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c1">
                 Card Name

@@ -1,16 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, MutableRefObject } from 'react';
 import TableWrapper from '../../Table/Wrapper';
 import TableHead from './THead';
 import TableBody from './Tbody';
 
-export default function Table({Items, NavbarHeight, leagueName}) {
-    const [toHover, setToHover] = useState("");
-    const [isSticky, setSticky] = useState(false);
+import type {KeyStates, TableData} from '../../../hooks/interfaces';
+
+interface Props {
+    leagueName: string,
+    NavbarHeight: number,
+    Items: Array<TableData>
+}
+
+export default function Table({Items, NavbarHeight, leagueName}: Props) {
+
+    const [toHover, setToHover] = useState<KeyStates>();
+    const [isSticky, setSticky] = useState<Boolean>(false);
     
-    const ref = useRef(null);
+    const ref: MutableRefObject<HTMLTableSectionElement | null> = useRef<HTMLTableSectionElement>(null);
     
     const handleScroll = () => {
-        if (ref.current) {
+        if (ref?.current) {
             const {top} = ref.current.getBoundingClientRect();
             setSticky(top <= NavbarHeight);
         }

@@ -1,18 +1,20 @@
-import {useRef, useEffect, MutableRefObject, SetStateAction} from 'react';
+import {useRef, useEffect, MutableRefObject} from 'react';
 import PoeTradeInputs from './PoeTradeInputs';
+
+import type {Currency} from '../../hooks/interfaces';
 
 interface Props {
     setFormRef: Function,
     SearchString: string,
-    METHOD: "POST" | "GET",
-    Currency?: "chaos" | "exalted",
+    METHOD?: "POST" | "GET",
+    Currency?: Currency,
     leagueName?: string,
-    Href: string,
+    Href?: string,
     PoeTrade?: Boolean
 }
 
 export default function PoeTradeForm({setFormRef, SearchString, METHOD = "POST", Currency = "chaos", leagueName, Href = "https://poe.trade/search", PoeTrade = false}: Props) {
-    const Ref: MutableRefObject<any> = useRef();
+    const Ref: MutableRefObject<HTMLFormElement| null> = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
         if(Ref && Ref['current']) setFormRef(Ref['current']);

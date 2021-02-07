@@ -7,7 +7,7 @@ interface Props {
     SetMouseOver: Function,
     KeyState?: KeyStates,
     _Key: KeyStates,
-    Class: string
+    Class?: string
 }
 
 export default function Th({SetMouseOver, KeyState, _Key, Class, children}: Props) {

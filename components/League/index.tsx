@@ -9,9 +9,21 @@ const SplitedValues = Dynamic(() => import('./Boxes/SplitedExalted'), {loading: 
 const ChangeHelper = Dynamic(() => import('./Boxes/ChangeHelper'), {loading: () => <Spinner/>});
 const TableView = Dynamic(() => import('./Table'), {loading: () => <Spinner/>});
 
-export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight}) {
+import type {CurrencyValues, TableData} from '../../hooks/interfaces';
 
-    const [boxHeight, setBoxHeight] = useState(Number);
+interface Props {
+    NavbarHeight: number,
+    LastUpdatedDate: string,
+    Cookies: any,
+    leagueName: string,
+    SplitsArray: Array<number>,
+    CurrencyValues: CurrencyValues,
+    CardsTable: Array<TableData>
+}
+
+export default function League({Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight}: Props) {
+
+    const [boxHeight, setBoxHeight] = useState<number>(Number);
 
     return (
         <>

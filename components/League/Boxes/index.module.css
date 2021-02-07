@@ -12,3 +12,11 @@
 .none {
     cursor: none;
 }
+
+.chaosvalue {
+    font-size: 15px;
+}
+
+.change {
+    font-size: inherit;
+}

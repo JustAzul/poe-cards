@@ -15,7 +15,7 @@ const LeagueError = Dynamic(() => import('../_error'), {loading: () => <PageLoad
 
 import type {SocketIoClient} from '../../hooks/useSocket';
 import type {GetServerSideProps} from 'next';
-import type {LeagueDetails, LeagueResult} from '../../hooks/interfaces';
+import type {LeagueDetails, LeagueResult, CurrencyValues} from '../../hooks/interfaces';
 
 interface Props {
   host: string,
@@ -58,7 +58,7 @@ const League = ({host, Cookies, SocketIO}: Props) => {
 
   const {ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated, Table} = LeagueDetails || {};
   
-  const CurrencyValues = {
+  const CurrencyValues: CurrencyValues = {
     'Exalted': ExaltValue,
     'Divine': DivineValue,
     'Annul': AnullValue,

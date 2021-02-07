@@ -7,12 +7,21 @@ import Dynamic from 'next/dynamic';
 import Spinner from '../../../Spinner';
 
 const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div>});
-const formatNumber = require('../../../../hooks/formatNumber.ts');
+const formatNumber: Function = require('../../../../hooks/formatNumber');
 
-export default function Tr({setToHover, toHover, Details, doSearch}) {
+import type {KeyStates, Card, TableData} from '../../../../hooks/interfaces';
+ 
+interface Props {
+    setToHover: Function,
+    toHover: KeyStates,
+    doSearch: Function,
+    Details: TableData
+}
+
+export default function Tr({setToHover, toHover, Details, doSearch}: Props) {
     const {Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice} = Details;
     
-    const GenDivCard = CardDetails => (
+    const GenDivCard = (CardDetails: Card) => (
         <div className="mr-2">
             <DivCard CardDetails={CardDetails} />
         </div>

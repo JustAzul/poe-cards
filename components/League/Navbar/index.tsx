@@ -1,14 +1,21 @@
 
 import styles from './index.module.css';
-import {useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 import Currency from './Currency';
 import mandali from '../../mandali.module.css';
 
-export default function Navbar({CurrencyValues, UpdateHeigh}) {    
-    const Element = useRef(null);
+import type { CurrencyValues } from '../../../hooks/interfaces';
+
+interface Props {
+    CurrencyValues: CurrencyValues,
+    UpdateHeigh: Function
+}
+
+export default function Navbar({CurrencyValues, UpdateHeigh}: Props) {    
+    const Element: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
 
     const HandleElement = () => {
-        if (Element.current) {
+        if (Element?.current) {
             const {height} = Element.current.getBoundingClientRect();
             UpdateHeigh(height);
         }

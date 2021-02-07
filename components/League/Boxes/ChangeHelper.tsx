@@ -1,25 +1,31 @@
-import _styles from '../index.module.css';
-import {useEffect, useRef, useState} from 'react';
-import {useCookies} from 'react-cookie';
 import styles from './index.module.css';
-import Head from '../Head.js';
+import {MutableRefObject, useEffect, useRef, useState} from 'react';
+import {useCookies} from 'react-cookie';
+import Head from './Head';
 
-import Transition from '../../../Transition';
+import Transition from '../../Transition';
 
-const formatNumber = require('../../../../hooks/formatNumber.ts');
+const formatNumber: Function = require('../../../hooks/formatNumber');
 
-export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}) {
-    const [ItemChaosValue, setItemChaosValue] = useState(0);
+interface Props {
+    Cookies: any,
+    leagueName: string,
+    ExaltedValue: number,
+    setBoxHeight: Function
+}
 
-    const [ItemChaosPrice, setItemChaosPrice] = useState(parseInt(Cookies[`${leagueName}_ItemChaosPrice`] || 0));
-    const [Amount, setAmount] = useState(parseInt(Cookies[`${leagueName}_Amount`] || 1));
-    const [ExaltedPayment, setExaltedPayment] = useState(parseInt(Cookies[`${leagueName}_ExaltedPayment`] || 0));
-    const [Change, setChange] = useState(0);
+export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxHeight}: Props) {
+    const [ItemChaosValue, setItemChaosValue] = useState<number>(0);
 
-    const ItemChaosPriceRef = useRef(null);
-    const AmountRef = useRef(null);
-    const ExaltedPaymentRef = useRef(null);
-    const ChangeRef = useRef(null);    
+    const [ItemChaosPrice, setItemChaosPrice] = useState<number>(parseInt(Cookies[`${leagueName}_ItemChaosPrice`] || 0));
+    const [Amount, setAmount] = useState<number>(parseInt(Cookies[`${leagueName}_Amount`] || 1));
+    const [ExaltedPayment, setExaltedPayment] = useState<number>(parseInt(Cookies[`${leagueName}_ExaltedPayment`] || 0));
+    const [Change, setChange] = useState<number>(0);
+
+    const ItemChaosPriceRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+    const AmountRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+    const ExaltedPaymentRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+    const ChangeRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);    
 
     const [,setItemChaosPriceCookie] = useCookies([`${leagueName}_ItemChaosPrice`]);
     const [,setAmountCookie] = useCookies([`${leagueName}_Amount`]);
@@ -32,18 +38,18 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
     
     const Handle = {
         ItemChaosPrice: () => {
-            const {value} = ItemChaosPriceRef['current'];
-            setItemChaosPrice(value);
+            const {value} = ItemChaosPriceRef['current'] ?? new HTMLInputElement;
+            setItemChaosPrice(parseInt(value));
             setItemChaosPriceCookie(`${leagueName}_ItemChaosPrice`, value, DefaultCookieOptions);
         },
         Amount: () => {
-            const {value} = AmountRef['current'];
-            setAmount(value);
+            const {value} = AmountRef['current'] ?? new HTMLInputElement;
+            setAmount(parseInt(value));
             setAmountCookie(`${leagueName}_Amount`, value, DefaultCookieOptions);
         },
         ExaltedPayment: () => {
-            const {value} = ExaltedPaymentRef['current'];
-            setExaltedPayment(value);
+            const {value} = ExaltedPaymentRef['current'] ?? new HTMLInputElement;
+            setExaltedPayment(parseInt(value));
             setExaltedPaymentCookie(`${leagueName}_ExaltedPayment`, value, DefaultCookieOptions);
         }
     };
@@ -58,55 +64,55 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
 
     useEffect(() => {
 
-        if (ItemChaosPriceRef && ItemChaosPriceRef.current) {
+        if (ItemChaosPriceRef?.current) {
             ItemChaosPriceRef.current.addEventListener("change", Handle['ItemChaosPrice']);
             ItemChaosPriceRef.current.addEventListener("input", Handle['ItemChaosPrice']);
         }
 
         return () => {
             try {
-                ItemChaosPriceRef.current.removeEventListener("change", Handle['ItemChaosPrice']);
-                ItemChaosPriceRef.current.removeEventListener("input", Handle['ItemChaosPrice']);
-            } catch (e) {}
+                ItemChaosPriceRef?.current?.removeEventListener("change", Handle['ItemChaosPrice']);
+                ItemChaosPriceRef?.current?.removeEventListener("input", Handle['ItemChaosPrice']);
+            } catch {}
         }
     }, [ItemChaosPriceRef]);
 
     useEffect(() => {
 
-        if (AmountRef && AmountRef.current) {
+        if (AmountRef?.current) {
             AmountRef.current.addEventListener("change", Handle['Amount']);
             AmountRef.current.addEventListener("input", Handle['Amount']);
         }
 
         return () => {
             try {
-                AmountRef.current.removeEventListener("change", Handle['Amount']);
-                AmountRef.current.removeEventListener("input", Handle['Amount']);
-            } catch (e) {}
+                AmountRef?.current?.removeEventListener("change", Handle['Amount']);
+                AmountRef?.current?.removeEventListener("input", Handle['Amount']);
+            } catch {}
 
         }
     }, [AmountRef]);
 
     useEffect(() => {
 
-        if (ExaltedPaymentRef && ExaltedPaymentRef.current) {
+        if (ExaltedPaymentRef?.current) {
             ExaltedPaymentRef.current.addEventListener("change", Handle['ExaltedPayment']);
             ExaltedPaymentRef.current.addEventListener("input", Handle['ExaltedPayment']);
         }
 
         return () => {
             try {
-                ExaltedPaymentRef.current.removeEventListener("change", Handle['ExaltedPayment']);
-                ExaltedPaymentRef.current.removeEventListener("input", Handle['ExaltedPayment']);
+                ExaltedPaymentRef?.current?.removeEventListener("change", Handle['ExaltedPayment']);
+                ExaltedPaymentRef?.current?.removeEventListener("input", Handle['ExaltedPayment']);
             } catch (e) {}
         }
     }, [ExaltedPaymentRef]);
     
     /* Box Height */
-    const BoxElement = useRef(null);
+    const BoxElement = useRef<HTMLDivElement>(null);
 
     const HandleElement = () => {
-        if (BoxElement.current) {
+        if (BoxElement?.current) {
             const {height} = BoxElement.current.getBoundingClientRect();
             setBoxHeight(height);
         }
@@ -126,7 +132,7 @@ export default function ChangeHelper({Cookies, leagueName, ExaltedValue, setBoxH
                 Change Helper 
             </Head>
 
-            <div ref={BoxElement} className={`mt-2 border ${_styles['bg-white']}`}>
+            <div ref={BoxElement} className={`mt-2 border ${styles['bg-white']}`}>
                 <div className="container">
                     <div className="row p-2 pt-1 justify-content-center text-center">
                         

@@ -5,12 +5,16 @@ import CardFrame from './CardFrame';
 import CardReward from './CardReward';
 import CardFlavour from './CardFlavour';
 
-export default function DivCard({CardDetails}) {
-    
-    const {CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass} = CardDetails['Details'];
+import type {CardDetail, Card} from '../../../../hooks/interfaces';
 
-    
+interface Props {
+    CardDetails: Card
+}
 
+export default function DivCard({CardDetails}: Props) {
+    
+    const {CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass}: CardDetail = CardDetails['Details'];
+    
     return (
         <span className={styles['divicard-wrapper']}>
             

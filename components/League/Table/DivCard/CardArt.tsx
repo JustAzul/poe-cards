@@ -1,7 +1,11 @@
 import styles from './index.module.css';
 import Image from 'next/image';
 
-export default function CardArt({artFilename}) {
+interface Props {
+    artFilename: string
+}
+
+export default function CardArt({artFilename}: Props) {
     return (
         <span className={styles['divicard-art']}>
             <Image

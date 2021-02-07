@@ -2,7 +2,7 @@ import styles from '../index.module.css';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-import type {KeyStates} from '../../../hooks/interfaces';
+import type {KeyStates, Currency} from '../../../hooks/interfaces';
 
 interface Props {
     children: ReactNode,
@@ -10,10 +10,10 @@ interface Props {
     KeyState?: KeyStates,
     _Key: KeyStates,
     Href?: string,
-    Class: string,
+    Class?: string,
     setTitle?: string,
     SearchString?: string,
-    Currency?: "chaos" | "exalted",
+    Currency?: Currency,
     Click?: Function
 }
 
