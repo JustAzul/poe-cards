@@ -1,3 +1,3 @@
 import numeral from 'numeral';
-const formatNumber = (number: Number) => numeral(number).format('0,0');
+const formatNumber = (number: number): string => numeral(number).format('0,0');
 module.exports = formatNumber;
