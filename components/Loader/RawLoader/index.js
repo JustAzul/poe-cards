@@ -1,14 +1,14 @@
 import styles from '../index.module.css';
 
 export default function RawLoader() {
-    return (
+  return (
         <>
-            <span className={styles['dot']} />
-            <div className={styles['dots']}>
+            <span className={styles.dot} />
+            <div className={styles.dots}>
                 <span />
                 <span />
                 <span />
             </div>
-        </>        
-    );
-};
+        </>
+  );
+}

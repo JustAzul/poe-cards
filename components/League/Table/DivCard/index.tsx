@@ -5,19 +5,20 @@ import CardFrame from './CardFrame';
 import CardReward from './CardReward';
 import CardFlavour from './CardFlavour';
 
-import type {CardDetail, Card} from '../../../../hooks/interfaces';
+import type { CardDetail, Card } from '../../../../hooks/interfaces';
 
 interface Props {
     CardDetails: Card
 }
 
-export default function DivCard({CardDetails}: Props) {
-    
-    const {CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass}: CardDetail = CardDetails['Details'];
-    
-    return (
+export default function DivCard({ CardDetails }: Props) {
+  const {
+    CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass,
+  }: CardDetail = CardDetails.Details;
+
+  return (
         <span className={styles['divicard-wrapper']}>
-            
+
             <CardArt artFilename={artFilename}/>
             <CardFrame/>
 
@@ -28,5 +29,5 @@ export default function DivCard({CardDetails}: Props) {
             <CardFlavour Flavour={Flavour}/>
 
         </span>
-    );
+  );
 }

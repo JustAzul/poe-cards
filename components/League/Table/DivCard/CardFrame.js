@@ -1,15 +1,15 @@
-import styles from './index.module.css';
 import Image from 'next/image';
+import styles from './index.module.css';
 
 export default function CardFrame() {
-    return (
+  return (
         <span className={styles['divicard-frame']}>
             <Image
-                src={`/images/cardbg.png`}
+                src={'/images/cardbg.png'}
                 width={220}
                 height={334}
                 priority={true}
             />
         </span>
-    );
+  );
 }

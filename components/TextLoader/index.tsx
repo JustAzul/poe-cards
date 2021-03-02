@@ -5,9 +5,9 @@ interface Props {
     Class?: string
 }
 
-export default function TextLoader({children, Class}: Props) {
-    return (
-    <h1 className={`${styles['animated']} ${styles['infinite']} ${styles['pulse']} text-center ${Class ? ` ${Class}` : ""}`}>
+export default function TextLoader({ children, Class }: Props) {
+  return (
+    <h1 className={`${styles.animated} ${styles.infinite} ${styles.pulse} text-center ${Class ? ` ${Class}` : ''}`}>
         {children}
     </h1>);
 }

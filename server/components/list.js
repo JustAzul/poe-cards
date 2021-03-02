@@ -1,13 +1,13 @@
 module.exports = [
-    "DivinationCard" ,
-    "UniqueArmour",
-    "UniqueAccessory",
-    "UniqueWeapon",
-    "Prophecy",
-    "UniqueMap",
-    "SkillGem"
-    /*,
+  'DivinationCard',
+  'UniqueArmour',
+  'UniqueAccessory',
+  'UniqueWeapon',
+  'Prophecy',
+  'UniqueMap',
+  'SkillGem',
+  /* ,
     "UniqueJewel",
-    "UniqueFlask" 
+    "UniqueFlask"
     */
-]
+];

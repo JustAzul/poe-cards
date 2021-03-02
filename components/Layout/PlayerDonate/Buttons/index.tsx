@@ -6,25 +6,25 @@ interface Props {
     ChannelName: string
 }
 
-function DonateSection({ChannelName}: Props) {
-    return (
+function DonateSection({ ChannelName }: Props) {
+  return (
         <>
             <Link href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZGFRUQCHW3Y4S&source=url">
                 <a className="m-1" target="_BLANK">
-                    <Image 
+                    <Image
                         className={styles.image}
                         src="/images/Paypal-Donate-yellow.svg"
                         alt="Paypal Donate"
                         width={96}
                         height={20}
                         priority={true}
-                        loading="eager"                        
+                        loading="eager"
                     />
                 </a>
             </Link>
             <Link href="https://trade.justazul.xyz/">
                 <a className="m-2" target="_BLANK">
-                    <Image 
+                    <Image
                         className={styles.image}
                         src="/images/Steam-Donate-yellow.svg"
                         alt="Steam Donate"
@@ -34,10 +34,10 @@ function DonateSection({ChannelName}: Props) {
                         loading="eager"
                     />
                 </a>
-            </Link>            
+            </Link>
             <Link href={`https://www.twitch.tv/products/${ChannelName}/ticket`}>
                 <a className="m-1" target="_BLANK">
-                    <Image 
+                    <Image
                         className={styles.image}
                         src="/images/Twitch-Subscribe-blue.svg"
                         alt="Twitch Subscribe"
@@ -48,8 +48,8 @@ function DonateSection({ChannelName}: Props) {
                     />
                 </a>
             </Link>
-        </>        
-    );
+        </>
+  );
 }
 
 export default DonateSection;

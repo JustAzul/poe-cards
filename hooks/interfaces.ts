@@ -7,22 +7,22 @@ export type CardDetail = {
     isCorrupted: Boolean,
     Flavour: string
   };
-  
-  export type Card = {
+
+export type Card = {
     name: string,
     stack: number,
     chaosprice: number,
     exaltedprice: number,
     Details: CardDetail
   };
-  
-  export type Reward = {
+
+export type Reward = {
     name: string,
     chaosprice: number,
     exaltedprice: number
   };
-  
-  export type TableData = {
+
+export type TableData = {
     Card: Card,
     Reward: Reward,
     setchaosprice: number,
@@ -32,7 +32,7 @@ export type CardDetail = {
     isCurrency: Boolean
   };
 
-  export type LeagueDetails = {
+export type LeagueDetails = {
     ExaltValue: number,
     DivineValue: number,
     AnullValue: number,
@@ -40,13 +40,13 @@ export type CardDetail = {
     LastUpdated: string,
     Table: Array<TableData>
   };
-  
-  export type LeagueResult = {
+
+export type LeagueResult = {
     success: Boolean,
     details: LeagueDetails
   };
 
-  export type Leagues = {
+export type Leagues = {
     leagueName?: string,
     startAt?: string,
     endAt?: string,
@@ -54,12 +54,12 @@ export type CardDetail = {
     DaysLeft?: number
   };
 
-  export type CurrencyValues = {
+export type CurrencyValues = {
     Exalted?: number,
     Divine?: number,
     Annul?: number,
     Mirror?: number
   };
 
-  export type Currency = "chaos" | "exalted";
-  export type KeyStates = "c1" | "c2" | "c3" | "c4" | "c5" | "c6" | "c7" | "c8" | "c9" | "c10" | undefined;
+export type Currency = 'chaos' | 'exalted';
+export type KeyStates = 'c1' | 'c2' | 'c3' | 'c4' | 'c5' | 'c6' | 'c7' | 'c8' | 'c9' | 'c10' | undefined;

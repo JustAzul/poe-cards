@@ -6,21 +6,20 @@ interface Props {
     isCorrupted: Boolean
 }
 
-export default function CardReward({RewardName, rewardClass, isCorrupted}: Props) {
-    
-    const GenerateCorruptedText: Function = () => (
+export default function CardReward({ RewardName, rewardClass, isCorrupted }: Props) {
+  const GenerateCorruptedText: Function = () => (
         <>
             <br></br>
             <span className={`${styles['text-color']} ${styles['-corrupted']}`}>Corrupted</span>
        </>
-    );
+  );
 
-    return (
+  return (
         <span className={styles['divicard-reward']}>
                 <span>
                     <span className={`${styles[`itemclass-${rewardClass}`]}`}>{RewardName}</span>
-                    {isCorrupted ? GenerateCorruptedText() : ``}
+                    {isCorrupted ? GenerateCorruptedText() : ''}
                 </span>
             </span>
-    );
+  );
 }
