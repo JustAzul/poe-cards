@@ -5,16 +5,11 @@ import { sleep } from 'azul-tools';
 import { duration } from 'moment';
 
 async function RequestItemOverview(League, Type) {
-  const searchParams = {
-    league: League,
-    type: Type,
-  };
-
   const o = {
-    url: 'https://proxy.justazul.workers.dev',
-    headers: {
-      url: 'https://poe.ninja/api/data/itemoverview',
-      params: JSON.stringify(searchParams),
+    url: 'https://poe.ninja/api/data/itemoverview',
+    searchParams: {
+      league: League,
+      type: Type,
     },
     responseType: 'json',
   };
@@ -30,16 +25,11 @@ async function RequestItemOverview(League, Type) {
 }
 
 async function RequestCurrencyOverview(League) {
-  const searchParams = {
-    league: League,
-    type: 'Currency',
-  };
-
   const o = {
-    url: 'https://proxy.justazul.workers.dev',
-    headers: {
-      url: 'https://poe.ninja/api/data/currencyoverview',
-      params: JSON.stringify(searchParams),
+    url: 'https://poe.ninja/api/data/currencyoverview',
+    searchParams: {
+      league: League,
+      type: 'Currency',
     },
     responseType: 'json',
   };
