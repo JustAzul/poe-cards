@@ -29,7 +29,7 @@ export default async function (req, res) {
     const Result = await RequestItemOverview(League, Type);
     DB.insert(Result);
     // eslint-disable-next-line no-await-in-loop
-    await sleep(duration(500, 'milliseconds'));
+    await sleep(duration(1500, 'milliseconds'));
   }
 
   const { Overview, Details } = await RequestCurrencyOverview(League);
