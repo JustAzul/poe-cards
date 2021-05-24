@@ -9,7 +9,7 @@ interface Props {
 function DonateSection({ ChannelName }: Props) {
   return (
         <>
-            <Link href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZGFRUQCHW3Y4S&source=url">
+            <Link href="https://www.paypal.com/donate?hosted_button_id=9KDR83JWCKAQW">
                 <a className="m-1" target="_BLANK">
                     <Image
                         className={styles.image}
