@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
+
 import '../styles/util.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.css';
@@ -10,6 +11,7 @@ import type { AppProps } from 'next/app';
 import { CookiesProvider } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { MotionConfig, ExitFeature, AnimationFeature } from 'framer-motion';
+import * as gtag from '../lib/gtag';
 import useSocket from '../hooks/useSocket';
 
 import type { SocketIoClient } from '../hooks/useSocket';
@@ -39,7 +41,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
   useEffect(() => {
     const handleStart = (url: string) => (url !== router.asPath) && setLoading(true);
-    const handleComplete = (url: string) => (url === router.asPath) && setLoading(false);
+    const handleComplete = (url: string) => {
+      gtag.pageview(url);
+      if (url === router.asPath) setLoading(false);
+    };
 
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
