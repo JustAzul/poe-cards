@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         router.events.off('routeChangeStart', handleStart);
         router.events.off('routeChangeComplete', handleComplete);
         router.events.off('routeChangeError', handleComplete);
-      } catch (e) {}
+      } catch {}
     };
   }, [router.asPath]);
 
