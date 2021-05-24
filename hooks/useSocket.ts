@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 export type SocketIoClient = typeof io.Socket;
 
-const socket: SocketIoClient = io();
+const socket: SocketIoClient = io(/* '//localhost:3001', { transport: ['websocket'] } */);
 
 export default function useSocket(callback?: Function) {
   const [activeSocket, setActiveSocket] = useState<SocketIoClient>(socket);
