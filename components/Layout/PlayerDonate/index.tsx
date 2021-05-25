@@ -8,11 +8,11 @@ import TextLoader from '../../TextLoader';
 // const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), { loading: () => <Spinner /> });
 const DonationButtons = Dynamic(() => import('./Buttons'), { loading: () => <TextLoader /> });
 
-/* interface Props {
+interface Props {
   parent: string
-} */
+}
 
-export default function PlayerDonate(/* { parent }: Props */) {
+export default function PlayerDonate({ parent }: Props) {
   const ChannelName: string = 'azul21';
 
   return (
