@@ -16,7 +16,7 @@
     "next": "10.2.1",
     "numeral": "^2.0.6",
     "react": "17.0.1",
-    "react-bootstrap": "^1.4.3",
+    "react-bootstrap": "^1.5.2",
     "react-cookie": "^4.0.3",
     "react-dom": "17.0.1",
     "socket.io-client": "^3.1.3"
