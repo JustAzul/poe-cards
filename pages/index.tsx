@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
-import { GetServerSideProps } from 'next';
+// import { GetServerSideProps } from 'next';
 import Dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import CentralSpinner from '../components/CentralSpinner';
@@ -17,10 +17,12 @@ interface Props {
   SocketIO: SocketIoClient
 }
 
-function Home({ host, SocketIO }: Props) {
+function Home({ /* host, */ SocketIO }: Props) {
   const [LeagueDetails, setLeagueDetails] = useState<Array<Leagues>>([]);
 
   const HandleListData = (data: Object) => setLeagueDetails(Object.values(data));
+
+  const host = 'poe.cards';
 
   useEffect(() => {
     if (SocketIO) {
@@ -31,6 +33,7 @@ function Home({ host, SocketIO }: Props) {
     return () => {
       try {
         SocketIO.off('LeagueListData', HandleListData);
+      // eslint-disable-next-line no-empty
       } catch {}
     };
   }, [SocketIO]);
@@ -42,7 +45,7 @@ function Home({ host, SocketIO }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+/* export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const Headers = req.headers;
   const host = Headers['x-forwarded-server'] ?? Headers.host ?? 'poe.cards';
 
@@ -51,6 +54,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       host,
     },
   };
-};
+}; */
 
 export default Home;

@@ -35,7 +35,7 @@ function DonateSection({ ChannelName }: Props) {
                     />
                 </a>
             </Link>
-            <Link href={`https://www.twitch.tv/products/${ChannelName}/ticket`}>
+           {/*  <Link href={`https://www.twitch.tv/products/${ChannelName}/ticket`}>
                 <a className="m-1" target="_BLANK">
                     <Image
                         className={styles.image}
@@ -47,7 +47,7 @@ function DonateSection({ ChannelName }: Props) {
                         loading="eager"
                     />
                 </a>
-            </Link>
+            </Link> */}
         </>
   );
 }

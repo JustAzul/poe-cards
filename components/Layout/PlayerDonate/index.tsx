@@ -1,11 +1,11 @@
 import Dynamic from 'next/dynamic';
 import mandali from '../../mandali.module.css';
 
-import Spinner from '../../Spinner';
+// import Spinner from '../../Spinner';
 
 import TextLoader from '../../TextLoader';
 
-const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), { loading: () => <Spinner /> });
+// const TwitchPlayer = Dynamic(() => import('./TwitchPlayer'), { loading: () => <Spinner /> });
 const DonationButtons = Dynamic(() => import('./Buttons'), { loading: () => <TextLoader /> });
 
 interface Props {
@@ -17,7 +17,7 @@ export default function PlayerDonate({ parent }: Props) {
 
   return (
         <div className="row justify-content-center mt-4">
-         <TwitchPlayer ChannelName={ChannelName} parent={parent}/>
+        {/*  <TwitchPlayer ChannelName={ChannelName} parent={parent}/> */}
           <div className="mt-4 text-center">
             <div>
               <blockquote className={`blockquote ${mandali.mandali}`}>
