@@ -129,7 +129,7 @@ export default function ChangeHelper({
   return (
         <Transition>
             <Head>
-                Change Helper
+                Change Calculator
             </Head>
 
             <div ref={BoxElement} className={`mt-2 border ${styles['bg-white']}`}>

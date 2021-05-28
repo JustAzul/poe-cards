@@ -30,11 +30,11 @@ export default function thead({
             </Th>
 
             <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c3">
-                Chaos Price
+                Price (c)
             </Th>
 
             <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c4">
-                Exalted Price
+                Price (ex)
             </Th>
 
             <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c5">
