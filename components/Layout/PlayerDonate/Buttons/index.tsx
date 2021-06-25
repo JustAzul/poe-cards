@@ -22,7 +22,7 @@ function DonateSection({ ChannelName }: Props) {
                     />
                 </a>
             </Link>
-            <Link href="https://trade.justazul.xyz/">
+            <Link href="https://trade.justazul.com/">
                 <a className="m-2" target="_BLANK">
                     <Image
                         className={styles.image}

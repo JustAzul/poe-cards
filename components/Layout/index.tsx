@@ -18,7 +18,7 @@ const Layout = ({
   children, parent, title, margintop = false, IgnorePlayer = false,
 }: Props) => {
   const CurrentYear: Date = new Date();
-  const DevURL: string = 'https://justazul.xyz';
+  const DevURL: string = 'https://justazul.com';
 
   return (
         <>
