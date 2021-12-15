@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
+import useSWR from 'swr';
 import { NextRouter, useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import cookie from 'cookie';
@@ -12,8 +13,19 @@ import CentralSpinner from '../../components/CentralSpinner';
 import PageLoader from '../../components/Loader';
 import Nav from '../../components/League/Navbar';
 
-import type { SocketIoClient } from '../../hooks/useSocket';
 import type { LeagueDetails as LeagueDetailsType, LeagueResult as LeagueResultType, CurrencyValues as CurrencyValuesType } from '../../hooks/interfaces';
+
+function fetcher(url) {
+  return fetch(url, {
+    headers: {
+      origin: 'https://poe.ninja',
+      referer: 'https://poe.ninja/',
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json());
+}
+
+const fetchList = require('../../hooks/fetchList');
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
@@ -22,17 +34,27 @@ const LeagueError = Dynamic(() => import('../_error'), { loading: () => <PageLoa
 
 interface Props {
   host: string,
-  SocketIO: SocketIoClient,
   Cookies: any
 }
 
-const League = ({ host, Cookies, SocketIO }: Props) => {
+const League = ({ host, Cookies }: Props) => {
   const [NavbarHeight, setNavbarHeight] = useState<number>(40);
   const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
   const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
 
   const router: NextRouter = useRouter();
   const { leagueName } = router.query;
+
+  const PoeNinja = fetchList
+    .map((Type) => {
+      const url = `https://poe.ninja/api/data/itemoverview?league=${leagueName}&language=en&type=${Type}`;
+      return useSWR(url, fetcher);
+    });
+
+  useEffect(() => {
+    console.log('something changed');
+    console.log(PoeNinja);
+  }, PoeNinja);
 
   const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
 
@@ -45,7 +67,7 @@ const League = ({ host, Cookies, SocketIO }: Props) => {
     }
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (SocketIO) {
       SocketIO.emit('getLeagueDetails', leagueName);
       SocketIO.on('LeagueDetails', HandleListData);
@@ -56,7 +78,7 @@ const League = ({ host, Cookies, SocketIO }: Props) => {
         SocketIO.off('LeagueDetails', HandleListData);
       } catch (err) {}
     };
-  }, [SocketIO]);
+  }, [SocketIO]); */
 
   const {
     ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', Table,

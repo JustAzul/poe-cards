@@ -12,32 +12,11 @@ import { CookiesProvider } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { MotionConfig, ExitFeature, AnimationFeature } from 'framer-motion';
 import * as gtag from '../lib/gtag';
-import useSocket from '../hooks/useSocket';
 
-import type { SocketIoClient } from '../hooks/useSocket';
 import Loader from '../components/Loader';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const SocketIO: SocketIoClient = useSocket();
-
   const [isLoading, setLoading] = useState<Boolean>(false);
-  const [isSocketConnected, setSocketState] = useState<Boolean>(false);
-
-  const HandleSocket = () => setSocketState(SocketIO.connected);
-
-  useEffect(() => {
-    if (SocketIO) {
-      SocketIO.on('connect', HandleSocket);
-      SocketIO.on('disconnect', HandleSocket);
-    }
-
-    return () => {
-      try {
-        SocketIO.off('connect', HandleSocket);
-        SocketIO.off('disconnect', HandleSocket);
-      } catch {}
-    };
-  }, [SocketIO]);
 
   useEffect(() => {
     const handleStart = (url: string) => (url !== router.asPath) && setLoading(true);
@@ -64,7 +43,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <MotionConfig features={[ExitFeature, AnimationFeature]}>
       <CookiesProvider>
-        <Component SocketIO={SocketIO} isSocketConnected={isSocketConnected} {...pageProps} />
+        <Component {...pageProps} />
       </CookiesProvider>
     </MotionConfig>
   );
