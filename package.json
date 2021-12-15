@@ -11,12 +11,12 @@
     "cookie": "^0.4.1",
     "firebase": "^9.6.1",
     "moment": "^2.29.1",
-    "next": "10.2.1",
+    "next": "^12.0.7",
     "numeral": "^2.0.6",
-    "react": "17.0.2",
+    "react": "^17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-cookie": "^4.0.3",
-    "react-dom": "17.0.2",
+    "react-dom": "^17.0.2",
     "react-firebase-hooks": "^4.0.1"
   },
   "devDependencies": {
