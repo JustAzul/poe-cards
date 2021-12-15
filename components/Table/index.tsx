@@ -50,7 +50,7 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
                               .map(({
                                 leagueName, endAt, DaysLeft, ladder,
                               }) => (
-                                    <Tr key={leagueName?.trim()} NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
+                                    <Tr key={leagueName?.trim().toLowerCase()} NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
                               ))}
                         </tbody>
             </TableWrapper>
