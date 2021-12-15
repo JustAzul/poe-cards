@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import useSWR from 'swr';
 import { NextRouter, useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import cookie from 'cookie';
@@ -45,7 +44,7 @@ const League = ({ host, Cookies }: Props) => {
   const router: NextRouter = useRouter();
   const { leagueName } = router.query;
 
-  const PoeNinja = fetchList
+  /* const PoeNinja = fetchList
     .map((Type) => {
       const url = `https://poe.ninja/api/data/itemoverview?league=${leagueName}&language=en&type=${Type}`;
       return useSWR(url, fetcher);
@@ -54,7 +53,7 @@ const League = ({ host, Cookies }: Props) => {
   useEffect(() => {
     console.log('something changed');
     console.log(PoeNinja);
-  }, PoeNinja);
+  }, PoeNinja); */
 
   const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
 

@@ -1,17 +1,10 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-import useSWR from 'swr';
 import Dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import firebase from '../firebase/clientApp';
 import CentralSpinner from '../components/CentralSpinner';
 
 import Layout from '../components/Layout';
-
-import { Leagues } from '../hooks/interfaces';
-
-const moment = require('moment');
-
-const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const SelectLeagueTable = Dynamic(() => import('../components/Table'), { loading: () => <CentralSpinner /> });
 
@@ -19,51 +12,25 @@ interface Props {
   host: string,
 }
 
-function calculateDaysDiff(InitialDate, EndDate) {
-  if (!InitialDate || !EndDate) return 9999;
-  return moment(EndDate).diff(InitialDate, 'days');
-}
-
-function FilterLeagues(Leagues = []) {
-  const Result = Leagues
-    .filter(({ realm }) => realm === 'pc')
-    .filter(({ id }) => id.indexOf('SSF') === -1)
-    .filter(({ id }) => id !== 'Hardcore')
-    .filter(({ event }) => !event)
-    .filter(({ id }) => id !== 'Standard');
-
-  return Result;
-}
-
 function parseLeaguesData(Leagues = []) {
-  return Leagues
-    .map((League) => {
-      const DaysDiff = calculateDaysDiff(League.startAt, League.endAt);
-
-      const o = {
-        leagueName: League.id,
-        startAt: League.startAt,
-        endAt: League.endAt,
-        ladder: League.url,
-        DaysLeft: DaysDiff,
-      };
-
-      return o;
-    });
+  const [List] = Leagues;
+  return Object.values(List);
 }
 
 function Home({ host }: Props) {
-  const [LeagueDetails, setLeagueDetails] = useState<Array<Leagues>>([]);
+  const [LeagueDetails, setLeagueDetails] = useState([]);
 
-  const { data, error } = useSWR('https://api.pathofexile.com/leagues', fetcher);
+  const [leagues, leaguesLoading, leaguesError] = useCollection(
+    firebase.firestore().collection('leagues'),
+    {},
+  );
 
   useEffect(() => {
-    if (data && !error) {
-      const LeagueList = FilterLeagues(data);
-      const LeaguesData = parseLeaguesData(LeagueList);
-      setLeagueDetails(LeaguesData);
-    }
-  }, [data, error]);
+    if (!leaguesLoading && !leaguesError && leagues) {
+      const leaguesData = leagues?.docs.map((doc) => (doc.data()));
+      setLeagueDetails(parseLeaguesData(leaguesData));
+    } else setLeagueDetails([]);
+  }, [leaguesLoading, leaguesError, leagues]);
 
   return (
     <Layout parent={host} title="Pick a League">

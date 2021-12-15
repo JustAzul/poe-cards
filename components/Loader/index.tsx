@@ -1,11 +1,7 @@
 import Head from 'next/head';
-import Dynamic from 'next/dynamic';
-import styles from './index.module.css';
 
 import LoaderWrapper from './RawLoader/Wrapper';
 import RawLoader from './RawLoader';
-
-const Transition = Dynamic(import('../Transition'), { loading: () => <LoaderWrapper> <RawLoader /> </LoaderWrapper> });
 
 interface Props {
     title?: string,
@@ -13,10 +9,6 @@ interface Props {
 }
 
 export default function Loader({ title = 'poe.cards', detail }: Props) {
-  const transition: Object = {
-    duration: 0.4,
-  };
-
   return (
         <>
             <Head>
@@ -24,9 +16,7 @@ export default function Loader({ title = 'poe.cards', detail }: Props) {
                 <link rel="icon" href="/images/InventoryIcon.png" />
             </Head>
 
-            <Transition transition={transition} styles={styles.gooey}>
-                <RawLoader detail={detail} />
-            </Transition>
+            <LoaderWrapper> <RawLoader detail={detail} /> </LoaderWrapper> */
         </>
   );
 }

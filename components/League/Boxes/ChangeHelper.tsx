@@ -5,8 +5,6 @@ import { useCookies } from 'react-cookie';
 import styles from './index.module.css';
 import Head from './Head';
 
-import Transition from '../../Transition';
-
 const formatNumber: Function = require('../../../hooks/formatNumber');
 
 interface Props {
@@ -127,7 +125,7 @@ export default function ChangeHelper({
   }, [BoxElement]);
 
   return (
-        <Transition>
+        <div>
             <Head>
                 Change Calculator
             </Head>
@@ -163,6 +161,6 @@ export default function ChangeHelper({
                     </div>
                 </div>
             </div>
-        </Transition>
+        </div>
   );
 }

@@ -3,8 +3,6 @@ import styles from './index.module.css';
 import TableStyles from '../../Table/index.module.css';
 import Head from './Head';
 
-import Transition from '../../Transition';
-
 interface Props {
     SplitsArray: Array<number>,
     boxHeight: number
@@ -32,7 +30,7 @@ export default function SplitedExalted({ SplitsArray, boxHeight }: Props) {
   const [row, setRow] = useState<string>('');
 
   return (
-        <Transition>
+        <div>
             <Head>
                 Exalted Splited Values
             </Head>
@@ -53,6 +51,6 @@ export default function SplitedExalted({ SplitsArray, boxHeight }: Props) {
 
                 </table>
             </div>
-        </Transition>
+        </div>
   );
 }

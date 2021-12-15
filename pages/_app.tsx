@@ -10,7 +10,6 @@ import type { AppProps } from 'next/app';
 
 import { CookiesProvider } from 'react-cookie';
 import { useEffect, useState } from 'react';
-import { MotionConfig, ExitFeature, AnimationFeature } from 'framer-motion';
 import * as gtag from '../lib/gtag';
 
 import Loader from '../components/Loader';
@@ -41,11 +40,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   if (isLoading) return <Loader />;
 
   return (
-    <MotionConfig features={[ExitFeature, AnimationFeature]}>
       <CookiesProvider>
         <Component {...pageProps} />
       </CookiesProvider>
-    </MotionConfig>
   );
 }
 

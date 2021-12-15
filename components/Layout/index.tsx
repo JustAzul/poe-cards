@@ -18,7 +18,7 @@ const Layout = ({
   children, parent, title, margintop = false, IgnorePlayer = false,
 }: Props) => {
   const CurrentYear: Date = new Date();
-  const DevURL: string = 'https://justazul.com';
+  const DevURL: string = 'https://github.com/JustAzul/poe-cards';
 
   return (
         <>

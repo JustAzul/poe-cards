@@ -34,30 +34,24 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
             <TableWrapper>
                 <thead>
                             <tr className={`${styles.row100} ${styles.head}`}>
-                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c1">
+                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} key="th_c1" _Key="c1">
                                     League
                                 </Th>
 
-                                {/* <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c2">
-                                    End At
-                                </Th>
-
-                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c3">
-                                    Days Left
-                                </Th> */}
-
-                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c4">
+                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} key="th_c4" _Key="c4">
                                     Ladder
                                 </Th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {LeagueDetails.map(({
-                              leagueName, endAt, DaysLeft, ladder,
-                            }) => (
-                                    <Tr NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
-                            ))}
+                            {LeagueDetails
+                              .sort((a, b) => ((`${a.leagueName}`).localeCompare(`${b.leagueName}`) * -1))
+                              .map(({
+                                leagueName, endAt, DaysLeft, ladder,
+                              }) => (
+                                    <Tr key={leagueName?.trim()} NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
+                              ))}
                         </tbody>
             </TableWrapper>
         </div>
