@@ -38,13 +38,13 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
                                     League
                                 </Th>
 
-                                <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c2">
+                                {/* <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c2">
                                     End At
                                 </Th>
 
                                 <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c3">
                                     Days Left
-                                </Th>
+                                </Th> */}
 
                                 <Th Class={styles.span} SetMouseOver={SetMouseOver} KeyState={state} _Key="c4">
                                     Ladder

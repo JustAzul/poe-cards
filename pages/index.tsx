@@ -29,6 +29,7 @@ function FilterLeagues(Leagues = []) {
     .filter(({ realm }) => realm === 'pc')
     .filter(({ id }) => id.indexOf('SSF') === -1)
     .filter(({ id }) => id !== 'Hardcore')
+    .filter(({ event }) => !event)
     .filter(({ id }) => id !== 'Standard');
 
   return Result;
