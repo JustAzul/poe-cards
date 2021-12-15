@@ -1,5 +1,5 @@
 module.exports = {
-    images: {
-      domains: ['web.poecdn.com'],
-    },
-  }
+  images: {
+    domains: ['web.poecdn.com'],
+  },
+};
