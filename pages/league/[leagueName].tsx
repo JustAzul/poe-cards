@@ -3,28 +3,18 @@
 /* eslint-disable import/no-unresolved */
 import { NextRouter, useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import cookie from 'cookie';
 
 import Dynamic from 'next/dynamic';
 
 import type { GetServerSideProps } from 'next';
+import firebase from '../../firebase/clientApp';
 import CentralSpinner from '../../components/CentralSpinner';
 import PageLoader from '../../components/Loader';
 import Nav from '../../components/League/Navbar';
 
 import type { LeagueDetails as LeagueDetailsType, LeagueResult as LeagueResultType, CurrencyValues as CurrencyValuesType } from '../../hooks/interfaces';
-
-function fetcher(url) {
-  return fetch(url, {
-    headers: {
-      origin: 'https://poe.ninja',
-      referer: 'https://poe.ninja/',
-      'Content-Type': 'application/json',
-    },
-  }).then((response) => response.json());
-}
-
-const fetchList = require('../../hooks/fetchList');
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
@@ -40,44 +30,65 @@ const League = ({ host, Cookies }: Props) => {
   const [NavbarHeight, setNavbarHeight] = useState<number>(40);
   const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
   const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
+  const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
 
   const router: NextRouter = useRouter();
   const { leagueName } = router.query;
 
-  /* const PoeNinja = fetchList
-    .map((Type) => {
-      const url = `https://poe.ninja/api/data/itemoverview?league=${leagueName}&language=en&type=${Type}`;
-      return useSWR(url, fetcher);
-    });
+  const [leagueItems, leagueItemsLoading, leagueItemsError] = useCollection(
+    firebase.firestore().collection('items'),
+    {},
+  );
 
-  useEffect(() => {
-    console.log('something changed');
-    console.log(PoeNinja);
-  }, PoeNinja); */
-
-  const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
-
-  const HandleListData = (LeagueName: string, LeagueResult: LeagueResultType) => {
-    if (LeagueName === leagueName) {
-      const { success, details } = LeagueResult;
-      setLeagueDetails(details);
-      setLeagueExist(success);
-      setReceivedLeagueData(true);
-    }
+  const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
+    const Result = Data.find(({ Name }) => Name === CurrencyName);
+    return Result?.chaosEquivalent || 0;
   };
 
-  /*   useEffect(() => {
-    if (SocketIO) {
-      SocketIO.emit('getLeagueDetails', leagueName);
-      SocketIO.on('LeagueDetails', HandleListData);
-    }
+  useEffect(() => {
+    setReceivedLeagueData(!leagueItemsLoading && !leagueItemsError);
 
-    return () => {
-      try {
-        SocketIO.off('LeagueDetails', HandleListData);
-      } catch (err) {}
-    };
-  }, [SocketIO]); */
+    if (!leagueItemsLoading && !leagueItemsError && !!leagueItems) {
+      const leaguesData = leagueItems?.docs;
+
+      const Items = leaguesData.find(({ id }) => id === 'all')?.data();
+      const Currency = leaguesData.find(({ id }) => id === 'currency')?.data();
+      const Updated = leaguesData.find(({ id }) => id === 'updated')?.data();
+
+      const DoesLeagueExist = Object.prototype.hasOwnProperty.call(Items, leagueName) && Object.prototype.hasOwnProperty.call(Currency, leagueName);
+      setLeagueExist(DoesLeagueExist);
+
+      if (DoesLeagueExist) {
+        const LeagueData = {
+          Currency: Currency[leagueName],
+          Items: Items[leagueName],
+          Updated: Updated[leagueName],
+        };
+
+        // console.log(LeagueData);
+
+        const o = {
+          ExaltValue: GetCurrencyChaosValue(LeagueData.Currency, 'Exalted Orb') || 0,
+          DivineValue: GetCurrencyChaosValue(LeagueData.Currency, 'Divine Orb') || 0,
+          AnullValue: GetCurrencyChaosValue(LeagueData.Currency, 'Orb of Annulment') || 0,
+          LastUpdated: LeagueData.Updated,
+          Table: LeagueData.Items,
+        };
+
+        o.Table = o.Table.sort((a, b) => {
+          const v1 = a.chaosprofit;
+          const v2 = b.chaosprofit;
+          return v2 - v1;
+        });
+
+        o.XMirrorValue = GetCurrencyChaosValue(LeagueData.Currency, 'Mirror of Kalandra') || 0;
+        o.XMirrorValue /= o.ExaltValue;
+        o.XMirrorValue = parseFloat(o.XMirrorValue.toFixed(1));
+
+        setLeagueDetails(o);
+      }
+    }
+  }, [leagueItems, leagueItemsLoading, leagueItemsError]);
 
   const {
     ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', Table,

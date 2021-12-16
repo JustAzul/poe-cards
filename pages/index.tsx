@@ -13,8 +13,7 @@ interface Props {
 }
 
 function parseLeaguesData(Leagues = []) {
-  const [List] = Leagues;
-  return Object.values(List);
+  return Object.values(Leagues);
 }
 
 function Home({ host }: Props) {
@@ -27,8 +26,10 @@ function Home({ host }: Props) {
 
   useEffect(() => {
     if (!leaguesLoading && !leaguesError && leagues) {
-      const leaguesData = leagues?.docs.map((doc) => (doc.data()));
-      setLeagueDetails(parseLeaguesData(leaguesData));
+      const leaguesData = leagues?.docs
+        .find((doc) => doc.id === 'all');
+
+      setLeagueDetails(parseLeaguesData(leaguesData?.data()));
     } else setLeagueDetails([]);
   }, [leaguesLoading, leaguesError, leagues]);
 
