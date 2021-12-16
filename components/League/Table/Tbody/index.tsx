@@ -30,7 +30,7 @@ export default function thead({
   return (
         <>
             <HiddenForm Currency={SearchCurrency} PoeTrade={true} setFormRef={setPoeTradeRef} leagueName={leagueName} SearchString={SearchString} />
-            {Items.map((Details) => <Tr doSearch={doSearch} setToHover={setToHover} toHover={toHover} Details={Details} />)}
+            {Items.map((Details) => <Tr key={Details.Card.name.trim()} doSearch={doSearch} setToHover={setToHover} toHover={toHover} Details={Details} />)}
         </>
   );
 }
