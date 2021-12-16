@@ -1,13 +1,13 @@
 import { useRef, useEffect, MutableRefObject } from 'react';
 import PoeTradeInputs from './PoeTradeInputs';
 
-import type { Currency } from '../../hooks/interfaces';
+import type { Currency as CurrencyType } from '../../hooks/interfaces';
 
 interface Props {
     setFormRef: Function,
     SearchString: string,
     METHOD?: 'POST' | 'GET',
-    Currency?: Currency,
+    Currency?: CurrencyType,
     leagueName?: string,
     Href?: string,
     PoeTrade?: Boolean
@@ -16,6 +16,7 @@ interface Props {
 export default function PoeTradeForm({
   setFormRef, SearchString, METHOD = 'POST', Currency = 'chaos', leagueName, Href = 'https://poe.trade/search', PoeTrade = false,
 }: Props) {
+  // eslint-disable-next-line no-undef
   const Ref: MutableRefObject<HTMLFormElement| null> = useRef<HTMLFormElement>(null);
 
   useEffect(() => {

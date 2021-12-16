@@ -2,6 +2,7 @@ import {
   MutableRefObject, useEffect, useRef, useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
+import * as React from 'react';
 import styles from './index.module.css';
 import Head from './Head';
 
@@ -24,9 +25,13 @@ export default function ChangeHelper({
   const [ExaltedPayment, setExaltedPayment] = useState<number>(parseInt(Cookies[`${leagueName}_ExaltedPayment`] || 0, 10));
   const [Change, setChange] = useState<number>(0);
 
+  // eslint-disable-next-line no-undef
   const ItemChaosPriceRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line no-undef
   const AmountRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line no-undef
   const ExaltedPaymentRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line no-undef
   const ChangeRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
 
   const [, setItemChaosPriceCookie] = useCookies([`${leagueName}_ItemChaosPrice`]);
@@ -40,16 +45,19 @@ export default function ChangeHelper({
 
   const Handle = {
     ItemChaosPrice: () => {
+      // eslint-disable-next-line no-undef
       const { value } = ItemChaosPriceRef.current ?? new HTMLInputElement();
       setItemChaosPrice(parseInt(value, 10));
       setItemChaosPriceCookie(`${leagueName}_ItemChaosPrice`, value, DefaultCookieOptions);
     },
     Amount: () => {
+      // eslint-disable-next-line no-undef
       const { value } = AmountRef.current ?? new HTMLInputElement();
       setAmount(parseInt(value, 10));
       setAmountCookie(`${leagueName}_Amount`, value, DefaultCookieOptions);
     },
     ExaltedPayment: () => {
+      // eslint-disable-next-line no-undef
       const { value } = ExaltedPaymentRef.current ?? new HTMLInputElement();
       setExaltedPayment(parseInt(value, 10));
       setExaltedPaymentCookie(`${leagueName}_ExaltedPayment`, value, DefaultCookieOptions);
@@ -107,6 +115,7 @@ export default function ChangeHelper({
   }, [ExaltedPaymentRef]);
 
   /* Box Height */
+  // eslint-disable-next-line no-undef
   const BoxElement = useRef<HTMLDivElement>(null);
 
   const HandleElement = () => {
@@ -118,8 +127,10 @@ export default function ChangeHelper({
 
   useEffect(() => {
     HandleElement();
+    // eslint-disable-next-line no-undef
     window.addEventListener('resize', HandleElement);
     return () => {
+      // eslint-disable-next-line no-undef
       window.removeEventListener('resize', () => HandleElement);
     };
   }, [BoxElement]);

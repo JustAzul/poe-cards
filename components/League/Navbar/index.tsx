@@ -3,14 +3,15 @@ import styles from './index.module.css';
 import Currency from './Currency';
 import mandali from '../../mandali.module.css';
 
-import type { CurrencyValues } from '../../../hooks/interfaces';
+import type { CurrencyValues as CurrencyValuesType } from '../../../hooks/interfaces';
 
 interface Props {
-    CurrencyValues: CurrencyValues,
+    CurrencyValues: CurrencyValuesType,
     UpdateHeigh: Function
 }
 
 export default function Navbar({ CurrencyValues, UpdateHeigh }: Props) {
+  // eslint-disable-next-line no-undef
   const Element: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
 
   const HandleElement = () => {
@@ -22,8 +23,10 @@ export default function Navbar({ CurrencyValues, UpdateHeigh }: Props) {
 
   useEffect(() => {
     HandleElement();
+    // eslint-disable-next-line no-undef
     window.addEventListener('resize', HandleElement);
     return () => {
+      // eslint-disable-next-line no-undef
       window.removeEventListener('resize', () => HandleElement);
     };
   }, [Element]);

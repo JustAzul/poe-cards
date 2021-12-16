@@ -33,6 +33,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         router.events.off('routeChangeStart', handleStart);
         router.events.off('routeChangeComplete', handleComplete);
         router.events.off('routeChangeError', handleComplete);
+      // eslint-disable-next-line no-empty
       } catch {}
     };
   }, [router.asPath]);

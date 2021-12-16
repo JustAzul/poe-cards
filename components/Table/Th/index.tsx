@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from '../index.module.css';
 
 import type { KeyStates } from '../../../hooks/interfaces';

@@ -1,4 +1,6 @@
+/* eslint-disable import/extensions */
 import styles from './index.module.css';
+// eslint-disable-next-line import/no-unresolved
 import Td from './Td';
 
 import type { KeyStates } from '../../hooks/interfaces';

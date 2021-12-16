@@ -1,3 +1,6 @@
+/* global HTMLFormElement */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
 import { useState } from 'react';
 import styles from './index.module.css';
 import CentralSpinner from '../CentralSpinner';
@@ -20,9 +23,7 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
 
   const NewTab = (href: string) => {
     setTargetHref(href);
-    process.nextTick(() => {
-      HiddenFormRef && HiddenFormRef.submit();
-    });
+    process.nextTick(() => HiddenFormRef && HiddenFormRef.submit());
   };
 
   if (!LeagueDetails || LeagueDetails.length === 0) return <CentralSpinner />;

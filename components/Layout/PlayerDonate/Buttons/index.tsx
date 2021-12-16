@@ -6,6 +6,7 @@ interface Props {
     ChannelName: string
 }
 
+// eslint-disable-next-line no-unused-vars
 function DonateSection({ ChannelName }: Props) {
   return (
         <>

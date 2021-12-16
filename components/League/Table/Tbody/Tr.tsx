@@ -21,6 +21,7 @@ export default function Tr({
   setToHover, toHover, Details, doSearch,
 }: Props) {
   const {
+    // eslint-disable-next-line no-shadow
     Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice,
   } = Details;
 

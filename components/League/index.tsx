@@ -22,6 +22,7 @@ interface Props {
 }
 
 export default function League({
+  // eslint-disable-next-line no-shadow
   Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight,
 }: Props) {
   const [boxHeight, setBoxHeight] = useState<number>(Number);

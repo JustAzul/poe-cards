@@ -3,7 +3,7 @@ import Tr from './Tr';
 
 import HiddenForm from '../../../HiddenForm';
 
-import type { KeyStates, Currency, TableData } from '../../../../hooks/interfaces';
+import type { KeyStates, Currency as CurrencyType, TableData } from '../../../../hooks/interfaces';
 
 interface Props {
     setToHover: Function,
@@ -16,15 +16,14 @@ export default function thead({
   setToHover, toHover, leagueName, Items,
 }: Props) {
   const [SearchString, setSearchString] = useState<string>('');
+  // eslint-disable-next-line no-undef
   const [PoeTradeRef, setPoeTradeRef] = useState<HTMLFormElement>();
-  const [SearchCurrency, setSearchCurrency] = useState<Currency>('chaos');
+  const [SearchCurrency, setSearchCurrency] = useState<CurrencyType>('chaos');
 
-  const doSearch = (toSearch: string, Currency: Currency = 'chaos') => {
+  const doSearch = (toSearch: string, Currency: CurrencyType = 'chaos') => {
     setSearchString(toSearch);
     setSearchCurrency(Currency);
-    process.nextTick(() => {
-      PoeTradeRef && PoeTradeRef.submit();
-    });
+    process.nextTick(() => PoeTradeRef && PoeTradeRef.submit());
   };
 
   return (

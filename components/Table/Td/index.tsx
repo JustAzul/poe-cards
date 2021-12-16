@@ -18,6 +18,7 @@ interface Props {
 }
 
 export default function Td({
+  // eslint-disable-next-line no-shadow
   children, SetMouseOver, KeyState, _Key, Href, Class, setTitle, Click, SearchString, Currency,
 }: Props) {
   const TD = (_children: ReactNode) => (<td onClick={() => Click && Click(SearchString, Currency)} title={setTitle} onMouseOver={() => SetMouseOver(_Key)} onMouseLeave={() => SetMouseOver('')} className={`${Class ? `${Class} ` : ''}${styles.column100}${_Key === 'c1' ? ` ${styles.column1}` : ''}${_Key === KeyState ? ` ${styles['hov-column-ver1']}` : ''}`}>{_children}</td>);

@@ -1,5 +1,7 @@
+/* eslint-disable import/extensions */
 import Head from 'next/head';
 
+// eslint-disable-next-line import/no-unresolved
 import LoaderWrapper from './RawLoader/Wrapper';
 import RawLoader from './RawLoader';
 
