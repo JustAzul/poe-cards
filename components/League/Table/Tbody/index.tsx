@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Tr from './Tr';
 
 import HiddenForm from '../../../HiddenForm';
+import * as gtag from '../../../../lib/gtag';
 
 import type { KeyStates, Currency as CurrencyType, TableData } from '../../../../hooks/interfaces';
 
@@ -24,6 +25,16 @@ export default function thead({
     setSearchString(toSearch);
     setSearchCurrency(Currency);
     process.nextTick(() => PoeTradeRef && PoeTradeRef.submit());
+
+    {
+      const o: any = {
+        action: 'item_search',
+        category: leagueName,
+        label: toSearch,
+      };
+
+      gtag.event(o);
+    }
   };
 
   return (
