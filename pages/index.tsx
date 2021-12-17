@@ -11,14 +11,15 @@ const SelectLeagueTable = Dynamic(() => import('../components/Table'), { loading
 
 interface Props {
   host: string,
+  defaultLeagueData: any
 }
 
 function parseLeaguesData(Leagues = []) {
   return Object.values(Leagues);
 }
 
-function Home({ host }: Props) {
-  const [LeagueDetails, setLeagueDetails] = useState([]);
+function Home({ host, defaultLeagueData }: Props) {
+  const [LeagueDetails, setLeagueDetails] = useState(defaultLeagueData);
 
   const [leagues, leaguesLoading, leaguesError] = useCollection(
     // @ts-expect-error im lazy, messing with types later.
@@ -29,11 +30,11 @@ function Home({ host }: Props) {
   useEffect(() => {
     if (!leaguesLoading && !leaguesError && leagues) {
       const leaguesData = leagues?.docs
-        .find((doc) => doc.id === 'all');
+        .find(({ id }) => id === 'all');
 
       // @ts-expect-error im lazy, messing with types later.
       setLeagueDetails(parseLeaguesData(leaguesData?.data()));
-    } else setLeagueDetails([]);
+    } else setLeagueDetails(defaultLeagueData);
   }, [leaguesLoading, leaguesError, leagues]);
 
   return (
@@ -47,9 +48,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const Headers = req.headers;
   const host = Headers['x-forwarded-server'] ?? Headers.host ?? 'poe.cards';
 
+  const data = await (await firebase.firestore().collection('leagues').get()).docs.find(({ id }) => id === 'all')?.data();
+
   return {
     props: {
       host,
+      // @ts-expect-error im lazy and will fix types later
+      defaultLeagueData: Object.values(data) || [],
     },
   };
 };
