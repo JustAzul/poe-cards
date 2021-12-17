@@ -10,12 +10,27 @@ import type { AppProps } from 'next/app';
 
 import { CookiesProvider } from 'react-cookie';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+import Script from 'next/script';
 import * as gtag from '../lib/gtag';
 
 import Loader from '../components/Loader';
 
-function MyApp({ Component, pageProps, router }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setLoading] = useState<Boolean>(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: any) => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     const handleStart = (url: string) => (url !== router.asPath) && setLoading(true);
@@ -33,7 +48,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         router.events.off('routeChangeStart', handleStart);
         router.events.off('routeChangeComplete', handleComplete);
         router.events.off('routeChangeError', handleComplete);
-      // eslint-disable-next-line no-empty
       } catch {}
     };
   }, [router.asPath]);
@@ -41,9 +55,30 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   if (isLoading) return <Loader />;
 
   return (
+    <>
+    {/* Global Site Tag (gtag.js) - Google Analytics */}
+    <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
       <CookiesProvider>
         <Component {...pageProps} />
       </CookiesProvider>
+    </>
   );
 }
 
