@@ -19,34 +19,29 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   const [isLoading, setLoading] = useState<Boolean>(false);
 
   useEffect(() => {
-    const handleRouteChange = (url: any) => {
-      gtag.pageview(url);
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
-
-  useEffect(() => {
     const handleStart = (url: string) => (url !== router.asPath) && setLoading(true);
 
     const handleComplete = (url: string) => {
+      gtag.pageview(url);
+      if (url === router.asPath) setLoading(false);
+    };
+
+    const handleError = (url: string) => {
       if (url === router.asPath) setLoading(false);
     };
 
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
-    router.events.on('routeChangeError', handleComplete);
+    router.events.on('routeChangeError', handleError);
 
     return () => {
       try {
         router.events.off('routeChangeStart', handleStart);
         router.events.off('routeChangeComplete', handleComplete);
-        router.events.off('routeChangeError', handleComplete);
+        router.events.off('routeChangeError', handleError);
       } catch {}
     };
-  }, [router.asPath]);
+  }, [router.asPath, router.events]);
 
   if (isLoading) return <Loader />;
 
