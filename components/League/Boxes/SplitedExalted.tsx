@@ -46,7 +46,7 @@ export default function SplitedExalted({ SplitsArray, boxHeight }: Props) {
                     </thead>
 
                     <tbody>
-                        {SplitsArray.map((Value, i) => <Row setRow={setRow} row={row} i={i} Value={Value} />)}
+                        {SplitsArray.map((Value, i) => <Row key={`splited-exalted-${i}`} setRow={setRow} row={row} i={i} Value={Value} />)}
                     </tbody>
 
                 </table>
