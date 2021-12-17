@@ -48,15 +48,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const Headers = req.headers;
   const host = Headers['x-forwarded-server'] ?? Headers.host ?? 'poe.cards';
 
-  const data = await firebase.firestore().collection('leagues').get();
-  const doc = data.docs.find(({ id }) => id === 'all');
-  // @ts-expect-error im lazy and will fix types later
-  const defaultLeagueData = Object.values(doc?.data()) || [];
-
   return {
     props: {
       host,
-      defaultLeagueData,
+      // TODO: apparently i need firebase-admin -.-
+      defaultLeagueData: [],
     },
   };
 };
