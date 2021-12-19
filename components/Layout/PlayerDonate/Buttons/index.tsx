@@ -2,6 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './index.module.css';
 
+import PaypalDonateImage from '../../../../public/images/Paypal-Donate-yellow.svg';
+import SteamDonateImage from '../../../../public/images/Steam-Donate-yellow.svg';
+
 interface Props {
     ChannelName: string
 }
@@ -13,9 +16,8 @@ function DonateSection({ ChannelName }: Props) {
             <Link href="https://www.paypal.com/donate?hosted_button_id=9KDR83JWCKAQW">
                 <a className="m-1" target="_BLANK">
                     <Image
-                        // placeholder="blur"
                         className={styles.image}
-                        src="/images/Paypal-Donate-yellow.svg"
+                        src={PaypalDonateImage}
                         alt="Paypal Donate"
                         width={96}
                         height={20}
@@ -27,9 +29,8 @@ function DonateSection({ ChannelName }: Props) {
             <Link href="https://trade.justazul.com/">
                 <a className="m-2" target="_BLANK">
                     <Image
-                        // placeholder="blur"
                         className={styles.image}
-                        src="/images/Steam-Donate-yellow.svg"
+                        src={SteamDonateImage}
                         alt="Steam Donate"
                         width={94}
                         height={20}

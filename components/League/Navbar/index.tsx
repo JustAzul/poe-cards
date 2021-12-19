@@ -5,6 +5,11 @@ import mandali from '../../mandali.module.css';
 
 import type { CurrencyValues as CurrencyValuesType } from '../../../hooks/interfaces';
 
+import AnnulOrb from '../../../public/images/AnnulOrb.png';
+import DivineOrb from '../../../public/images/DivineOrb.png';
+import ExaltedOrb from '../../../public/images/ExaltedOrb.png';
+import MirrorKalandra from '../../../public/images/MirrorKalandra.png';
+
 interface Props {
     CurrencyValues: CurrencyValuesType,
     UpdateHeigh: Function
@@ -35,19 +40,19 @@ export default function Navbar({ CurrencyValues, UpdateHeigh }: Props) {
         <div id="header" ref={Element} className={`navbar navbar-dark bg-dark fixed-top ${mandali.mandali}`}>
             <div className={`container ${styles['font-class']}`} >
 
-                <Currency img="ExaltedOrb">
+                <Currency img={ExaltedOrb}>
                     Exalted Value: <span className="pl-1">{CurrencyValues.Exalted}c</span>
                 </Currency>
 
-                <Currency img="DivineOrb">
+                <Currency img={DivineOrb}>
                     Divine Value: <span className="pl-1">{CurrencyValues.Divine}c</span>
                 </Currency>
 
-                <Currency img="AnnulOrb">
+                <Currency img={AnnulOrb}>
                     Annul Value: <span className="pl-1">{CurrencyValues.Annul}c</span>
                 </Currency>
 
-                <Currency img="MirrorKalandra">
+                <Currency img={MirrorKalandra}>
                     Mirror Value: <span className="pl-1 mr-2">{CurrencyValues.Mirror} ex</span>
                 </Currency>
 
