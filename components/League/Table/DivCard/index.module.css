@@ -80,6 +80,7 @@
     font-style: italic;
   }
   
+  /* purgecss start ignore */
   .itemclass-00 {
     color: #aa9e82;
   }
@@ -99,6 +100,7 @@
   .itemclass-8 {
     color: #fff;
   }
+  /* purgecss end ignore */
   
   .text-color.-corrupted {
     color: #d20000;
