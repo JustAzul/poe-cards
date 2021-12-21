@@ -1,7 +1,6 @@
 import Dynamic from 'next/dynamic';
+import { memo } from 'react';
 import mandali from '../../mandali.module.css';
-
-// import Spinner from '../../Spinner';
 
 import TextLoader from '../../TextLoader';
 
@@ -13,7 +12,7 @@ interface Props {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function PlayerDonate({ parent }: Props) {
+function PlayerDonate({ parent }: Props) {
   const ChannelName: string = 'azul21';
 
   return (
@@ -32,3 +31,5 @@ export default function PlayerDonate({ parent }: Props) {
         </div>
   );
 }
+
+export default memo(PlayerDonate);

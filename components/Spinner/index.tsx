@@ -1,5 +1,12 @@
+import { memo } from 'react';
 import styles from './index.module.css';
 
-export default function Spinner() {
-  return <div className={styles.loading} />;
+function Raw() {
+  return (
+    <>
+      <div className={styles.loading} />
+    </>
+  );
 }
+
+export default memo(Raw);
