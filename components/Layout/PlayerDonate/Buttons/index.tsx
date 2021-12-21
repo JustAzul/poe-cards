@@ -22,7 +22,6 @@ function DonateSection({ ChannelName }: Props) {
                         width={96}
                         height={20}
                         priority={true}
-                        loading="eager"
                     />
                 </a>
             </Link>
@@ -35,22 +34,19 @@ function DonateSection({ ChannelName }: Props) {
                         width={94}
                         height={20}
                         priority={true}
-                        loading="eager"
                     />
                 </a>
             </Link>
            {/*  <Link href={`https://www.twitch.tv/products/${ChannelName}/ticket`}>
                 <a className="m-1" target="_BLANK">
                     <Image
-                        // placeholder="blur"
                         className={styles.image}
                         src="/images/Twitch-Subscribe-blue.svg"
                         alt="Twitch Subscribe"
                         width={108}
                         height={20}
                         priority={true}
-                        loading="eager"
-                    />
+                        />
                 </a>
             </Link> */}
         </>
