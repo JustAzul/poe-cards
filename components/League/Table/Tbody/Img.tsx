@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import { memo } from 'react';
 
 interface Props {
     // eslint-disable-next-line no-undef
     artFileName: StaticImageData
 }
 
-export default function Img({ artFileName }: Props) {
+function Img({ artFileName }: Props) {
   return (
         <Image
             placeholder="blur"
@@ -15,3 +16,5 @@ export default function Img({ artFileName }: Props) {
         />
   );
 }
+
+export default memo(Img);
