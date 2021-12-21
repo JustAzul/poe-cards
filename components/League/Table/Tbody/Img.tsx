@@ -8,7 +8,7 @@ interface Props {
 export default function Img({ artFileName }: Props) {
   return (
         <Image
-            // placeholder="blur"
+            placeholder="blur"
             src={artFileName}
             width={24}
             height={24}
