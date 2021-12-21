@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -23,6 +23,17 @@ const Layout = ({
   const CurrentYear: Date = new Date();
   const DevURL: string = 'https://github.com/JustAzul/poe-cards';
 
+  const rawFooter = () => (
+    <div className="text-center mt-2 pb-3">
+        <footer className="blockquote-footer">
+            Copyright © <cite title={parent}><Link href="/"><a className="text-decoration-none">{parent}</a></Link></cite> 2019 - {CurrentYear.getFullYear()}. Powered by <cite title="poe.ninja"><Link href="https://poe.ninja/"><a className="text-decoration-none" target="_BLANK">poe.ninja</a></Link></cite>, Developed by <cite
+            title="Azul"><Link href={DevURL}><a className="text-decoration-none" target="_BLANK">Azul</a></Link></cite>.
+         </footer>
+    </div>
+  );
+
+  const Footer = memo(rawFooter);
+
   return (
         <>
             <Head>
@@ -35,13 +46,7 @@ const Layout = ({
                     {!IgnorePlayer && <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
                     {children}
                 </div>
-
-                <div className="text-center mt-2 pb-3">
-                    <footer className="blockquote-footer">
-                        Copyright © <cite title={parent}><Link href="/"><a className="text-decoration-none">{parent}</a></Link></cite> 2019 - {CurrentYear.getFullYear()}. Powered by <cite title="poe.ninja"><Link href="https://poe.ninja/"><a className="text-decoration-none" target="_BLANK">poe.ninja</a></Link></cite>, Developed by <cite
-                        title="Azul"><Link href={DevURL}><a className="text-decoration-none" target="_BLANK">Azul</a></Link></cite>.
-                    </footer>
-                </div>
+                <Footer />
             </div>
         </>
   );
