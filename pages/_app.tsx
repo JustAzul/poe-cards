@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     };
 
     const handleError = (url: string) => {
-      if (url === router.asPath) setLoading(false);
+      if (url === router.asPath) setLoading(true);
     };
 
     router.events.on('routeChangeStart', handleStart);
@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     };
   }, [router.asPath, router.events]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader detail='Loading Components..'/>;
 
   return (
     <>

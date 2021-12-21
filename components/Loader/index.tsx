@@ -10,7 +10,7 @@ interface Props {
     detail?: string,
 }
 
-export default function Loader({ title = 'poe.cards', detail }: Props) {
+function Loader({ title = 'Loading', detail }: Props) {
   return (
         <>
             <Head>
@@ -18,7 +18,12 @@ export default function Loader({ title = 'poe.cards', detail }: Props) {
                 <link rel="icon" href="/images/InventoryIcon.png" />
             </Head>
 
-            <LoaderWrapper> <RawLoader detail={detail} /> </LoaderWrapper> */
+            <LoaderWrapper>
+                <RawLoader detail={detail} />
+            </LoaderWrapper>
+
         </>
   );
 }
+
+export default Loader;

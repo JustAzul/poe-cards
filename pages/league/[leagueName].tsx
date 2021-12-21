@@ -19,7 +19,7 @@ import type { LeagueDetails as LeagueDetailsType/* , LeagueResult as LeagueResul
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
 const LeagueComponent = Dynamic(() => import('../../components/League'), { loading: () => <CentralSpinner /> });
-const LeagueError = Dynamic(() => import('../_error'), { loading: () => <PageLoader /> });
+const LeagueError = Dynamic(() => import('../_error'), { loading: () => <PageLoader detail='Please Wait..' /> });
 
 interface Props {
   host: string,
@@ -137,7 +137,12 @@ const League = ({ host, Cookies }: Props) => {
 
   return (
     <>
-      {ReceivedLeagueData ? (LeagueExist ? toRender() : <LeagueError statusCode={404} leagueError={true} />) : <PageLoader />}
+      {ReceivedLeagueData
+        ? (LeagueExist
+          ? toRender()
+          : <LeagueError statusCode={404} leagueError={true} />)
+        : <PageLoader detail='Fetching Data..' />
+      }
     </>
   );
 };
