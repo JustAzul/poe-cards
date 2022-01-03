@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Tr from './Tr';
 
 import HiddenForm from '../../../HiddenForm';
+import SortTable from '../../../../hooks/sortTable';
 import * as gtag from '../../../../lib/gtag';
 
 import type { KeyStates, Currency as CurrencyType, TableData } from '../../../../hooks/interfaces';
@@ -10,16 +11,26 @@ interface Props {
     setToHover: Function,
     leagueName: string,
     Items: Array<TableData>,
-    toHover: KeyStates
+    toHover: KeyStates,
+    SortKey: KeyStates,
+    SortType: 0 | 1,
 }
 
 export default function thead({
-  setToHover, toHover, leagueName, Items,
+  setToHover, toHover, leagueName, Items, SortKey = 'c9', SortType = 1,
 }: Props) {
   const [SearchString, setSearchString] = useState<string>('');
   // eslint-disable-next-line no-undef
   const [PoeTradeRef, setPoeTradeRef] = useState<HTMLFormElement>();
   const [SearchCurrency, setSearchCurrency] = useState<CurrencyType>('chaos');
+  const [LeagueItems, setLeagueItems] = useState<Array<TableData>>(Items);
+
+  useEffect(() => {
+    if (Items.length > 1) {
+      const SortedTable = SortTable(Items, SortKey, SortType);
+      setLeagueItems(SortedTable);
+    }
+  }, [SortKey, SortType]);
 
   const doSearch = (toSearch: string, Currency: CurrencyType = 'chaos') => {
     setSearchString(toSearch);
@@ -40,7 +51,9 @@ export default function thead({
   return (
         <>
             <HiddenForm Currency={SearchCurrency} PoeTrade={true} setFormRef={setPoeTradeRef} leagueName={leagueName} SearchString={SearchString} />
-            {Items.map((Details) => <Tr key={Details.Card.name.trim()} doSearch={doSearch} setToHover={setToHover} toHover={toHover} Details={Details} />)}
+            {LeagueItems
+              .map((Details) => <Tr key={Details.Card.name.trim()} doSearch={doSearch} setToHover={setToHover} toHover={toHover} Details={Details} />)
+            }
         </>
   );
 }
