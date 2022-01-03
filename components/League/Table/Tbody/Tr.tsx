@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import Dynamic from 'next/dynamic';
 import styles from '../index.module.css';
@@ -21,7 +22,7 @@ interface Props {
     Details: TableData
 }
 
-export default function Tr({
+function Tr({
   setToHover, toHover, Details, doSearch,
 }: Props) {
   const {
@@ -37,7 +38,7 @@ export default function Tr({
 
   return (
     <OverlayTrigger overlay={GenDivCard(Card)} placement="left">
-        <tr className={TableStyles.row100}>
+        <tr key={Card.name.trim().toLowerCase() + Reward.name.trim().toLowerCase()} className={TableStyles.row100}>
 
                     <Td Click={doSearch} SearchString={Card.name} setTitle="Divination Card Name" Class={`click${isCurrency ? ` ${styles.currency}` : ''}`} SetMouseOver={setToHover} KeyState={toHover} _Key="c1" key={`${Card.name}-c1`} >
                         {<Img artFileName={InventoryIcon} />}
@@ -85,3 +86,5 @@ export default function Tr({
         </OverlayTrigger >
   );
 }
+
+export default memo(Tr);

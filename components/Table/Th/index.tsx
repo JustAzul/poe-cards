@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactNode, memo } from 'react';
 import styles from '../index.module.css';
 import Arrow from './Arrow';
 
 import type { KeyStates } from '../../../hooks/interfaces';
 
 interface Props {
-    children: React.ReactNode,
+    children: ReactNode,
     SetMouseOver: Function,
     setSortType?: Function,
     setSortKey?: Function,
@@ -17,7 +17,7 @@ interface Props {
     Class?: string
 }
 
-export default function Th({
+function Th({
   SetMouseOver, KeyState, _Key, Class, children, SortKey = 'c9', SortType = 1, enableClick = false, setSortKey, setSortType,
 }: Props) {
   const clickExec = () => {
@@ -32,3 +32,5 @@ export default function Th({
           </th>
   );
 }
+
+export default memo(Th);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './index.module.css';
 
 import CardArt from './CardArt';
@@ -11,7 +12,7 @@ interface Props {
     CardDetails: Card
 }
 
-export default function DivCard({ CardDetails }: Props) {
+function DivCard({ CardDetails }: Props) {
   const {
     CardName, CardStack, Flavour, RewardName, artFilename, isCorrupted, rewardClass,
   }: CardDetail = CardDetails.Details;
@@ -31,3 +32,5 @@ export default function DivCard({ CardDetails }: Props) {
         </span>
   );
 }
+
+export default memo(DivCard);

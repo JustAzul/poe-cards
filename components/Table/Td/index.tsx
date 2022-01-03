@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 import styles from '../index.module.css';
 
 import type { KeyStates, Currency } from '../../../hooks/interfaces';
@@ -17,7 +17,7 @@ interface Props {
     Click?: Function
 }
 
-export default function Td({
+function Td({
   // eslint-disable-next-line no-shadow
   children, SetMouseOver, KeyState, _Key, Href, Class, setTitle, Click, SearchString, Currency,
 }: Props) {
@@ -37,3 +37,5 @@ export default function Td({
         </>
   );
 }
+
+export default memo(Td);
