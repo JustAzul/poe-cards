@@ -45,22 +45,26 @@ export default function Table({
         <TableWrapper>
                 <thead ref={ref} className={`sticky-wrapper${isSticky ? ' sticky' : ''}`}>
                     <TableHead
-                    SortKey={SortKey}
-                    SortType={SortType}
-                    setSortKey={setSortKey}
-                    setSortType={setSortType}
-                    NavbarHeight={NavbarHeight}
-                    ShouldSticky={isSticky}
-                    toHover={toHover}
-                    setToHover={setToHover} />
+                      SortKey={SortKey}
+                      SortType={SortType}
+                      setSortKey={setSortKey}
+                      setSortType={setSortType}
+                      NavbarHeight={NavbarHeight}
+                      ShouldSticky={isSticky}
+                      toHover={toHover}
+                      setToHover={setToHover}
+                    />
                 </thead>
 
                 <tbody>
                     <TableBody
-                    leagueName={leagueName}
-                    toHover={toHover}
-                    setToHover={setToHover}
-                    Items={Items} />
+                      leagueName={leagueName}
+                      SortKey={SortKey}
+                      SortType={SortType}
+                      toHover={toHover}
+                      setToHover={setToHover}
+                      Items={Items}
+                    />
                 </tbody>
         </TableWrapper>
   );
