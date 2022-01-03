@@ -5,7 +5,7 @@ import LastUpdated from './LastUpdated';
 
 import mandali from '../mandali.module.css';
 
-import type { CurrencyValues, TableData } from '../../hooks/interfaces';
+import type { CurrencyValues, TableData, KeyStates } from '../../hooks/interfaces';
 
 const SplitedValues = Dynamic(() => import('./Boxes/SplitedExalted'), { loading: () => <Spinner/> });
 const ChangeHelper = Dynamic(() => import('./Boxes/ChangeHelper'), { loading: () => <Spinner/> });
@@ -18,12 +18,16 @@ interface Props {
     leagueName: string,
     SplitsArray: Array<number>,
     CurrencyValues: CurrencyValues,
-    CardsTable: Array<TableData>
+    CardsTable: Array<TableData>,
+    SortKey: KeyStates,
+    SortType: 0 | 1,
+    setSortKey: Function,
+    setSortType: Function
 }
 
 export default function League({
   // eslint-disable-next-line no-shadow
-  Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight,
+  Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight, SortType = 1, SortKey = 'c9', setSortType, setSortKey,
 }: Props) {
   const [boxHeight, setBoxHeight] = useState<number>(Number);
 
@@ -47,7 +51,7 @@ export default function League({
 
             <div className="row justify-content-md-center pt-3 pb-3">
                 <div className="table100 ver1 user-select-none">
-                    {CardsTable.length === 0 ? <Spinner/> : <TableView leagueName={leagueName} NavbarHeight={NavbarHeight} Items={CardsTable}/>}
+                    {CardsTable.length === 0 ? <Spinner/> : <TableView SortType={SortType} setSortType={setSortType} SortKey={SortKey} setSortKey={setSortKey} leagueName={leagueName} NavbarHeight={NavbarHeight} Items={CardsTable}/>}
                 </div>
             </div>
         </>

@@ -14,7 +14,12 @@ import CentralSpinner from '../../components/CentralSpinner';
 import PageLoader from '../../components/Loader';
 import Nav from '../../components/League/Navbar';
 
-import type { LeagueDetails as LeagueDetailsType/* , LeagueResult as LeagueResultType */, CurrencyValues as CurrencyValuesType } from '../../hooks/interfaces';
+import type {
+  LeagueDetails as LeagueDetailsType,
+  CurrencyValues as CurrencyValuesType,
+  TableData,
+  KeyStates,
+} from '../../hooks/interfaces';
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
@@ -26,11 +31,35 @@ interface Props {
   Cookies: any
 }
 
+const InternalEnum = {
+  c5: 'setchaosprice',
+  c6: 'setexprice',
+  c9: 'chaosprofit',
+  c10: 'exprofit',
+};
+
+const SortTable = (Table: Array<TableData> = [], SortKey: KeyStates = 'c9', SortType: 0|1 = 1): Array<TableData> => Table.sort((a, b) => {
+  // @ts-expect-error im lazy, messing with types later.
+  const SortVar = InternalEnum[SortKey];
+
+  // @ts-expect-error im lazy, messing with types later.
+  const v1 = a[SortVar];
+  // @ts-expect-error im lazy, messing with types later.
+  const v2 = b[SortVar];
+
+  if (SortType) return v2 - v1;
+  return v1 - v2;
+});
+
 const League = ({ host, Cookies }: Props) => {
   const [NavbarHeight, setNavbarHeight] = useState<number>(40);
   const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
   const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
   const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
+  const [LeagueTable, setLeagueTable] = useState <Array<TableData>>([]);
+
+  const [SortKey, setSortKey] = useState<KeyStates>('c9');
+  const [SortType, setSortType] = useState<0 | 1>(1);
 
   const router: NextRouter = useRouter();
   const { leagueName } = router.query;
@@ -81,12 +110,7 @@ const League = ({ host, Cookies }: Props) => {
           Table: LeagueData.Items,
         };
 
-        // @ts-expect-error im lazy, messing with types later.
-        o.Table = o.Table.sort((a, b) => {
-          const v1 = a.chaosprofit;
-          const v2 = b.chaosprofit;
-          return v2 - v1;
-        });
+        setLeagueTable(o.Table);
 
         // @ts-expect-error im lazy, messing with types later.
         o.XMirrorValue = GetCurrencyChaosValue(LeagueData.Currency, 'Mirror of Kalandra') || 0;
@@ -101,8 +125,15 @@ const League = ({ host, Cookies }: Props) => {
     }
   }, [leagueItems, leagueItemsLoading, leagueItemsError]);
 
+  useEffect(() => {
+    if (LeagueTable.length > 1) {
+      const SortedTable = SortTable(LeagueTable, SortKey, SortType);
+      setLeagueTable(SortedTable);
+    }
+  }, [LeagueTable, SortKey, SortType]);
+
   const {
-    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', Table,
+    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', /* Table, */
   } = LeagueDetails || {};
 
   const CurrencyValues: CurrencyValuesType = {
@@ -124,11 +155,15 @@ const League = ({ host, Cookies }: Props) => {
   <Layout parent={host} margintop={true} title={`${leagueName} League`}>
         <Nav CurrencyValues={CurrencyValues} UpdateHeigh={setNavbarHeight} />
           <LeagueComponent
+              SortKey={SortKey}
+              SortType={SortType}
+              setSortKey={setSortKey}
+              setSortType={setSortType}
               leagueName={leagueName?.toString() ?? 'undefined'}
               Cookies={Cookies}
               LastUpdatedDate={LastUpdated}
               NavbarHeight={NavbarHeight}
-              CardsTable={Table ?? []}
+              CardsTable={LeagueTable}
               CurrencyValues={CurrencyValues}
               SplitsArray={SplitsArray}
               />

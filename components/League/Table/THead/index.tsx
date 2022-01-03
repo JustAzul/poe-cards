@@ -8,11 +8,15 @@ interface Props {
     NavbarHeight: number,
     setToHover: Function,
     ShouldSticky: Boolean,
-    toHover: KeyStates
+    toHover: KeyStates,
+    SortKey?: KeyStates,
+    SortType?: 0 | 1,
+    setSortKey: Function,
+    setSortType: Function
 }
 
 export default function thead({
-  setToHover, toHover, ShouldSticky, NavbarHeight,
+  setToHover, toHover, ShouldSticky, NavbarHeight, SortKey = 'c9', SortType = 1, setSortKey, setSortType,
 }: Props) {
   const StickyStyle: CSSProperties = {
     top: `${NavbarHeight}px`,
@@ -21,43 +25,43 @@ export default function thead({
   return (
         <tr style={ShouldSticky ? StickyStyle : {}} className={`${TableStyles.row100} ${TableStyles.head} sticky-inner`}>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c1">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c1">
                 Card Name
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c2">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c2">
                 Stack Size
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c3">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c3">
                 Price (c)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c4">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c4">
                 Price (ex)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c5">
+            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c5">
                 Set Price (c)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c6">
+            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c6">
                 Set Price (ex)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c7">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c7">
                 Item Price (c)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c8">
+            <Th /* setSortKey={setSortKey} setSortType={setSortType} */ enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c8">
                 Item Price (ex)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c9">
+            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c9">
                 Profit (c)
             </Th>
 
-            <Th SetMouseOver={setToHover} KeyState={toHover} _Key="c10">
+            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={SortKey} SortType={SortType} _Key="c10">
                 Profit (ex)
             </Th>
 

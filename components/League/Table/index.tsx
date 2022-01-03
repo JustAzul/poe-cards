@@ -11,10 +11,16 @@ import type { KeyStates, TableData } from '../../../hooks/interfaces';
 interface Props {
     leagueName: string,
     NavbarHeight: number,
-    Items: Array<TableData>
+    Items: Array<TableData>,
+    SortKey: KeyStates,
+    SortType: 0 | 1,
+    setSortKey: Function,
+    setSortType: Function
 }
 
-export default function Table({ Items, NavbarHeight, leagueName }: Props) {
+export default function Table({
+  Items, NavbarHeight, leagueName, SortKey = 'c9', SortType = 1, setSortKey, setSortType,
+}: Props) {
   const [toHover, setToHover] = useState<KeyStates>();
   const [isSticky, setSticky] = useState<Boolean>(false);
 
@@ -38,11 +44,23 @@ export default function Table({ Items, NavbarHeight, leagueName }: Props) {
   return (
         <TableWrapper>
                 <thead ref={ref} className={`sticky-wrapper${isSticky ? ' sticky' : ''}`}>
-                    <TableHead NavbarHeight={NavbarHeight} ShouldSticky={isSticky} toHover={toHover} setToHover={setToHover}></TableHead>
+                    <TableHead
+                    SortKey={SortKey}
+                    SortType={SortType}
+                    setSortKey={setSortKey}
+                    setSortType={setSortType}
+                    NavbarHeight={NavbarHeight}
+                    ShouldSticky={isSticky}
+                    toHover={toHover}
+                    setToHover={setToHover} />
                 </thead>
 
                 <tbody>
-                    <TableBody leagueName={leagueName} toHover={toHover} setToHover={setToHover} Items={Items}></TableBody>
+                    <TableBody
+                    leagueName={leagueName}
+                    toHover={toHover}
+                    setToHover={setToHover}
+                    Items={Items} />
                 </tbody>
         </TableWrapper>
   );
