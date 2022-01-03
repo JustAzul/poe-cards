@@ -13,6 +13,7 @@ import firebase from '../../firebase/clientApp';
 import CentralSpinner from '../../components/CentralSpinner';
 import PageLoader from '../../components/Loader';
 import Nav from '../../components/League/Navbar';
+import SortTable from '../../hooks/sortTable';
 
 import type {
   LeagueDetails as LeagueDetailsType,
@@ -30,26 +31,6 @@ interface Props {
   host: string,
   Cookies: any
 }
-
-const InternalEnum = {
-  c5: 'setchaosprice',
-  c6: 'setexprice',
-  c9: 'chaosprofit',
-  c10: 'exprofit',
-};
-
-const SortTable = (Table: Array<TableData> = [], SortKey: KeyStates = 'c9', SortType: 0|1 = 1): Array<TableData> => Table.sort((a, b) => {
-  // @ts-expect-error im lazy, messing with types later.
-  const SortVar = InternalEnum[SortKey];
-
-  // @ts-expect-error im lazy, messing with types later.
-  const v1 = a[SortVar];
-  // @ts-expect-error im lazy, messing with types later.
-  const v2 = b[SortVar];
-
-  if (SortType) return v2 - v1;
-  return v1 - v2;
-});
 
 const League = ({ host, Cookies }: Props) => {
   const [NavbarHeight, setNavbarHeight] = useState<number>(40);
@@ -100,8 +81,6 @@ const League = ({ host, Cookies }: Props) => {
           Updated: Updated[leagueName],
         };
 
-        // console.log(LeagueData);
-
         const o = {
           ExaltValue: GetCurrencyChaosValue(LeagueData.Currency, 'Exalted Orb') || 0,
           DivineValue: GetCurrencyChaosValue(LeagueData.Currency, 'Divine Orb') || 0,
@@ -110,7 +89,8 @@ const League = ({ host, Cookies }: Props) => {
           Table: LeagueData.Items,
         };
 
-        setLeagueTable(o.Table);
+        const SortedTable = SortTable(o.Table, SortKey, SortType);
+        setLeagueTable(SortedTable);
 
         // @ts-expect-error im lazy, messing with types later.
         o.XMirrorValue = GetCurrencyChaosValue(LeagueData.Currency, 'Mirror of Kalandra') || 0;
@@ -125,15 +105,8 @@ const League = ({ host, Cookies }: Props) => {
     }
   }, [leagueItems, leagueItemsLoading, leagueItemsError]);
 
-  useEffect(() => {
-    if (LeagueTable.length > 1) {
-      const SortedTable = SortTable(LeagueTable, SortKey, SortType);
-      setLeagueTable(SortedTable);
-    }
-  }, [LeagueTable, SortKey, SortType]);
-
   const {
-    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', /* Table, */
+    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never',
   } = LeagueDetails || {};
 
   const CurrencyValues: CurrencyValuesType = {
