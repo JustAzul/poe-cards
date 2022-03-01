@@ -22,7 +22,7 @@ export default function thead({
   const [SearchString, setSearchString] = useState<string>('');
   // eslint-disable-next-line no-undef
   const [PoeTradeRef, setPoeTradeRef] = useState<HTMLFormElement>();
-  const [SearchCurrency, setSearchCurrency] = useState<CurrencyType>('chaos');
+  const [SearchMaxValue, setSearchMaxValue] = useState<number>(0);
   const [LeagueItems, setLeagueItems] = useState<Array<TableData>>(Items);
 
   useEffect(() => {
@@ -32,9 +32,9 @@ export default function thead({
     }
   }, [SortKey, SortType]);
 
-  const doSearch = (toSearch: string, Currency: CurrencyType = 'chaos') => {
+  const doSearch = (toSearch: string, maxValue: number) => {
     setSearchString(toSearch);
-    setSearchCurrency(Currency);
+    setSearchMaxValue(maxValue);
     process.nextTick(() => PoeTradeRef && PoeTradeRef.submit());
 
     {
@@ -50,7 +50,7 @@ export default function thead({
 
   return (
         <>
-            <HiddenForm Currency={SearchCurrency} PoeTrade={true} setFormRef={setPoeTradeRef} leagueName={leagueName} SearchString={SearchString} />
+            <HiddenForm PoeTrade={true} setFormRef={setPoeTradeRef} maxPrice={SearchMaxValue} leagueName={leagueName} SearchString={SearchString} />
             {LeagueItems
               .map((Details) => <Tr key={Details.Card.name.trim()} doSearch={doSearch} setToHover={setToHover} toHover={toHover} Details={Details} />)
             }

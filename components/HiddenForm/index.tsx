@@ -1,20 +1,18 @@
 import { useRef, useEffect, MutableRefObject } from 'react';
 import PoeTradeInputs from './PoeTradeInputs';
 
-import type { Currency as CurrencyType } from '../../hooks/interfaces';
-
 interface Props {
     setFormRef: Function,
     SearchString: string,
+    maxPrice: number,
     METHOD?: 'POST' | 'GET',
-    Currency?: CurrencyType,
     leagueName?: string,
     Href?: string,
     PoeTrade?: Boolean
 }
 
 export default function PoeTradeForm({
-  setFormRef, SearchString, METHOD = 'POST', Currency = 'chaos', leagueName, Href = 'https://poe.trade/search', PoeTrade = false,
+  setFormRef, SearchString, METHOD = 'POST', maxPrice, leagueName, Href = '/api/trade_redirect', PoeTrade = false,
 }: Props) {
   // eslint-disable-next-line no-undef
   const Ref: MutableRefObject<HTMLFormElement| null> = useRef<HTMLFormElement>(null);
@@ -25,7 +23,7 @@ export default function PoeTradeForm({
 
   return (
         <form ref={Ref} method={METHOD} action={Href} target={SearchString}>
-            {PoeTrade && <PoeTradeInputs Currency={Currency} leagueName={leagueName} SearchString={SearchString} />}
+            {PoeTrade && <PoeTradeInputs maxPrice={maxPrice || 0} leagueName={leagueName} SearchString={SearchString} />}
         </form>
   );
 }

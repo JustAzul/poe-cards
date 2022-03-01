@@ -1,16 +1,17 @@
 interface Props {
     leagueName?: string,
-    Currency: string,
+    maxPrice: number,
     SearchString: string
 }
 
-export default function Inputs({ leagueName, Currency, SearchString }: Props) {
+export default function Inputs({
+  leagueName, SearchString, maxPrice,
+}: Props) {
   return (
         <>
-            <input type="hidden" name="league" value={leagueName} />
-            <input type="hidden" name="online" value="x" />
-            <input type="hidden" name="buyout_currency" value={Currency} />
-            <input type="hidden" name="name" value={SearchString} />
+            <input type="hidden" name="leagueName" value={leagueName} />
+            <input type="hidden" name="itemName" value={SearchString} />
+            <input type="hidden" name="maxPrice" value={maxPrice} />
         </>
   );
 }
