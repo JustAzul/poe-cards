@@ -4,7 +4,7 @@ import PoeTradeInputs from './PoeTradeInputs';
 interface Props {
     setFormRef: Function,
     SearchString: string,
-    maxPrice: number,
+    maxPrice?: number,
     METHOD?: 'POST' | 'GET',
     leagueName?: string,
     Href?: string,
