@@ -5,7 +5,7 @@ import HiddenForm from '../../../HiddenForm';
 import SortTable from '../../../../hooks/sortTable';
 import * as gtag from '../../../../lib/gtag';
 
-import type { KeyStates, Currency as CurrencyType, TableData } from '../../../../hooks/interfaces';
+import type { KeyStates, TableData } from '../../../../hooks/interfaces';
 
 interface Props {
     setToHover: Function,
