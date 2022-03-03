@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import Dynamic from 'next/dynamic';
-import Spinner from '../Spinner';
+// import Dynamic from 'next/dynamic';
+// import Spinner from '../Spinner';
 
 import fadeStyles from './index.module.css';
 
-const PlayerDonate = Dynamic(() => import('./PlayerDonate'), { loading: () => <Spinner/> });
+// const PlayerDonate = Dynamic(() => import('./PlayerDonate'), { loading: () => <Spinner/> });
 
 interface Props {
     children: React.ReactNode,
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Layout = ({
-  children, parent, title, margintop = false, IgnorePlayer = false,
+  children, parent, title, margintop = false, /* IgnorePlayer = false, */
 }: Props) => {
   const CurrentYear: Date = new Date();
   const DevURL: string = 'https://github.com/JustAzul/poe-cards';

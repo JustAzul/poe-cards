@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './index.module.css';
 
 import PaypalDonateImage from '../../../../public/images/Paypal-Donate-yellow.svg';
-import SteamDonateImage from '../../../../public/images/Steam-Donate-yellow.svg';
+// import SteamDonateImage from '../../../../public/images/Steam-Donate-yellow.svg';
 
 interface Props {
     ChannelName: string
