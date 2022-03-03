@@ -25,7 +25,7 @@ function DonateSection({ ChannelName }: Props) {
                     />
                 </a>
             </Link>
-            <Link href="https://trade.justazul.com/">
+            {/* <Link href="https://trade.justazul.com/">
                 <a className="m-2" target="_BLANK">
                     <Image
                         className={styles.image}
@@ -36,7 +36,7 @@ function DonateSection({ ChannelName }: Props) {
                         priority={true}
                     />
                 </a>
-            </Link>
+            </Link> */}
            {/*  <Link href={`https://www.twitch.tv/products/${ChannelName}/ticket`}>
                 <a className="m-1" target="_BLANK">
                     <Image
