@@ -43,7 +43,7 @@ const Layout = ({
 
             <div className={fadeStyles.fadein1}>
                 <div className={`${margintop ? 'container-fluid mt-5' : 'container'}`}>
-                    {!IgnorePlayer && <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>}
+                    {/* {!IgnorePlayer && <div className="container pt-1 text-center"><PlayerDonate parent={parent} /></div>} */}
                     {children}
                 </div>
                 <Footer />
