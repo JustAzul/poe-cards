@@ -66,6 +66,17 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           `,
         }}
       />
+
+      <Script
+          id="Adsense-id"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+          async
+          // crossorigin="anonymous"
+          strategy="afterInteractive"
+          // eslint-disable-next-line no-console
+          onError={ (e) => { console.error('AdSense script failed to load', e); }}
+      />
+
       <CookiesProvider>
         <Component {...pageProps} />
       </CookiesProvider>
