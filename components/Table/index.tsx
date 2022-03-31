@@ -31,7 +31,7 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
   return (
         <>
         <HiddenForm SearchString={TargetHref} Href={TargetHref} setFormRef={setHiddenFormRef} METHOD="GET" />
-        <div className="row justify-content-md-center mt-3 mb-3">
+        <div className="row justify-content-md-center mt-5 pb-3">
             <TableWrapper>
                 <thead>
                             <tr className={`${styles.row100} ${styles.head}`}>
