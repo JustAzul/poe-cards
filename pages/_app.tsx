@@ -67,14 +67,21 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         }}
       />
 
-      {/* <Script
+      <Script
           id="Adsense-id"
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
           async
-          // crossorigin="anonymous"
+          onError={(e) => { console.error('Adsense Script failed to load', e); }}
           strategy="afterInteractive"
-          // eslint-disable-next-line no-console
-          onError={ (e) => { console.error('AdSense script failed to load', e); }}
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_ADSENSE_CA_PUB_ID}`}
+          crossOrigin="anonymous"
+        />
+
+      {/* <Script
+        id="Adsense-id"
+        data-ad-client={`ca-pub-${process.env.NEXT_PUBLIC_ADSENSE_CA_PUB_ID}`}
+        async strategy="afterInteractive"
+        onError={ (e) => { console.error('Adsense Script failed to load', e); }}
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       /> */}
 
       <CookiesProvider>
