@@ -31,9 +31,7 @@ function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {
 }
 
 function generateSearchQuery(toSearch: ToSearch) {
-  // TODO: handle cards that rewards leveled gems
-
-  return {
+  const result = {
     query: {
       status: {
         option: 'onlineleague',
@@ -50,6 +48,31 @@ function generateSearchQuery(toSearch: ToSearch) {
       price: 'asc',
     },
   };
+
+  if (toSearch.itemName.includes('Level ')) {
+    const split = toSearch.itemName.split(' ');
+
+    // remove word 'Level'
+    split.shift();
+
+    const requiredLevel = split.shift();
+    const itemName = split.join(' ');
+
+    result.query.term = itemName;
+
+    // @ts-expect-error no problem defining a undefined key here
+    result.query.filters = {
+      misc_filters: {
+        filters: {
+          gem_level: {
+            min: requiredLevel,
+          },
+        },
+      },
+    };
+  }
+
+  return result;
 }
 
 function doSearch(toSearch: ToSearch, leagueName: string) {
