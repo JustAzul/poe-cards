@@ -1,10 +1,10 @@
+import Image, { StaticImageData } from 'next/image';
+
 import React from 'react';
-import Image from 'next/image';
 import styles from './index.module.css';
 
 interface Props {
     children: React.ReactNode,
-    // eslint-disable-next-line no-undef
     img: StaticImageData
 }
 

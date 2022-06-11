@@ -1,8 +1,8 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
+
 import { memo } from 'react';
 
 interface Props {
-    // eslint-disable-next-line no-undef
     artFileName: StaticImageData
 }
 
