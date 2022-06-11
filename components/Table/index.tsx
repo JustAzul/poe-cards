@@ -1,36 +1,35 @@
-/* global HTMLFormElement */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
-import { useState } from 'react';
-import styles from './index.module.css';
+
+import type { KeyStates, Leagues } from '../../hooks/interfaces';
+
 import CentralSpinner from '../CentralSpinner';
-import HiddenForm from '../HiddenForm';
 import TableWrapper from './Wrapper';
 import Th from './Th';
+import { ToSearch } from '../League/Table/Tbody/toSearch.interface';
 import Tr from './Tr';
-
-import type { Leagues, KeyStates } from '../../hooks/interfaces';
+import styles from './index.module.css';
+import { useState } from 'react';
 
 interface Props {
     LeagueDetails: Array<Leagues>
 }
 
+function openNewTab({ itemName }: ToSearch): void {
+  if (typeof window === 'undefined') return;
+
+  //! we only get here if this is defined.
+  // eslint-disable-next-line no-undef
+  window.open(itemName, itemName);
+}
+
 export default function SelectLeagueTable({ LeagueDetails }: Props) {
   const [state, SetMouseOver] = useState<KeyStates>();
-
-  const [TargetHref, setTargetHref] = useState<string>('');
-  const [HiddenFormRef, setHiddenFormRef] = useState<HTMLFormElement>();
-
-  const NewTab = (href: string) => {
-    setTargetHref(href);
-    process.nextTick(() => HiddenFormRef && HiddenFormRef.submit());
-  };
 
   if (!LeagueDetails || LeagueDetails.length === 0) return <CentralSpinner />;
 
   return (
         <>
-        <HiddenForm SearchString={TargetHref} Href={TargetHref} setFormRef={setHiddenFormRef} METHOD="GET" />
         <div className="row justify-content-md-center mt-5 pb-3">
             <TableWrapper>
                 <thead>
@@ -51,7 +50,7 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
                               .map(({
                                 leagueName, endAt, DaysLeft, ladder,
                               }) => (
-                                    <Tr key={leagueName?.trim().toLowerCase()} NewTab={NewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
+                                    <Tr key={leagueName?.trim().toLowerCase()} NewTab={openNewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
                               ))}
                         </tbody>
             </TableWrapper>

@@ -26,6 +26,7 @@
         "@typescript-eslint/no-use-before-define": ["error"],
         "import/extensions": "off",
         "import/no-unresolved": "off",
+        "import/order": "off",
         "extensions": ["off"]
     }
 }

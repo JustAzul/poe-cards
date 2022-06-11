@@ -1,16 +1,16 @@
-import { memo } from 'react';
-import { OverlayTrigger } from 'react-bootstrap';
-import Dynamic from 'next/dynamic';
-import styles from '../index.module.css';
-import TableStyles from '../../../Table/index.module.css';
-import Img from './Img';
-import Td from '../../../Table/Td';
-import Spinner from '../../../Spinner';
-import type { KeyStates, Card, TableData } from '../../../../hooks/interfaces';
+import type { Card, KeyStates, TableData } from '../../../../hooks/interfaces';
 
-import InventoryIcon from '../../../../public/images/InventoryIcon.png';
 import ChaosOrb from '../../../../public/images/ChaosOrb.png';
+import Dynamic from 'next/dynamic';
 import ExaltedOrb from '../../../../public/images/ExaltedOrb.png';
+import Img from './Img';
+import InventoryIcon from '../../../../public/images/InventoryIcon.png';
+import { OverlayTrigger } from 'react-bootstrap';
+import Spinner from '../../../Spinner';
+import TableStyles from '../../../Table/index.module.css';
+import Td from '../../../Table/Td';
+import { memo } from 'react';
+import styles from '../index.module.css';
 
 const DivCard = Dynamic(() => import('../DivCard'), { loading: () => <div className="mr-2"><Spinner /></div> });
 const formatNumber: Function = require('../../../../hooks/formatNumber');
@@ -67,11 +67,11 @@ function Tr({
                         {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{setexprice}</span>
                     </Td>
 
-                    <Td Click={doSearch} SearchMaxValue={Reward.chaosprice} SearchString={Reward.name} setTitle={`${Reward.name} Chaos Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c7" key={`${Card.name}-c7`} >
+                    <Td Click={isCurrency ? undefined : doSearch} SearchMaxValue={Reward.chaosprice} SearchString={Reward.name} setTitle={`${Reward.name} Chaos Value`} Class={isCurrency ? undefined : 'click'} SetMouseOver={setToHover} KeyState={toHover} _Key="c7" key={`${Card.name}-c7`} >
                         {<Img artFileName={ChaosOrb} />}<span className="ml-2">{formatNumber(Reward.chaosprice)}</span>
                     </Td>
 
-                    <Td Click={doSearch} SearchMaxValue={Reward.chaosprice} SearchString={Reward.name} setTitle={`${Reward.name} Exalted Value`} Class="click" SetMouseOver={setToHover} KeyState={toHover} _Key="c8" key={`${Card.name}-c8`} >
+                    <Td Click={isCurrency ? undefined : doSearch} SearchMaxValue={Reward.chaosprice} SearchString={Reward.name} setTitle={`${Reward.name} Exalted Value`} Class={isCurrency ? undefined : 'click'} SetMouseOver={setToHover} KeyState={toHover} _Key="c8" key={`${Card.name}-c8`} >
                         {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{Reward.exaltedprice}</span>
                     </Td>
 
