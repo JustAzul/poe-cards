@@ -1,7 +1,7 @@
 {
   "name": "poe-cards",
   "version": "1.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "next build"
   },
