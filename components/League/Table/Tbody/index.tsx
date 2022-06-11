@@ -4,6 +4,7 @@ import type { KeyStates, TableData } from '../../../../hooks/interfaces';
 import { useEffect, useState } from 'react';
 
 import SortTable from '../../../../hooks/sortTable';
+import { ToSearch } from './toSearch.interface';
 import Tr from './Tr';
 
 interface Props {
@@ -13,11 +14,6 @@ interface Props {
     toHover: KeyStates,
     SortKey: KeyStates,
     SortType: 0 | 1,
-}
-
-interface ToSearch {
-  itemName: string;
-  searchMaxValue: number;
 }
 
 function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {
