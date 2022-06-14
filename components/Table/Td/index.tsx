@@ -2,6 +2,7 @@ import { ReactNode, memo } from 'react';
 
 import type { KeyStates } from '../../../hooks/interfaces';
 import Link from 'next/link';
+import { ToSearch } from '../../League/Table/Tbody/toSearch.interface';
 import styles from '../index.module.css';
 
 interface Props {
@@ -12,28 +13,39 @@ interface Props {
     Href?: string,
     Class?: string,
     setTitle?: string,
-    SearchString?: string,
-    SearchMaxValue?: number,
+    toSearchDetails?: ToSearch
     Click?: Function
 }
+function internalTD(props: Props) {
+  const {
+    children, SetMouseOver, KeyState, _Key, Class, setTitle, Click, toSearchDetails,
+  } = props;
 
-function Td({
-  // eslint-disable-next-line no-shadow
-  children, SetMouseOver, KeyState, _Key, Href, Class, setTitle, Click, SearchString, SearchMaxValue,
-}: Props) {
-  const TD = (_children: ReactNode) => (<td onClick={() => Click && Click({ itemName: SearchString, searchMaxValue: SearchMaxValue })} title={setTitle} onMouseOver={() => SetMouseOver(_Key)} onMouseLeave={() => SetMouseOver('')} className={`${Class ? `${Class} ` : ''}${styles.column100}${_Key === 'c1' ? ` ${styles.column1}` : ''}${_Key === KeyState ? ` ${styles['hov-column-ver1']}` : ''}`}>{_children}</td>);
+  const internalClass = `${Class ? `${Class} ` : ''}${styles.column100}${_Key === 'c1' ? ` ${styles.column1}` : ''}${_Key === KeyState ? ` ${styles['hov-column-ver1']}` : ''}`;
 
-  if (Href) {
+  return (
+    <td
+      onClick={() => Click && Click(toSearchDetails)}
+      title={setTitle} onMouseOver={() => SetMouseOver(_Key)}
+      onMouseLeave={() => SetMouseOver('')}
+      className={internalClass}>
+        {children}
+      </td>
+  );
+}
+
+function Td(props: Props) {
+  if (props.Href) {
     return (
-            <Link href={Href}>
-                {TD(children)}
+            <Link href={props.Href}>
+                {internalTD(props)}
             </Link>
     );
   }
 
   return (
         <>
-            {TD(children)}
+            {internalTD(props)}
         </>
   );
 }
