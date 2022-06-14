@@ -26,7 +26,32 @@ function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {
   gtag.event(o);
 }
 
+function generateSearchCardQuery(toSearch: ToSearch) {
+  return {
+    query: {
+      filters: {
+        type_filters: {
+          filters: {
+            category: {
+              option: 'card',
+            },
+          },
+        },
+      },
+      status: {
+        option: 'onlineleague',
+      },
+      type: toSearch.itemName,
+    },
+    sort: {
+      price: 'asc',
+    },
+  };
+}
+
 function generateSearchQuery(toSearch: ToSearch) {
+  if (toSearch.isCard) return generateSearchCardQuery(toSearch);
+
   const result = {
     query: {
       filters: {
