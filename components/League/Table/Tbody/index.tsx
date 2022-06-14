@@ -29,6 +29,15 @@ function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {
 function generateSearchQuery(toSearch: ToSearch) {
   const result = {
     query: {
+      filters: {
+        misc_filters: {
+          filters: {
+            corrupted: {
+              option: toSearch.isCorrupted || false,
+            },
+          },
+        },
+      },
       status: {
         option: 'onlineleague',
       },
@@ -57,14 +66,8 @@ function generateSearchQuery(toSearch: ToSearch) {
     result.query.term = itemName;
 
     // @ts-expect-error no problem defining a undefined key here
-    result.query.filters = {
-      misc_filters: {
-        filters: {
-          gem_level: {
-            min: requiredLevel,
-          },
-        },
-      },
+    result.query.filters.misc_filters.filters.gem_level = {
+      min: requiredLevel,
     };
   }
 
@@ -103,7 +106,13 @@ export default function thead({
   return (
         <>
             {LeagueItems
-              .map((Details) => <Tr key={Details.Card.name.trim()} doSearch={(toSearch:ToSearch) => doSearch(toSearch, leagueName)} setToHover={setToHover} toHover={toHover} Details={Details} />)
+              .map((Details) => <Tr
+              key={Details.Card.name.trim()}
+              doSearch={(toSearch:ToSearch) => doSearch(toSearch, leagueName)}
+              setToHover={setToHover}
+              toHover={toHover}
+              Details={Details}
+              />)
             }
         </>
   );
