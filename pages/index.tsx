@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CentralSpinner from '../components/CentralSpinner';
 import Dynamic from 'next/dynamic';
@@ -19,10 +19,7 @@ interface Props {
 }
 
 function parseLeaguesData(Leagues = []) {
-  return useMemo(
-    () => Object.values(Leagues),
-    [Leagues],
-  );
+  return Object.values(Leagues);
 }
 
 function Home({ host, defaultLeagueData }: Props) {
@@ -39,8 +36,12 @@ function Home({ host, defaultLeagueData }: Props) {
       const leaguesData = leagues?.docs
         .find(({ id }) => id === 'all');
 
-      // @ts-expect-error im lazy, messing with types later.
-      setLeagueDetails(parseLeaguesData(leaguesData?.data()));
+      setLeagueDetails(
+        parseLeaguesData(
+          // @ts-expect-error im lazy, messing with types later.
+          leaguesData?.data(),
+        ),
+      );
     } else setLeagueDetails(defaultLeagueData);
   }, [leaguesLoading, leaguesError, leagues]);
 
