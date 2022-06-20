@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import CentralSpinner from '../components/CentralSpinner';
 import Dynamic from 'next/dynamic';
@@ -8,7 +8,10 @@ import firebaseAdmin from '../firebase/adminApp';
 import firebaseClient from '../firebase/clientApp';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-const SelectLeagueTable = Dynamic(() => import('../components/Table'), { loading: () => <CentralSpinner /> });
+const SelectLeagueTable = Dynamic(
+  () => import('../components/Table'),
+  { loading: () => <CentralSpinner /> },
+);
 
 interface Props {
   host: string,
@@ -16,7 +19,10 @@ interface Props {
 }
 
 function parseLeaguesData(Leagues = []) {
-  return Object.values(Leagues);
+  return useMemo(
+    () => Object.values(Leagues),
+    [Leagues],
+  );
 }
 
 function Home({ host, defaultLeagueData }: Props) {
