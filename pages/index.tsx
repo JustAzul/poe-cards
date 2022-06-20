@@ -1,11 +1,12 @@
-import Dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { GetServerSideProps } from 'next/types';
-import firebase from '../firebase/clientApp';
-import CentralSpinner from '../components/CentralSpinner';
 
+import CentralSpinner from '../components/CentralSpinner';
+import Dynamic from 'next/dynamic';
+import { GetServerSideProps } from 'next/types';
 import Layout from '../components/Layout';
+import firebaseAdmin from '../firebase/adminApp';
+import firebaseClient from '../firebase/clientApp';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 const SelectLeagueTable = Dynamic(() => import('../components/Table'), { loading: () => <CentralSpinner /> });
 
@@ -23,7 +24,7 @@ function Home({ host, defaultLeagueData }: Props) {
 
   const [leagues, leaguesLoading, leaguesError] = useCollection(
     // @ts-expect-error im lazy, messing with types later.
-    firebase.firestore().collection('leagues'),
+    firebaseClient.firestore().collection('leagues'),
     {},
   );
 
@@ -48,11 +49,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const Headers = req.headers;
   const host = Headers['x-forwarded-server'] ?? Headers.host ?? 'poe.cards';
 
+  const defaultLeagueData = (await firebaseAdmin
+    .firestore()
+    .collection('leagues')
+    .doc('all')
+    .get())
+    .data();
+
   return {
     props: {
       host,
-      // TODO: apparently i need firebase-admin -.-
-      defaultLeagueData: [],
+      // @ts-expect-error we are receiving correct data here.
+      defaultLeagueData: parseLeaguesData(defaultLeagueData),
     },
   };
 };
