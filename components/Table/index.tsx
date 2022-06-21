@@ -2,6 +2,7 @@
 /* eslint-disable import/extensions */
 
 import type { KeyStates, Leagues } from '../../hooks/interfaces';
+import { useMemo, useState } from 'react';
 
 import CentralSpinner from '../CentralSpinner';
 import TableWrapper from './Wrapper';
@@ -9,10 +10,16 @@ import Th from './Th';
 import { ToSearch } from '../League/Table/Tbody/toSearch.interface';
 import Tr from './Tr';
 import styles from './index.module.css';
-import { useState } from 'react';
 
 interface Props {
     LeagueDetails: Array<Leagues>
+}
+
+function sortLeagueDetails(leagueDetails: Leagues[]) {
+  return useMemo(
+    () => leagueDetails.sort((a, b) => ((`${a.leagueName}`).localeCompare(`${b.leagueName}`) * -1)),
+    [leagueDetails],
+  );
 }
 
 function openNewTab({ itemName }: ToSearch): void {
@@ -45,8 +52,7 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
                         </thead>
 
                         <tbody>
-                            {LeagueDetails
-                              .sort((a, b) => ((`${a.leagueName}`).localeCompare(`${b.leagueName}`) * -1))
+                            {sortLeagueDetails(LeagueDetails)
                               .map(({
                                 leagueName, endAt, DaysLeft, ladder,
                               }) => (
