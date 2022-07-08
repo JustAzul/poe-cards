@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import CentralSpinner from '../components/CentralSpinner';
+import Contexts from '../context';
 import Dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next/types';
 import Layout from '../components/Layout';
@@ -47,7 +48,9 @@ function Home({ host, defaultLeagueData }: Props) {
 
   return (
     <Layout parent={host} title="Pick a League">
-      <SelectLeagueTable LeagueDetails={LeagueDetails} />
+      <Contexts.leagueDetails.Provider value={LeagueDetails}>
+        <SelectLeagueTable />
+      </Contexts.leagueDetails.Provider>
     </Layout>
   );
 }

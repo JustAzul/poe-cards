@@ -2,18 +2,15 @@
 /* eslint-disable import/extensions */
 
 import type { KeyStates, Leagues } from '../../hooks/interfaces';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 
 import CentralSpinner from '../CentralSpinner';
+import Contexts from '../../context';
 import TableWrapper from './Wrapper';
 import Th from './Th';
 import { ToSearch } from '../League/Table/Tbody/toSearch.interface';
 import Tr from './Tr';
 import styles from './index.module.css';
-
-interface Props {
-    LeagueDetails: Array<Leagues>
-}
 
 function sortLeagueDetails(leagueDetails: Leagues[]) {
   return useMemo(
@@ -30,8 +27,10 @@ function openNewTab({ itemName }: ToSearch): void {
   window.open(itemName, itemName);
 }
 
-export default function SelectLeagueTable({ LeagueDetails }: Props) {
+export default function SelectLeagueTable() {
   const [state, SetMouseOver] = useState<KeyStates>();
+
+  const LeagueDetails = useContext(Contexts.leagueDetails);
 
   if (!LeagueDetails || LeagueDetails.length === 0) return <CentralSpinner />;
 
@@ -56,7 +55,16 @@ export default function SelectLeagueTable({ LeagueDetails }: Props) {
                               .map(({
                                 leagueName, endAt, DaysLeft, ladder,
                               }) => (
-                                    <Tr key={leagueName?.trim().toLowerCase()} NewTab={openNewTab} state={state} SetMouseOver={SetMouseOver} leagueName={leagueName} endAt={endAt} DaysLeft={DaysLeft} ladder={ladder} />
+                                    <Tr
+                                        key={leagueName?.trim().toLowerCase()}
+                                        NewTab={openNewTab}
+                                        state={state}
+                                        SetMouseOver={SetMouseOver}
+                                        leagueName={leagueName}
+                                        endAt={endAt}
+                                        DaysLeft={DaysLeft}
+                                        ladder={ladder}
+                                    />
                               ))}
                         </tbody>
             </TableWrapper>
