@@ -1,11 +1,10 @@
+import type { CurrencyValues, KeyStates, TableData } from '../../hooks/interfaces';
+
 import Dynamic from 'next/dynamic';
-import { useState } from 'react';
-import Spinner from '../Spinner';
 import LastUpdated from './LastUpdated';
-
+import Spinner from '../Spinner';
 import mandali from '../mandali.module.css';
-
-import type { CurrencyValues, TableData, KeyStates } from '../../hooks/interfaces';
+import { useState } from 'react';
 
 const SplitedValues = Dynamic(() => import('./Boxes/SplitedExalted'), { loading: () => <Spinner/> });
 const ChangeHelper = Dynamic(() => import('./Boxes/ChangeHelper'), { loading: () => <Spinner/> });
@@ -14,7 +13,6 @@ const TableView = Dynamic(() => import('./Table'), { loading: () => <Spinner/> }
 interface Props {
     NavbarHeight: number,
     LastUpdatedDate: string,
-    Cookies: any,
     leagueName: string,
     SplitsArray: Array<number>,
     CurrencyValues: CurrencyValues,
@@ -27,7 +25,7 @@ interface Props {
 
 export default function League({
   // eslint-disable-next-line no-shadow
-  Cookies, leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight, SortType = 1, SortKey = 'c9', setSortType, setSortKey,
+  leagueName, CurrencyValues, SplitsArray, CardsTable, LastUpdatedDate, NavbarHeight, SortType = 1, SortKey = 'c9', setSortType, setSortKey,
 }: Props) {
   const [boxHeight, setBoxHeight] = useState<number>(Number);
 
@@ -41,7 +39,7 @@ export default function League({
                     </div>
 
                     <div className="col-sm mt-2 text-center">
-                       {CurrencyValues.Exalted ? <ChangeHelper leagueName={leagueName} Cookies={Cookies} ExaltedValue={CurrencyValues.Exalted} setBoxHeight={setBoxHeight}/> : <Spinner/>}
+                       {CurrencyValues.Exalted ? <ChangeHelper leagueName={leagueName} ExaltedValue={CurrencyValues.Exalted} setBoxHeight={setBoxHeight}/> : <Spinner/>}
                     </div>
 
                 </div>
