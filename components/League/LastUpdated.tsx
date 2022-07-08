@@ -1,29 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+import Contexts from '../../context';
 import TextLoader from '../TextLoader';
 import mandali from '../mandali.module.css';
 
 const moment = require('moment');
 
-interface Props {
-    LastUpdatedDate: string
-}
+export default function LastUpdated() {
+  const [text, setText] = useState<string>('Never');
 
-export default function LastUpdated({ LastUpdatedDate }: Props) {
-  const [Text, setText] = useState<string>('Never');
+  const { lastUpdatedDate } = useContext(Contexts.leaguePageData);
 
   useEffect(() => {
-    setText(moment(LastUpdatedDate).fromNow());
+    setText(moment(lastUpdatedDate).fromNow());
 
     const Interval = setInterval(() => {
-      setText(moment(LastUpdatedDate).fromNow());
+      setText(moment(lastUpdatedDate).fromNow());
     }, moment.duration(30, 'seconds'));
 
     return () => clearInterval(Interval);
-  }, [Text, LastUpdatedDate]);
+  }, [text, lastUpdatedDate]);
 
   return (
-        <div className={`text-center ${mandali.mandali} user-select-none ${LastUpdatedDate ? 'mt-3' : 'mb-2'}`}>
-             {LastUpdatedDate ? `- Last updated ${Text} -` : <TextLoader>...</TextLoader>}
+        <div className={`text-center ${mandali.mandali} user-select-none ${lastUpdatedDate ? 'mt-3' : 'mb-2'}`}>
+             {lastUpdatedDate ? `- Last updated ${text} -` : <TextLoader>...</TextLoader>}
          </div>
   );
 }

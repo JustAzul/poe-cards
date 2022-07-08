@@ -1,19 +1,16 @@
 import * as gtag from '../../../../lib/gtag';
 
 import type { KeyStates, TableData } from '../../../../hooks/interfaces';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import Contexts from '../../../../context';
 import SortTable from '../../../../hooks/sortTable';
 import { ToSearch } from './toSearch.interface';
 import Tr from './Tr';
 
 interface Props {
     setToHover: Function,
-    leagueName: string,
-    Items: Array<TableData>,
     toHover: KeyStates,
-    SortKey: KeyStates,
-    SortType: 0 | 1,
 }
 
 function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {
@@ -117,26 +114,30 @@ function doSearch(toSearch: ToSearch, leagueName: string) {
 }
 
 export default function thead({
-  setToHover, toHover, leagueName, Items, SortKey = 'c9', SortType = 1,
+  setToHover, toHover,
 }: Props) {
-  const [LeagueItems, setLeagueItems] = useState<Array<TableData>>(Items);
+  const {
+    cardsTable, leagueName, sortKey, sortType,
+  } = useContext(Contexts.leaguePageData);
+
+  const [LeagueItems, setLeagueItems] = useState<Array<TableData>>(cardsTable);
 
   useEffect(() => {
-    if (Items.length > 1) {
-      const SortedTable = SortTable(Items, SortKey, SortType);
+    if (cardsTable.length > 1) {
+      const SortedTable = SortTable(cardsTable, sortKey, sortType);
       setLeagueItems(SortedTable);
     }
-  }, [SortKey, SortType]);
+  }, [sortKey, sortType]);
 
   return (
         <>
             {LeagueItems
               .map((Details) => <Tr
-              key={Details.Card.name.trim()}
-              doSearch={(toSearch:ToSearch) => doSearch(toSearch, leagueName)}
-              setToHover={setToHover}
-              toHover={toHover}
-              Details={Details}
+                key={Details.Card.name.trim()}
+                doSearch={(toSearch:ToSearch) => doSearch(toSearch, leagueName)}
+                setToHover={setToHover}
+                toHover={toHover}
+                Details={Details}
               />)
             }
         </>

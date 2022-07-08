@@ -12,6 +12,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import CentralSpinner from '../../components/CentralSpinner';
+import Contexts from '../../context';
 import Dynamic from 'next/dynamic';
 import type { GetServerSideProps } from 'next';
 import Nav from '../../components/League/Navbar';
@@ -30,6 +31,12 @@ const generateSplitsArray = (Value: number = 0) => {
   for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
   return arr;
 };
+const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
+  const result = Data.find(({ Name }) => Name === CurrencyName);
+  // @ts-expect-error im lazy, messing with types later.
+  return result?.chaosEquivalent || 0;
+};
+
 interface Props {
   host: string,
 }
@@ -52,12 +59,6 @@ const League = ({ host }: Props) => {
     firebase.firestore().collection('items'),
     {},
   );
-
-  const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
-    const result = Data.find(({ Name }) => Name === CurrencyName);
-    // @ts-expect-error im lazy, messing with types later.
-    return result?.chaosEquivalent || 0;
-  };
 
   useEffect(() => {
     setReceivedLeagueData(!leagueItemsLoading && !leagueItemsError);
@@ -120,21 +121,25 @@ const League = ({ host }: Props) => {
 
   const splitsArray: Array<number> = generateSplitsArray(ExaltValue);
 
+  const contextData = {
+    sortKey,
+    sortType,
+    setSortKey,
+    setSortType,
+    leagueName: leagueName?.toString() ?? 'undefined',
+    lastUpdatedDate: LastUpdated,
+    navbarHeight,
+    cardsTable: leagueTable,
+    currencyValues,
+    splitsArray,
+  };
+
   const toRender = () => (
-  <Layout parent={host} margintop={true} title={`${leagueName} League`}>
-        <Nav CurrencyValues={currencyValues} UpdateHeigh={setNavbarHeight} />
-          <LeagueComponent
-              SortKey={sortKey}
-              SortType={sortType}
-              setSortKey={setSortKey}
-              setSortType={setSortType}
-              leagueName={leagueName?.toString() ?? 'undefined'}
-              LastUpdatedDate={LastUpdated}
-              NavbarHeight={navbarHeight}
-              CardsTable={leagueTable}
-              CurrencyValues={currencyValues}
-              SplitsArray={splitsArray}
-              />
+    <Layout parent={host} margintop={true} title={`${leagueName} League`}>
+      <Contexts.leaguePageData.Provider value={contextData}>
+          <Nav UpdateHeigh={setNavbarHeight} />
+          <LeagueComponent />
+      </Contexts.leaguePageData.Provider>
     </Layout>
   );
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import styles from './index.module.css';
-import TableStyles from '../../Table/index.module.css';
+import { useContext, useState } from 'react';
+
+import Contexts from '../../../context';
 import Head from './Head';
+import TableStyles from '../../Table/index.module.css';
+import styles from './index.module.css';
 
 interface Props {
-    SplitsArray: Array<number>,
     boxHeight: number
 }
 
@@ -26,8 +27,10 @@ function Row({
   );
 }
 
-export default function SplitedExalted({ SplitsArray, boxHeight }: Props) {
+export default function SplitedExalted({ boxHeight }: Props) {
   const [row, setRow] = useState<string>('');
+
+  const { splitsArray } = useContext(Contexts.leaguePageData);
 
   return (
         <div>
@@ -46,7 +49,7 @@ export default function SplitedExalted({ SplitsArray, boxHeight }: Props) {
                     </thead>
 
                     <tbody>
-                        {SplitsArray.map((Value, i) => <Row key={`splited-exalted-${i}`} setRow={setRow} row={row} i={i} Value={Value} />)}
+                        {splitsArray.map((Value, i) => <Row key={`splited-exalted-${i}`} setRow={setRow} row={row} i={i} Value={Value} />)}
                     </tbody>
 
                 </table>

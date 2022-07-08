@@ -1,27 +1,33 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
-import styles from './index.module.css';
-import Currency from './Currency';
-import mandali from '../../mandali.module.css';
-
-import type { CurrencyValues as CurrencyValuesType } from '../../../hooks/interfaces';
+import {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
 
 import AnnulOrb from '../../../public/images/AnnulOrb.png';
+import Contexts from '../../../context';
+import Currency from './Currency';
 import DivineOrb from '../../../public/images/DivineOrb.png';
 import ExaltedOrb from '../../../public/images/ExaltedOrb.png';
 import MirrorKalandra from '../../../public/images/MirrorKalandra.png';
+import mandali from '../../mandali.module.css';
+import styles from './index.module.css';
 
 interface Props {
-    CurrencyValues: CurrencyValuesType,
     UpdateHeigh: Function
 }
 
-export default function Navbar({ CurrencyValues, UpdateHeigh }: Props) {
+export default function Navbar({ UpdateHeigh }: Props) {
   // eslint-disable-next-line no-undef
-  const Element: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
+  const element: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
+
+  // @ts-expect-error im lazy, messing with types later.
+  const { currencyValues } = useContext(Contexts.leaguePageData);
 
   const HandleElement = () => {
-    if (Element?.current) {
-      const { height } = Element.current.getBoundingClientRect();
+    if (element?.current) {
+      const { height } = element.current.getBoundingClientRect();
       UpdateHeigh(height);
     }
   };
@@ -34,26 +40,26 @@ export default function Navbar({ CurrencyValues, UpdateHeigh }: Props) {
       // eslint-disable-next-line no-undef
       window.removeEventListener('resize', () => HandleElement);
     };
-  }, [Element]);
+  }, [element]);
 
   return (
-        <div id="header" ref={Element} className={`navbar navbar-dark bg-dark fixed-top ${mandali.mandali}`}>
+        <div id="header" ref={element} className={`navbar navbar-dark bg-dark fixed-top ${mandali.mandali}`}>
             <div className={`container ${styles['font-class']}`} >
 
                 <Currency img={ExaltedOrb}>
-                    Exalted Value: <span className="pl-1">{CurrencyValues.Exalted}c</span>
+                    Exalted Value: <span className="pl-1">{currencyValues.Exalted}c</span>
                 </Currency>
 
                 <Currency img={DivineOrb}>
-                    Divine Value: <span className="pl-1">{CurrencyValues.Divine}c</span>
+                    Divine Value: <span className="pl-1">{currencyValues.Divine}c</span>
                 </Currency>
 
                 <Currency img={AnnulOrb}>
-                    Annul Value: <span className="pl-1">{CurrencyValues.Annul}c</span>
+                    Annul Value: <span className="pl-1">{currencyValues.Annul}c</span>
                 </Currency>
 
                 <Currency img={MirrorKalandra}>
-                    Mirror Value: <span className="pl-1 mr-2">{CurrencyValues.Mirror} ex</span>
+                    Mirror Value: <span className="pl-1 mr-2">{currencyValues.Mirror} ex</span>
                 </Currency>
 
             </div>

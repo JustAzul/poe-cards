@@ -4,26 +4,28 @@ import * as React from 'react';
 
 import {
   MutableRefObject,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 
+import Contexts from '../../../context';
 import Head from './Head';
 import styles from './index.module.css';
 
 const formatNumber: Function = require('../../../hooks/formatNumber');
 
 interface Props {
-    leagueName: string,
-    ExaltedValue: number,
     setBoxHeight: Function
 }
 
 export default function ChangeHelper({
-  leagueName, ExaltedValue, setBoxHeight,
+  setBoxHeight,
 }: Props) {
+  const { leagueName, currencyValues } = useContext(Contexts.leaguePageData);
+
   const [itemChaosValue, setItemChaosValue] = useState<number>(0);
 
   const [itemChaosPrice, setItemChaosPrice] = useState<number>(
@@ -85,7 +87,11 @@ export default function ChangeHelper({
   }, [itemChaosPrice, amount]);
 
   useEffect(() => {
-    setChange(formatNumber((ExaltedValue * exaltedPayment) - itemChaosValue));
+    setChange(
+      formatNumber(
+        ((currencyValues?.Exalted || 0) * exaltedPayment) - itemChaosValue,
+      ),
+    );
   }, [itemChaosValue, exaltedPayment]);
 
   useEffect(() => {
