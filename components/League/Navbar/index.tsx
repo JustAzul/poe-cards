@@ -22,7 +22,6 @@ export default function Navbar({ UpdateHeigh }: Props) {
   // eslint-disable-next-line no-undef
   const element: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
 
-  // @ts-expect-error im lazy, messing with types later.
   const { currencyValues } = useContext(Contexts.leaguePageData);
 
   const HandleElement = () => {
