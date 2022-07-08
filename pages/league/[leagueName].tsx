@@ -1,46 +1,55 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import { NextRouter, useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import cookie from 'cookie';
-
-import Dynamic from 'next/dynamic';
-
-import type { GetServerSideProps } from 'next';
-import firebase from '../../firebase/clientApp';
-import CentralSpinner from '../../components/CentralSpinner';
-import PageLoader from '../../components/Loader';
-import Nav from '../../components/League/Navbar';
-import SortTable from '../../hooks/sortTable';
 
 import type {
-  LeagueDetails as LeagueDetailsType,
   CurrencyValues as CurrencyValuesType,
-  TableData,
   KeyStates,
+  LeagueDetails as LeagueDetailsType,
+  TableData,
 } from '../../hooks/interfaces';
+import { NextRouter, useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import CentralSpinner from '../../components/CentralSpinner';
+import Contexts from '../../context';
+import Dynamic from 'next/dynamic';
+import type { GetServerSideProps } from 'next';
+import Nav from '../../components/League/Navbar';
+import PageLoader from '../../components/Loader';
+import SortTable from '../../hooks/sortTable';
+import firebase from '../../firebase/clientApp';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
 const LeagueComponent = Dynamic(() => import('../../components/League'), { loading: () => <CentralSpinner /> });
 const LeagueError = Dynamic(() => import('../_error'), { loading: () => <PageLoader detail='Please Wait..' /> });
 
+const generateSplitsArray = (Value: number = 0) => {
+  const arr = [];
+  for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
+  return arr;
+};
+const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
+  const result = Data.find(({ Name }) => Name === CurrencyName);
+  // @ts-expect-error im lazy, messing with types later.
+  return result?.chaosEquivalent || 0;
+};
+
 interface Props {
   host: string,
-  Cookies: any
 }
 
-const League = ({ host, Cookies }: Props) => {
-  const [NavbarHeight, setNavbarHeight] = useState<number>(40);
-  const [LeagueExist, setLeagueExist] = useState<Boolean>(false);
-  const [ReceivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
-  const [LeagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
-  const [LeagueTable, setLeagueTable] = useState <Array<TableData>>([]);
+const League = ({ host }: Props) => {
+  const [navbarHeight, setNavbarHeight] = useState<number>(40);
+  const [leagueExist, setLeagueExist] = useState<Boolean>(false);
+  const [receivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
+  const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
+  const [leagueTable, setLeagueTable] = useState <Array<TableData>>([]);
 
-  const [SortKey, setSortKey] = useState<KeyStates>('c9');
-  const [SortType, setSortType] = useState<0 | 1>(1);
+  const [sortKey, setSortKey] = useState<KeyStates>('c9');
+  const [sortType, setSortType] = useState<0 | 1>(1);
 
   const router: NextRouter = useRouter();
   const { leagueName } = router.query;
@@ -51,49 +60,43 @@ const League = ({ host, Cookies }: Props) => {
     {},
   );
 
-  const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
-    const Result = Data.find(({ Name }) => Name === CurrencyName);
-    // @ts-expect-error im lazy, messing with types later.
-    return Result?.chaosEquivalent || 0;
-  };
-
   useEffect(() => {
     setReceivedLeagueData(!leagueItemsLoading && !leagueItemsError);
 
     if (!leagueItemsLoading && !leagueItemsError && !!leagueItems) {
       const leaguesData = leagueItems?.docs;
 
-      const Items = leaguesData.find(({ id }) => id === 'all')?.data();
-      const Currency = leaguesData.find(({ id }) => id === 'currency')?.data();
-      const Updated = leaguesData.find(({ id }) => id === 'updated')?.data();
+      const items = leaguesData.find(({ id }) => id === 'all')?.data();
+      const currency = leaguesData.find(({ id }) => id === 'currency')?.data();
+      const updated = leaguesData.find(({ id }) => id === 'updated')?.data();
 
       // @ts-expect-error im lazy, messing with types later.
-      const DoesLeagueExist = Object.prototype.hasOwnProperty.call(Items, leagueName) && Object.prototype.hasOwnProperty.call(Currency, leagueName);
-      setLeagueExist(DoesLeagueExist);
+      const doesLeagueExist = Object.prototype.hasOwnProperty.call(items, leagueName) && Object.prototype.hasOwnProperty.call(currency, leagueName);
+      setLeagueExist(doesLeagueExist);
 
-      if (DoesLeagueExist) {
-        const LeagueData = {
+      if (doesLeagueExist) {
+        const leagueData = {
           // @ts-expect-error im lazy, messing with types later.
-          Currency: Currency[leagueName],
+          Currency: currency[leagueName],
           // @ts-expect-error im lazy, messing with types later.
-          Items: Items[leagueName],
+          Items: items[leagueName],
           // @ts-expect-error im lazy, messing with types later.
-          Updated: Updated[leagueName],
+          Updated: updated[leagueName],
         };
 
         const o = {
-          ExaltValue: GetCurrencyChaosValue(LeagueData.Currency, 'Exalted Orb') || 0,
-          DivineValue: GetCurrencyChaosValue(LeagueData.Currency, 'Divine Orb') || 0,
-          AnullValue: GetCurrencyChaosValue(LeagueData.Currency, 'Orb of Annulment') || 0,
-          LastUpdated: LeagueData.Updated,
-          Table: LeagueData.Items,
+          ExaltValue: GetCurrencyChaosValue(leagueData.Currency, 'Exalted Orb') || 0,
+          DivineValue: GetCurrencyChaosValue(leagueData.Currency, 'Divine Orb') || 0,
+          AnullValue: GetCurrencyChaosValue(leagueData.Currency, 'Orb of Annulment') || 0,
+          LastUpdated: leagueData.Updated,
+          Table: leagueData.Items,
         };
 
-        const SortedTable = SortTable(o.Table, SortKey, SortType);
-        setLeagueTable(SortedTable);
+        const sortedTable = SortTable(o.Table, sortKey, sortType);
+        setLeagueTable(sortedTable);
 
         // @ts-expect-error im lazy, messing with types later.
-        o.XMirrorValue = GetCurrencyChaosValue(LeagueData.Currency, 'Mirror of Kalandra') || 0;
+        o.XMirrorValue = GetCurrencyChaosValue(leagueData.Currency, 'Mirror of Kalandra') || 0;
         // @ts-expect-error im lazy, messing with types later.
         o.XMirrorValue /= o.ExaltValue;
         // @ts-expect-error im lazy, messing with types later.
@@ -107,46 +110,43 @@ const League = ({ host, Cookies }: Props) => {
 
   const {
     ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never',
-  } = LeagueDetails || {};
+  } = leagueDetails || {};
 
-  const CurrencyValues: CurrencyValuesType = {
+  const currencyValues: CurrencyValuesType = {
     Exalted: ExaltValue,
     Divine: DivineValue,
     Annul: AnullValue,
     Mirror: XMirrorValue,
   };
 
-  const GenerateSplitsArray = (Value: number = 0) => {
-    const arr = [];
-    for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
-    return arr;
+  const splitsArray: Array<number> = generateSplitsArray(ExaltValue);
+
+  const contextData = {
+    sortKey,
+    sortType,
+    setSortKey,
+    setSortType,
+    leagueName: leagueName?.toString() ?? 'undefined',
+    lastUpdatedDate: LastUpdated,
+    navbarHeight,
+    cardsTable: leagueTable,
+    currencyValues,
+    splitsArray,
   };
 
-  const SplitsArray: Array<number> = GenerateSplitsArray(ExaltValue);
-
   const toRender = () => (
-  <Layout parent={host} margintop={true} title={`${leagueName} League`}>
-        <Nav CurrencyValues={CurrencyValues} UpdateHeigh={setNavbarHeight} />
-          <LeagueComponent
-              SortKey={SortKey}
-              SortType={SortType}
-              setSortKey={setSortKey}
-              setSortType={setSortType}
-              leagueName={leagueName?.toString() ?? 'undefined'}
-              Cookies={Cookies}
-              LastUpdatedDate={LastUpdated}
-              NavbarHeight={NavbarHeight}
-              CardsTable={LeagueTable}
-              CurrencyValues={CurrencyValues}
-              SplitsArray={SplitsArray}
-              />
+    <Layout parent={host} margintop={true} title={`${leagueName} League`}>
+      <Contexts.leaguePageData.Provider value={contextData}>
+          <Nav UpdateHeigh={setNavbarHeight} />
+          <LeagueComponent />
+      </Contexts.leaguePageData.Provider>
     </Layout>
   );
 
   return (
     <>
-      {ReceivedLeagueData
-        ? (LeagueExist
+      {receivedLeagueData
+        ? (leagueExist
           ? toRender()
           : <LeagueError statusCode={404} leagueError={true} />)
         : <PageLoader detail='Fetching Data..' />
@@ -156,17 +156,12 @@ const League = ({ host, Cookies }: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // eslint-disable-next-line no-undef
-  const parseCookies = () => cookie.parse(req ? req?.headers?.cookie ?? '' : document.cookie);
-  const CookieData = parseCookies();
-
   const { headers } = req;
   const host = headers['x-forwarded-server'] || headers.host || 'poe.cards';
 
   return {
     props: {
       host,
-      Cookies: CookieData && CookieData,
     },
   };
 };

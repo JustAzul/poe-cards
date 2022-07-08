@@ -6,14 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.css';
 import '../styles/globals.css';
 
-import type { AppProps } from 'next/app';
-import { CookiesProvider } from 'react-cookie';
-import { useEffect, useState } from 'react';
-
-import Script from 'next/script';
 import * as gtag from '../lib/gtag';
 
+import { useEffect, useState } from 'react';
+
+import type { AppProps } from 'next/app';
 import Loader from '../components/Loader';
+import Script from 'next/script';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [isLoading, setLoading] = useState<Boolean>(false);
@@ -84,9 +83,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       /> */}
 
-      <CookiesProvider>
         <Component {...pageProps} />
-      </CookiesProvider>
     </>
   );
 }

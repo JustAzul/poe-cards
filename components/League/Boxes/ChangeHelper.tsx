@@ -1,44 +1,62 @@
-import {
-  MutableRefObject, useEffect, useRef, useState,
-} from 'react';
-import { useCookies } from 'react-cookie';
+/* eslint-disable no-undef */
+
 import * as React from 'react';
-import styles from './index.module.css';
+
+import {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { getCookie, setCookie } from 'cookies-next';
+
+import Contexts from '../../../context';
 import Head from './Head';
+import styles from './index.module.css';
 
 const formatNumber: Function = require('../../../hooks/formatNumber');
 
 interface Props {
-    Cookies: any,
-    leagueName: string,
-    ExaltedValue: number,
     setBoxHeight: Function
 }
 
 export default function ChangeHelper({
-  Cookies, leagueName, ExaltedValue, setBoxHeight,
+  setBoxHeight,
 }: Props) {
-  const [ItemChaosValue, setItemChaosValue] = useState<number>(0);
+  const { leagueName, currencyValues } = useContext(Contexts.leaguePageData);
 
-  const [ItemChaosPrice, setItemChaosPrice] = useState<number>(parseInt(Cookies[`${leagueName}_ItemChaosPrice`] || 0, 10));
-  const [Amount, setAmount] = useState<number>(parseInt(Cookies[`${leagueName}_Amount`] || 1, 10));
-  const [ExaltedPayment, setExaltedPayment] = useState<number>(parseInt(Cookies[`${leagueName}_ExaltedPayment`] || 0, 10));
-  const [Change, setChange] = useState<number>(0);
+  const [itemChaosValue, setItemChaosValue] = useState<number>(0);
 
-  // eslint-disable-next-line no-undef
-  const ItemChaosPriceRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  // eslint-disable-next-line no-undef
-  const AmountRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  // eslint-disable-next-line no-undef
-  const ExaltedPaymentRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  // eslint-disable-next-line no-undef
-  const ChangeRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  const [itemChaosPrice, setItemChaosPrice] = useState<number>(
+    parseInt(
+      getCookie(`${leagueName}_ItemChaosPrice`)?.toString() || '0',
+      10,
+    ),
+  );
 
-  const [, setItemChaosPriceCookie] = useCookies([`${leagueName}_ItemChaosPrice`]);
-  const [, setAmountCookie] = useCookies([`${leagueName}_Amount`]);
-  const [, setExaltedPaymentCookie] = useCookies([`${leagueName}_ExaltedPayment`]);
+  const [amount, setAmount] = useState<number>(
+    parseInt(
+      getCookie(`${leagueName}_Amount`)?.toString() || '1',
+      10,
+    ),
+  );
 
-  const DefaultCookieOptions = {
+  const [exaltedPayment, setExaltedPayment] = useState<number>(
+    parseInt(
+      getCookie(`${leagueName}_ExaltedPayment`)?.toString() || '0',
+      10,
+    ),
+  );
+
+  const [change, setChange] = useState<number>(0);
+
+  const itemChaosPriceRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  const amountRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  const exaltedPaymentRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+  const changeRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
+
+  const defaultCookieOptions = {
     path: '/',
     sameSite: true,
   };
@@ -46,73 +64,77 @@ export default function ChangeHelper({
   const Handle = {
     ItemChaosPrice: () => {
       // eslint-disable-next-line no-undef
-      const { value } = ItemChaosPriceRef.current ?? new HTMLInputElement();
+      const { value } = itemChaosPriceRef.current ?? new HTMLInputElement();
       setItemChaosPrice(parseInt(value, 10));
-      setItemChaosPriceCookie(`${leagueName}_ItemChaosPrice`, value, DefaultCookieOptions);
+      setCookie(`${leagueName}_ItemChaosPrice`, value, defaultCookieOptions);
     },
     Amount: () => {
       // eslint-disable-next-line no-undef
-      const { value } = AmountRef.current ?? new HTMLInputElement();
+      const { value } = amountRef.current ?? new HTMLInputElement();
       setAmount(parseInt(value, 10));
-      setAmountCookie(`${leagueName}_Amount`, value, DefaultCookieOptions);
+      setCookie(`${leagueName}_Amount`, value, defaultCookieOptions);
     },
     ExaltedPayment: () => {
       // eslint-disable-next-line no-undef
-      const { value } = ExaltedPaymentRef.current ?? new HTMLInputElement();
+      const { value } = exaltedPaymentRef.current ?? new HTMLInputElement();
       setExaltedPayment(parseInt(value, 10));
-      setExaltedPaymentCookie(`${leagueName}_ExaltedPayment`, value, DefaultCookieOptions);
+      setCookie(`${leagueName}_ExaltedPayment`, value, defaultCookieOptions);
     },
   };
 
   useEffect(() => {
-    setItemChaosValue(ItemChaosPrice * Amount);
-  }, [ItemChaosPrice, Amount]);
+    setItemChaosValue(itemChaosPrice * amount);
+  }, [itemChaosPrice, amount]);
 
   useEffect(() => {
-    setChange(formatNumber((ExaltedValue * ExaltedPayment) - ItemChaosValue));
-  }, [ItemChaosValue, ExaltedPayment]);
+    setChange(
+      formatNumber(
+        ((currencyValues?.Exalted || 0) * exaltedPayment) - itemChaosValue,
+      ),
+    );
+  }, [itemChaosValue, exaltedPayment]);
 
   useEffect(() => {
-    if (ItemChaosPriceRef?.current) {
-      ItemChaosPriceRef.current.addEventListener('change', Handle.ItemChaosPrice);
-      ItemChaosPriceRef.current.addEventListener('input', Handle.ItemChaosPrice);
+    if (itemChaosPriceRef?.current) {
+      itemChaosPriceRef.current.addEventListener('change', Handle.ItemChaosPrice);
+      itemChaosPriceRef.current.addEventListener('input', Handle.ItemChaosPrice);
     }
 
     return () => {
       try {
-        ItemChaosPriceRef?.current?.removeEventListener('change', Handle.ItemChaosPrice);
-        ItemChaosPriceRef?.current?.removeEventListener('input', Handle.ItemChaosPrice);
+        itemChaosPriceRef?.current?.removeEventListener('change', Handle.ItemChaosPrice);
+        itemChaosPriceRef?.current?.removeEventListener('input', Handle.ItemChaosPrice);
       } catch {}
     };
-  }, [ItemChaosPriceRef]);
+  }, [itemChaosPriceRef]);
 
   useEffect(() => {
-    if (AmountRef?.current) {
-      AmountRef.current.addEventListener('change', Handle.Amount);
-      AmountRef.current.addEventListener('input', Handle.Amount);
+    if (amountRef?.current) {
+      amountRef.current.addEventListener('change', Handle.Amount);
+      amountRef.current.addEventListener('input', Handle.Amount);
     }
 
     return () => {
       try {
-        AmountRef?.current?.removeEventListener('change', Handle.Amount);
-        AmountRef?.current?.removeEventListener('input', Handle.Amount);
+        amountRef?.current?.removeEventListener('change', Handle.Amount);
+        amountRef?.current?.removeEventListener('input', Handle.Amount);
       } catch {}
     };
-  }, [AmountRef]);
+  }, [amountRef]);
 
   useEffect(() => {
-    if (ExaltedPaymentRef?.current) {
-      ExaltedPaymentRef.current.addEventListener('change', Handle.ExaltedPayment);
-      ExaltedPaymentRef.current.addEventListener('input', Handle.ExaltedPayment);
+    if (exaltedPaymentRef?.current) {
+      exaltedPaymentRef.current.addEventListener('change', Handle.ExaltedPayment);
+      exaltedPaymentRef.current.addEventListener('input', Handle.ExaltedPayment);
     }
 
     return () => {
       try {
-        ExaltedPaymentRef?.current?.removeEventListener('change', Handle.ExaltedPayment);
-        ExaltedPaymentRef?.current?.removeEventListener('input', Handle.ExaltedPayment);
+        exaltedPaymentRef?.current?.removeEventListener('change', Handle.ExaltedPayment);
+        exaltedPaymentRef?.current?.removeEventListener('input', Handle.ExaltedPayment);
       } catch (e) {}
     };
-  }, [ExaltedPaymentRef]);
+  }, [exaltedPaymentRef]);
 
   /* Box Height */
   // eslint-disable-next-line no-undef
@@ -147,26 +169,26 @@ export default function ChangeHelper({
 
                         <div className="form-group">
                             <label className="user-select-none">Item Chaos Price:</label>
-                            <input ref={ItemChaosPriceRef} defaultValue={ItemChaosPrice} min={0} type="number" placeholder="Chaos Price per item" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input ref={itemChaosPriceRef} defaultValue={itemChaosPrice} min={0} type="number" placeholder="Chaos Price per item" className="form-control-sm text-center border mr-2 ml-2"></input>
                         </div>
 
                         <div className="form-group">
                             <label className="user-select-none">Amount:</label>
-                            <input ref={AmountRef} defaultValue={Amount} min={0} type="number" placeholder="Item Amount Value" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input ref={amountRef} defaultValue={amount} min={0} type="number" placeholder="Item Amount Value" className="form-control-sm text-center border mr-2 ml-2"></input>
                         </div>
 
                         <div className="form-group mb-2">
                             <label className="user-select-none">Exalted Payment:</label>
-                            <input ref={ExaltedPaymentRef} defaultValue={ExaltedPayment} min={0} type="number" placeholder="Exalted Payment Value" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input ref={exaltedPaymentRef} defaultValue={exaltedPayment} min={0} type="number" placeholder="Exalted Payment Value" className="form-control-sm text-center border mr-2 ml-2"></input>
                         </div>
 
                         <div className="form-group mb-2">
                             <label className="user-select-none">Change:</label>
-                            <input ref={ChangeRef} value={`${Change || 0}c`} min={0} type="text" className={`form-control-sm text-center mr-2 ml-2 ${styles.change}`} readOnly></input>
+                            <input ref={changeRef} value={`${change || 0}c`} min={0} type="text" className={`form-control-sm text-center mr-2 ml-2 ${styles.change}`} readOnly></input>
                         </div>
 
                         <div className={`p-0 m-0 pb-1 ${styles.chaosvalue}`}>
-                            <span className="user-select-none">Item Chaos Value: </span><span className="pl-1">{ItemChaosValue}c</span>
+                            <span className="user-select-none">Item Chaos Value: </span><span className="pl-1">{itemChaosValue}c</span>
                         </div>
 
                     </div>

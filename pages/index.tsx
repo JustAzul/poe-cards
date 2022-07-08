@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import CentralSpinner from '../components/CentralSpinner';
+import Contexts from '../context';
 import Dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next/types';
 import Layout from '../components/Layout';
@@ -8,7 +9,10 @@ import firebaseAdmin from '../firebase/adminApp';
 import firebaseClient from '../firebase/clientApp';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-const SelectLeagueTable = Dynamic(() => import('../components/Table'), { loading: () => <CentralSpinner /> });
+const SelectLeagueTable = Dynamic(
+  () => import('../components/Table'),
+  { loading: () => <CentralSpinner /> },
+);
 
 interface Props {
   host: string,
@@ -33,14 +37,20 @@ function Home({ host, defaultLeagueData }: Props) {
       const leaguesData = leagues?.docs
         .find(({ id }) => id === 'all');
 
-      // @ts-expect-error im lazy, messing with types later.
-      setLeagueDetails(parseLeaguesData(leaguesData?.data()));
+      setLeagueDetails(
+        parseLeaguesData(
+          // @ts-expect-error im lazy, messing with types later.
+          leaguesData?.data(),
+        ),
+      );
     } else setLeagueDetails(defaultLeagueData);
   }, [leaguesLoading, leaguesError, leagues]);
 
   return (
     <Layout parent={host} title="Pick a League">
-      <SelectLeagueTable LeagueDetails={LeagueDetails} />
+      <Contexts.leagueDetails.Provider value={LeagueDetails}>
+        <SelectLeagueTable />
+      </Contexts.leagueDetails.Provider>
     </Layout>
   );
 }
