@@ -11,7 +11,7 @@
     "autoprefixer": "10.4.7",
     "bootstrap": "^4.6.0",
     "cookies-next": "^2.1.1",
-    "firebase": "^9.6.7",
+    "firebase": "^9.8.4",
     "firebase-admin": "^11.0.0",
     "got": "^11.8.3",
     "moment": "^2.29.4",
