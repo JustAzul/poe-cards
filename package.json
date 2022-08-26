@@ -15,7 +15,7 @@
     "firebase-admin": "^11.0.1",
     "got": "^11.8.3",
     "moment": "^2.29.4",
-    "next": "^12.2.3",
+    "next": "^12.2.4",
     "numeral": "^2.0.6",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^7.7.2",
