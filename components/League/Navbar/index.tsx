@@ -5,12 +5,9 @@ import {
   useRef,
 } from 'react';
 
-import AnnulOrb from '../../../public/images/AnnulOrb.png';
 import Contexts from '../../../context';
 import Currency from './Currency';
-import DivineOrb from '../../../public/images/DivineOrb.png';
-import ExaltedOrb from '../../../public/images/ExaltedOrb.png';
-import MirrorKalandra from '../../../public/images/MirrorKalandra.png';
+import { NAVBAR_CURRENCIES } from './constants';
 import mandali from '../../mandali.module.css';
 import styles from './index.module.css';
 
@@ -45,21 +42,11 @@ export default function Navbar({ UpdateHeigh }: Props) {
         <div id="header" ref={element} className={`navbar navbar-dark bg-dark fixed-top ${mandali.mandali}`}>
             <div className={`container ${styles['font-class']}`} >
 
-                <Currency img={ExaltedOrb}>
-                    Exalted Value: <span className="pl-1">{currencyValues.Exalted}c</span>
+              {NAVBAR_CURRENCIES.map((item, i, a) => (
+                <Currency key={i} img={item.img}>
+                    {item.name} Value: <span className={`pl-1${(a.length - 1) === i ? 'mr-2' : ''}`}>{`${parseInt(currencyValues[item.name], 10)}${item.valueText}`}</span>
                 </Currency>
-
-                <Currency img={DivineOrb}>
-                    Divine Value: <span className="pl-1">{currencyValues.Divine}c</span>
-                </Currency>
-
-                <Currency img={AnnulOrb}>
-                    Annul Value: <span className="pl-1">{currencyValues.Annul}c</span>
-                </Currency>
-
-                <Currency img={MirrorKalandra}>
-                    Mirror Value: <span className="pl-1 mr-2">{currencyValues.Mirror} ex</span>
-                </Currency>
+              ))}
 
             </div>
         </div>
