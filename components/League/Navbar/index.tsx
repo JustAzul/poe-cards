@@ -44,7 +44,7 @@ export default function Navbar({ UpdateHeigh }: Props) {
 
               {NAVBAR_CURRENCIES.map((item, i, a) => (
                 <Currency key={i} img={item.img}>
-                    {item.name} Value: <span className={`pl-1${(a.length - 1) === i ? 'mr-2' : ''}`}>{`${parseInt(currencyValues[item.name], 10)}${item.valueText}`}</span>
+                    {item.name} Value: <span className={`pl-1${(a.length - 1) === i ? 'mr-2' : ''}`}>{`${parseInt(currencyValues[item.name]?.toString() || '0', 10)}${item.valueText}`}</span>
                 </Currency>
               ))}
 
