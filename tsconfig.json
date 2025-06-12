@@ -17,14 +17,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "firebase/clientApp.js",
-    "firebase/adminApp.js",
+    "src/firebase/clientApp.js",
+    "src/firebase/adminApp.js",
   ],
   "exclude": [
     "node_modules"
