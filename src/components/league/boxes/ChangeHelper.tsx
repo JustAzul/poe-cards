@@ -1,13 +1,11 @@
-/* eslint-disable no-undef */
-
 import * as React from 'react';
 
 import {
-  MutableRefObject,
   useContext,
   useEffect,
   useRef,
   useState,
+  ChangeEvent,
 } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 
@@ -51,35 +49,31 @@ export default function ChangeHelper({
 
   const [change, setChange] = useState<number>(0);
 
-  const itemChaosPriceRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  const amountRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  const exaltedPaymentRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
-  const changeRef: MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null);
 
   const defaultCookieOptions = {
     path: '/',
     sameSite: true,
   };
 
-  const Handle = {
-    ItemChaosPrice: () => {
-      // eslint-disable-next-line no-undef
-      const { value } = itemChaosPriceRef.current ?? new HTMLInputElement();
-      setItemChaosPrice(parseInt(value, 10));
-      setCookie(`${leagueName}_ItemChaosPrice`, value, defaultCookieOptions);
-    },
-    Amount: () => {
-      // eslint-disable-next-line no-undef
-      const { value } = amountRef.current ?? new HTMLInputElement();
-      setAmount(parseInt(value, 10));
-      setCookie(`${leagueName}_Amount`, value, defaultCookieOptions);
-    },
-    ExaltedPayment: () => {
-      // eslint-disable-next-line no-undef
-      const { value } = exaltedPaymentRef.current ?? new HTMLInputElement();
-      setExaltedPayment(parseInt(value, 10));
-      setCookie(`${leagueName}_ExaltedPayment`, value, defaultCookieOptions);
-    },
+  const handleItemChaosPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const price = parseInt(value, 10) || 0;
+    setItemChaosPrice(price);
+    setCookie(`${leagueName}_ItemChaosPrice`, price.toString(), defaultCookieOptions);
+  };
+
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const amountValue = parseInt(value, 10) || 0;
+    setAmount(amountValue);
+    setCookie(`${leagueName}_Amount`, amountValue.toString(), defaultCookieOptions);
+  };
+
+  const handleExaltedPaymentChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const exaltedValue = parseInt(value, 10) || 0;
+    setExaltedPayment(exaltedValue);
+    setCookie(`${leagueName}_ExaltedPayment`, exaltedValue.toString(), defaultCookieOptions);
   };
 
   useEffect(() => {
@@ -94,47 +88,6 @@ export default function ChangeHelper({
     );
   }, [itemChaosValue, exaltedPayment]);
 
-  useEffect(() => {
-    if (itemChaosPriceRef?.current) {
-      itemChaosPriceRef.current.addEventListener('change', Handle.ItemChaosPrice);
-      itemChaosPriceRef.current.addEventListener('input', Handle.ItemChaosPrice);
-    }
-
-    return () => {
-      try {
-        itemChaosPriceRef?.current?.removeEventListener('change', Handle.ItemChaosPrice);
-        itemChaosPriceRef?.current?.removeEventListener('input', Handle.ItemChaosPrice);
-      } catch {}
-    };
-  }, [itemChaosPriceRef]);
-
-  useEffect(() => {
-    if (amountRef?.current) {
-      amountRef.current.addEventListener('change', Handle.Amount);
-      amountRef.current.addEventListener('input', Handle.Amount);
-    }
-
-    return () => {
-      try {
-        amountRef?.current?.removeEventListener('change', Handle.Amount);
-        amountRef?.current?.removeEventListener('input', Handle.Amount);
-      } catch {}
-    };
-  }, [amountRef]);
-
-  useEffect(() => {
-    if (exaltedPaymentRef?.current) {
-      exaltedPaymentRef.current.addEventListener('change', Handle.ExaltedPayment);
-      exaltedPaymentRef.current.addEventListener('input', Handle.ExaltedPayment);
-    }
-
-    return () => {
-      try {
-        exaltedPaymentRef?.current?.removeEventListener('change', Handle.ExaltedPayment);
-        exaltedPaymentRef?.current?.removeEventListener('input', Handle.ExaltedPayment);
-      } catch (e) {}
-    };
-  }, [exaltedPaymentRef]);
 
   /* Box Height */
   // eslint-disable-next-line no-undef
@@ -149,11 +102,9 @@ export default function ChangeHelper({
 
   useEffect(() => {
     HandleElement();
-    // eslint-disable-next-line no-undef
     window.addEventListener('resize', HandleElement);
     return () => {
-      // eslint-disable-next-line no-undef
-      window.removeEventListener('resize', () => HandleElement);
+      window.removeEventListener('resize', HandleElement);
     };
   }, [BoxElement]);
 
@@ -169,22 +120,22 @@ export default function ChangeHelper({
 
                         <div className="form-group">
                             <label className="user-select-none">Item Chaos Price:</label>
-                            <input ref={itemChaosPriceRef} defaultValue={itemChaosPrice} min={0} type="number" placeholder="Chaos Price per item" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input value={itemChaosPrice} onChange={handleItemChaosPriceChange} min={0} type="number" placeholder="Chaos Price per item" className="form-control-sm text-center border mr-2 ml-2" />
                         </div>
 
                         <div className="form-group">
                             <label className="user-select-none">Amount:</label>
-                            <input ref={amountRef} defaultValue={amount} min={0} type="number" placeholder="Item Amount Value" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input value={amount} onChange={handleAmountChange} min={0} type="number" placeholder="Item Amount Value" className="form-control-sm text-center border mr-2 ml-2" />
                         </div>
 
                         <div className="form-group mb-2">
                             <label className="user-select-none">Exalted Payment:</label>
-                            <input ref={exaltedPaymentRef} defaultValue={exaltedPayment} min={0} type="number" placeholder="Exalted Payment Value" className="form-control-sm text-center border mr-2 ml-2"></input>
+                            <input value={exaltedPayment} onChange={handleExaltedPaymentChange} min={0} type="number" placeholder="Exalted Payment Value" className="form-control-sm text-center border mr-2 ml-2" />
                         </div>
 
                         <div className="form-group mb-2">
                             <label className="user-select-none">Change:</label>
-                            <input ref={changeRef} value={`${change || 0}c`} min={0} type="text" className={`form-control-sm text-center mr-2 ml-2 ${styles.change}`} readOnly></input>
+                            <input value={`${change || 0}c`} min={0} type="text" className={`form-control-sm text-center mr-2 ml-2 ${styles.change}`} readOnly />
                         </div>
 
                         <div className={`p-0 m-0 pb-1 ${styles.chaosvalue}`}>
