@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as React from 'react';
 
 import {
@@ -48,8 +49,6 @@ export default function ChangeHelper({
   );
 
   const [change, setChange] = useState<number>(0);
-
-
   const defaultCookieOptions = {
     path: '/',
     sameSite: true,
@@ -68,7 +67,6 @@ export default function ChangeHelper({
     setAmount(amountValue);
     setCookie(`${leagueName}_Amount`, amountValue.toString(), defaultCookieOptions);
   };
-
   const handleExaltedPaymentChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const exaltedValue = parseInt(value, 10) || 0;
@@ -88,25 +86,24 @@ export default function ChangeHelper({
     );
   }, [itemChaosValue, exaltedPayment]);
 
-
   /* Box Height */
   // eslint-disable-next-line no-undef
-  const BoxElement = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
 
-  const HandleElement = () => {
-    if (BoxElement?.current) {
-      const { height } = BoxElement.current.getBoundingClientRect();
+  const handleResize = () => {
+    if (boxRef.current) {
+      const { height } = boxRef.current.getBoundingClientRect();
       setBoxHeight(height);
     }
   };
 
   useEffect(() => {
-    HandleElement();
-    window.addEventListener('resize', HandleElement);
+    handleResize();
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', HandleElement);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [BoxElement]);
+  }, []);
 
   return (
         <div>
@@ -114,7 +111,7 @@ export default function ChangeHelper({
                 Change Calculator
             </Head>
 
-            <div ref={BoxElement} className={`mt-2 border ${styles['bg-white']}`}>
+            <div ref={boxRef} className={`mt-2 border ${styles['bg-white']}`}>
                 <div className="container">
                     <div className="row p-2 pt-1 justify-content-center text-center">
 
