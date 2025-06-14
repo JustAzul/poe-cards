@@ -1,4 +1,5 @@
 import { ReactNode, memo } from 'react';
+import type React from 'react';
 
 import type { KeyStates } from '@/hooks/interfaces';
 import Link from 'next/link';
@@ -6,15 +7,15 @@ import { ToSearch } from '@/components/league/table/tbody/to-search.interface';
 import styles from '../index.module.css';
 
 interface Props {
-    children: ReactNode,
-    SetMouseOver: Function,
-    KeyState?: KeyStates,
-    _Key: KeyStates,
-    Href?: string,
-    Class?: string,
-    setTitle?: string,
-    toSearchDetails?: ToSearch
-    Click?: Function
+    children: ReactNode;
+    SetMouseOver: React.Dispatch<KeyStates | undefined>;
+    KeyState?: KeyStates;
+    _Key: KeyStates;
+    Href?: string;
+    Class?: string;
+    setTitle?: string;
+    toSearchDetails?: ToSearch;
+    Click?: React.Dispatch<ToSearch>;
 }
 function internalTD(props: Props) {
   const {
@@ -25,9 +26,11 @@ function internalTD(props: Props) {
 
   return (
     <td
-      onClick={() => Click && Click(toSearchDetails)}
+      onClick={() => {
+        if (Click && toSearchDetails) Click(toSearchDetails);
+      }}
       title={setTitle} onMouseOver={() => SetMouseOver(_Key)}
-      onMouseLeave={() => SetMouseOver('')}
+      onMouseLeave={() => SetMouseOver(undefined)}
       className={internalClass}>
         {children}
       </td>

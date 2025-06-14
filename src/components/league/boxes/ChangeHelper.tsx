@@ -18,7 +18,7 @@ import styles from './index.module.css';
 const formatNumber: Function = require('@/hooks/formatNumber');
 
 interface Props {
-    setBoxHeight: Function
+    setBoxHeight: React.Dispatch<number>;
 }
 
 export default function ChangeHelper({
