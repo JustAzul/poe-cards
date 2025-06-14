@@ -11,9 +11,9 @@ import TableStyles from '@/components/table/index.module.css';
 import Td from '@/components/table/td';
 import { memo } from 'react';
 import styles from '../index.module.css';
+import formatNumber from '@/hooks/format-number';
 
 const DivCard = Dynamic(() => import('../div-card'), { loading: () => <div className="mr-2"><Spinner /></div> });
-const formatNumber: Function = require('@/hooks/formatNumber');
 
 interface Props {
     setToHover: Function,

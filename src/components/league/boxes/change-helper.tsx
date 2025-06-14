@@ -14,10 +14,10 @@ import Contexts from '@/context';
 import Head from './Head';
 import styles from './index.module.css';
 
-const formatNumber: Function = require('@/hooks/formatNumber');
+import formatNumber from '@/hooks/format-number';
 
 interface Props {
-    setBoxHeight: Function
+  setBoxHeight: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ChangeHelper({
@@ -48,7 +48,7 @@ export default function ChangeHelper({
     ),
   );
 
-  const [change, setChange] = useState<number>(0);
+  const [change, setChange] = useState<string>('0');
   const defaultCookieOptions = {
     path: '/',
     sameSite: true,
