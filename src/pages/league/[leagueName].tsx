@@ -43,8 +43,8 @@ interface Props {
 
 const League = ({ host }: Props) => {
   const [navbarHeight, setNavbarHeight] = useState<number>(40);
-  const [leagueExist, setLeagueExist] = useState<Boolean>(false);
-  const [receivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
+  const [leagueExist, setLeagueExist] = useState<boolean>(false);
+  const [receivedLeagueData, setReceivedLeagueData] = useState<boolean>(false);
   const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
   const [leagueTable, setLeagueTable] = useState <Array<TableData>>([]);
 

@@ -6,7 +6,7 @@ import TableStyles from '../../../table/index.module.css';
 import Th from '../../../table/th';
 
 interface Props {
-    ShouldSticky: Boolean,
+    ShouldSticky: boolean,
     setToHover: Function,
     toHover: KeyStates,
 }
