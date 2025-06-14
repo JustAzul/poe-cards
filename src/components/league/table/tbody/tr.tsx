@@ -12,6 +12,8 @@ import Td from '@/components/table/td';
 import { memo } from 'react';
 import styles from '../index.module.css';
 
+const DIVINATION_CARD_CLASS = 6;
+
 const DivCard = Dynamic(() => import('../div-card'), { loading: () => <div className="mr-2"><Spinner /></div> });
 const formatNumber: Function = require('@/hooks/formatNumber');
 
@@ -136,7 +138,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          isCard: Number(Card.Details.rewardClass) === 6,
+                          isCard: Number(Card.Details.rewardClass) === DIVINATION_CARD_CLASS,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }
@@ -157,7 +159,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          isCard: Number(Card.Details.rewardClass) === 6,
+                          isCard: Number(Card.Details.rewardClass) === DIVINATION_CARD_CLASS,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }
