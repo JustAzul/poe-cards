@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import type React from 'react';
 
 import Contexts from '@/context';
 import Head from './Head';
@@ -10,10 +11,10 @@ interface Props {
 }
 
 interface RowProps {
-    i: number,
-    Value: number,
-    setRow: Function,
-    row: string
+    i: number;
+    Value: number;
+    setRow: React.Dispatch<string>;
+    row: string;
 }
 
 function Row({

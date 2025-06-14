@@ -5,7 +5,7 @@ import {
   TableData,
 } from '@/hooks/interfaces';
 
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 
 interface LeagueData {
   navbarHeight: number,
@@ -16,8 +16,8 @@ interface LeagueData {
   cardsTable: Array<TableData>,
   sortKey: KeyStates,
   sortType: 0 | 1,
-  setSortKey: Function,
-  setSortType: Function
+  setSortKey: React.Dispatch<React.SetStateAction<KeyStates>>,
+  setSortType: React.Dispatch<React.SetStateAction<0 | 1>>
 }
 
 export default {
