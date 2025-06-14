@@ -1,19 +1,21 @@
 /* eslint-disable import/extensions */
 
 import type { KeyStates } from '@/hooks/interfaces';
+import type React from 'react';
+import { ToSearch } from '@/components/league/table/tbody/to-search.interface';
 import Td from './td';
 import styles from './index.module.css';
 
 // eslint-disable-next-line import/no-unresolved
 
 interface Props {
-    leagueName?: string,
-    DaysLeft?: number,
-    ladder?: string,
-    endAt?: string,
-    state?: KeyStates,
-    SetMouseOver: Function,
-    NewTab?: Function
+    leagueName?: string;
+    DaysLeft?: number;
+    ladder?: string;
+    endAt?: string;
+    state?: KeyStates;
+    SetMouseOver: React.Dispatch<KeyStates | undefined>;
+    NewTab?: React.Dispatch<ToSearch>;
 }
 
 export default function Tr({

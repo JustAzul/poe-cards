@@ -18,7 +18,7 @@ import styles from './index.module.css';
 const formatNumber: Function = require('@/hooks/formatNumber');
 
 interface Props {
-    setBoxHeight: Function
+    setBoxHeight: React.Dispatch<number>;
 }
 
 export default function ChangeHelper({
@@ -153,7 +153,7 @@ export default function ChangeHelper({
     window.addEventListener('resize', HandleElement);
     return () => {
       // eslint-disable-next-line no-undef
-      window.removeEventListener('resize', () => HandleElement);
+      window.removeEventListener('resize', HandleElement);
     };
   }, [BoxElement]);
 

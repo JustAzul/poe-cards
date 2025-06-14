@@ -4,6 +4,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import type React from 'react';
 
 import Contexts from '@/context';
 import Currency from './currency';
@@ -12,7 +13,7 @@ import mandali from '../../mandali.module.css';
 import styles from './index.module.css';
 
 interface Props {
-    UpdateHeigh: Function
+    UpdateHeigh: React.Dispatch<number>;
 }
 
 export default function Navbar({ UpdateHeigh }: Props) {
@@ -34,7 +35,7 @@ export default function Navbar({ UpdateHeigh }: Props) {
     window.addEventListener('resize', HandleElement);
     return () => {
       // eslint-disable-next-line no-undef
-      window.removeEventListener('resize', () => HandleElement);
+      window.removeEventListener('resize', HandleElement);
     };
   }, [element]);
 
