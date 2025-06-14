@@ -1,6 +1,4 @@
 import type { Card, KeyStates, TableData } from '@/hooks/interfaces';
-import type React from 'react';
-import { ToSearch } from './to-search.interface';
 
 import ChaosOrb from 'public/images/ChaosOrb.png';
 import Dynamic from 'next/dynamic';
@@ -13,15 +11,17 @@ import TableStyles from '@/components/table/index.module.css';
 import Td from '@/components/table/td';
 import { memo } from 'react';
 import styles from '../index.module.css';
-import formatNumber from '@/hooks/format-number';
+
+const DIVINATION_CARD_CLASS = 6;
 
 const DivCard = Dynamic(() => import('../div-card'), { loading: () => <div className="mr-2"><Spinner /></div> });
+const formatNumber: Function = require('@/hooks/formatNumber');
 
 interface Props {
-    setToHover: React.Dispatch<KeyStates | undefined>;
-    toHover: KeyStates;
-    doSearch: React.Dispatch<ToSearch>;
-    Details: TableData;
+    setToHover: Function,
+    toHover: KeyStates,
+    doSearch: Function,
+    Details: TableData
 }
 
 function Tr({
@@ -138,10 +138,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          // @ts-expect-error all good here actualy.
-                          // eslint-disable-next-line eqeqeq
-                          isCard: Card.Details.rewardClass == 6,
-                          // @ts-expect-error all good here actualy.
+                          isCard: Number(Card.Details.rewardClass) === DIVINATION_CARD_CLASS,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }
@@ -162,10 +159,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          // @ts-expect-error all good here actualy.
-                          // eslint-disable-next-line eqeqeq
-                          isCard: Card.Details.rewardClass == 6,
-                          // @ts-expect-error all good here actualy.
+                          isCard: Number(Card.Details.rewardClass) === DIVINATION_CARD_CLASS,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }

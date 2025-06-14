@@ -3,8 +3,8 @@ import type { NextPageContext } from 'next';
 import styles from '@/components/error.module.css';
 
 interface Props {
-  statusCode: Number,
-  leagueError?: Boolean
+  statusCode: number,
+  leagueError?: boolean
 }
 
 function Error({ statusCode, leagueError = false }: Props) {

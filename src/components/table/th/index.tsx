@@ -1,21 +1,20 @@
 import { ReactNode, memo } from 'react';
-import type React from 'react';
 import styles from '../index.module.css';
 import Arrow from './arrow';
 
 import type { KeyStates } from '@/hooks/interfaces';
 
 interface Props {
-    children: ReactNode;
-    SetMouseOver: React.Dispatch<KeyStates | undefined>;
-    setSortType?: React.Dispatch<0 | 1>;
-    setSortKey?: React.Dispatch<KeyStates>;
-    KeyState?: KeyStates;
-    SortKey?: KeyStates;
-    _Key: KeyStates;
-    enableClick?: Boolean;
+    children: ReactNode,
+    SetMouseOver: Function,
+    setSortType?: Function,
+    setSortKey?: Function,
+    KeyState?: KeyStates,
+    SortKey?: KeyStates,
+    _Key: KeyStates,
+    enableClick?: boolean,
     SortType?: 0 | 1;
-    Class?: string;
+    Class?: string
 }
 
 function Th({
@@ -28,7 +27,7 @@ function Th({
   };
 
   return (
-        <th onClick={() => clickExec()} onMouseOver={() => SetMouseOver(_Key)} onMouseLeave={() => SetMouseOver(undefined)} className={`${(_Key !== 'c1' && enableClick === true) ? 'click ' : ''}${Class ? `${Class} ` : ''}${styles.column100}${_Key === 'c1' ? ` ${styles.column1}` : ''}${KeyState === _Key ? ` ${styles['hov-column-head-ver1']}` : ''}`}>
+        <th onClick={() => clickExec()} onMouseOver={() => SetMouseOver(_Key)} onMouseLeave={() => SetMouseOver('')} className={`${(_Key !== 'c1' && enableClick === true) ? 'click ' : ''}${Class ? `${Class} ` : ''}${styles.column100}${_Key === 'c1' ? ` ${styles.column1}` : ''}${KeyState === _Key ? ` ${styles['hov-column-head-ver1']}` : ''}`}>
           {children} {SortKey === _Key && <Arrow isUp={!!SortType} />}
           </th>
   );

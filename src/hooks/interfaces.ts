@@ -4,7 +4,7 @@ export type CardDetail = {
     CardStack: number,
     RewardName: string,
     rewardClass: string,
-    isCorrupted: Boolean,
+    isCorrupted: boolean,
     Flavour: string
   };
 
@@ -29,7 +29,7 @@ export type TableData = {
     setexprice: number,
     chaosprofit: number,
     exprofit: number,
-    isCurrency: Boolean
+    isCurrency: boolean
   };
 
 export type LeagueDetails = {
@@ -42,7 +42,7 @@ export type LeagueDetails = {
   };
 
 export type LeagueResult = {
-    success: Boolean,
+    success: boolean,
     details: LeagueDetails
   };
 
