@@ -34,7 +34,7 @@ export default function Navbar({ UpdateHeigh }: Props) {
     window.addEventListener('resize', HandleElement);
     return () => {
       // eslint-disable-next-line no-undef
-      window.removeEventListener('resize', () => HandleElement);
+      window.removeEventListener('resize', HandleElement);
     };
   }, [element]);
 
