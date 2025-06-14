@@ -1,4 +1,5 @@
 import { CSSProperties, useContext } from 'react';
+import type React from 'react';
 
 import Contexts from '@/context';
 import type { KeyStates } from '@/hooks/interfaces';
@@ -6,9 +7,9 @@ import TableStyles from '../../../table/index.module.css';
 import Th from '../../../table/th';
 
 interface Props {
-    ShouldSticky: Boolean,
-    setToHover: Function,
-    toHover: KeyStates,
+    ShouldSticky: Boolean;
+    setToHover: React.Dispatch<KeyStates | undefined>;
+    toHover: KeyStates;
 }
 
 export default function thead({

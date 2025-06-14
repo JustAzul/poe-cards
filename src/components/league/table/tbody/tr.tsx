@@ -1,4 +1,6 @@
 import type { Card, KeyStates, TableData } from '@/hooks/interfaces';
+import type React from 'react';
+import { ToSearch } from './to-search.interface';
 
 import ChaosOrb from 'public/images/ChaosOrb.png';
 import Dynamic from 'next/dynamic';
@@ -16,10 +18,10 @@ import formatNumber from '@/hooks/format-number';
 const DivCard = Dynamic(() => import('../div-card'), { loading: () => <div className="mr-2"><Spinner /></div> });
 
 interface Props {
-    setToHover: Function,
-    toHover: KeyStates,
-    doSearch: Function,
-    Details: TableData
+    setToHover: React.Dispatch<KeyStates | undefined>;
+    toHover: KeyStates;
+    doSearch: React.Dispatch<ToSearch>;
+    Details: TableData;
 }
 
 function Tr({

@@ -2,6 +2,7 @@ import * as gtag from '@/lib/gtag';
 
 import type { KeyStates, TableData } from '@/hooks/interfaces';
 import { useContext, useEffect, useState } from 'react';
+import type React from 'react';
 
 import Contexts from '@/context';
 import SortTable from '@/hooks/sortTable';
@@ -9,8 +10,8 @@ import { ToSearch } from './to-search.interface';
 import Tr from './tr';
 
 interface Props {
-    setToHover: Function,
-    toHover: KeyStates,
+    setToHover: React.Dispatch<KeyStates | undefined>;
+    toHover: KeyStates;
 }
 
 function sendGoogleTagEvent({ itemName }: ToSearch, leagueName: string) {

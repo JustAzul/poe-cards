@@ -7,13 +7,13 @@ import Spinner from '../spinner';
 import mandali from '../mandali.module.css';
 
 const SplitedValues = Dynamic(() => import('./boxes/SplitedExalted'), { loading: () => <Spinner/> });
-const ChangeHelper = Dynamic(() => import('./boxes/change-helper'), {
+const ChangeHelper = Dynamic(() => import('./boxes/ChangeHelper'), {
   loading: () => <Spinner />,
 });
 const TableView = Dynamic(() => import('./table'), { loading: () => <Spinner/> });
 
 export default function League() {
-  const [boxHeight, setBoxHeight] = useState<number>(Number);
+  const [boxHeight, setBoxHeight] = useState<number>(0);
 
   const { currencyValues, cardsTable } = useContext(Contexts.leaguePageData);
 
