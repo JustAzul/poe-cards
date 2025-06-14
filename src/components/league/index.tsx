@@ -11,7 +11,7 @@ const ChangeHelper = Dynamic(() => import('./boxes/ChangeHelper'), { loading: ()
 const TableView = Dynamic(() => import('./table'), { loading: () => <Spinner/> });
 
 export default function League() {
-  const [boxHeight, setBoxHeight] = useState<number>(Number);
+  const [boxHeight, setBoxHeight] = useState<number>(0);
 
   const { currencyValues, cardsTable } = useContext(Contexts.leaguePageData);
 

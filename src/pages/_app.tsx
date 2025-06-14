@@ -15,7 +15,7 @@ import Loader from '@/components/loader';
 import Script from 'next/script';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const [isLoading, setLoading] = useState<Boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const handleStart = (url: string) => (url !== router.asPath) && setLoading(true);

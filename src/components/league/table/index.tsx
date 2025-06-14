@@ -16,7 +16,7 @@ import TableWrapper from '../../table/wrapper';
 
 export default function Table() {
   const [toHover, setToHover] = useState<KeyStates>();
-  const [isSticky, setSticky] = useState<Boolean>(false);
+  const [isSticky, setSticky] = useState<boolean>(false);
 
   const { navbarHeight } = useContext(Contexts.leaguePageData);
 

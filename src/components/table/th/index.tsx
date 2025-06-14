@@ -12,7 +12,7 @@ interface Props {
     KeyState?: KeyStates,
     SortKey?: KeyStates,
     _Key: KeyStates,
-    enableClick?: Boolean,
+    enableClick?: boolean,
     SortType?: 0 | 1;
     Class?: string
 }

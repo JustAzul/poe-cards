@@ -136,10 +136,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          // @ts-expect-error all good here actualy.
-                          // eslint-disable-next-line eqeqeq
-                          isCard: Card.Details.rewardClass == 6,
-                          // @ts-expect-error all good here actualy.
+                          isCard: Number(Card.Details.rewardClass) === 6,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }
@@ -160,10 +157,7 @@ function Tr({
                         {
                           itemName: Reward.name,
                           searchMaxValue: Reward.chaosprice,
-                          // @ts-expect-error all good here actualy.
-                          // eslint-disable-next-line eqeqeq
-                          isCard: Card.Details.rewardClass == 6,
-                          // @ts-expect-error all good here actualy.
+                          isCard: Number(Card.Details.rewardClass) === 6,
                           isCorrupted: Card.Details.isCorrupted || false,
                         }
                     }

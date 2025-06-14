@@ -7,7 +7,7 @@ interface Props {
     children: ReactNode,
     parent: string,
     title: string,
-    margintop?: Boolean,
+    margintop?: boolean,
 }
 
 const Layout = ({

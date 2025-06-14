@@ -3,7 +3,7 @@ import styles from './index.module.css';
 interface Props {
     RewardName: string,
     rewardClass: string,
-    isCorrupted: Boolean
+    isCorrupted: boolean
 }
 
 export default function CardReward({ RewardName, rewardClass, isCorrupted }: Props) {
