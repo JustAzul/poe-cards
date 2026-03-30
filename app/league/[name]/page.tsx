@@ -2,15 +2,14 @@
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { use } from "react";
-import Image from "next/image";
 import { fetchLeagueData } from "@/lib/api";
-import type { ProfitTableRowDto, LeagueDataResponse } from "@/lib/types/api";
+import type { LeagueDataResponse } from "@/lib/types/api";
 import {
   buildCardTradeUrl,
   buildRewardTradeUrl,
   buildPoeNinjaUrl,
 } from "@/lib/trade-url";
-import { CurrencyBar, CURRENCY_ICONS } from "@/components/currency-bar";
+import { CurrencyBar } from "@/components/currency-bar";
 import { LastUpdated } from "@/components/last-updated";
 import { DivineSplits } from "@/components/exalted-splits";
 import { ChangeCalculator } from "@/components/change-calculator";
@@ -24,308 +23,87 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CardTooltip } from "@/components/card-tooltip";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ProfitRangeSlider } from "@/components/profit-range-slider";
+import type { CurrencyMode } from "@/lib/format";
+import {
+  VIEW_PRESETS,
+  filterRows,
+  sortRows,
+} from "@/lib/league-utils";
+import type { SortKey, SortDir, ColumnId, ViewPreset } from "@/lib/league-utils";
+import { CurrencyValue, ProfitCell, MarginCell } from "@/components/league/cells";
+import { CardThumb } from "@/components/league/card-thumb";
+import { TableSkeleton } from "@/components/league/table-skeleton";
+import { SortIndicator } from "@/components/league/sort-indicator";
 
 // ---------------------------------------------------------------------------
-// Currency icon URLs
+// Shared header cell helpers (defined outside LeaguePage to avoid re-creation)
 // ---------------------------------------------------------------------------
 
-const CHAOS_ICON = CURRENCY_ICONS.Chaos;
-const DIVINE_ICON = CURRENCY_ICONS.Divine;
+const colGlow = "text-primary [text-shadow:0_0_8px_rgba(196,119,42,0.4)]";
+const colActive = "text-green-400";
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-type CurrencyMode = "chaos" | "divine";
-
-function formatChaos(value: number): string {
-  if (Math.abs(value) >= 10) {
-    return Math.round(value).toLocaleString("en-US");
-  }
-  return value.toFixed(1);
-}
-
-function formatDivine(chaosValue: number, divineRate: number): string {
-  if (divineRate <= 0) return "\u2014";
-  const div = chaosValue / divineRate;
-  if (Math.abs(div) >= 10) {
-    return Math.round(div).toLocaleString("en-US");
-  }
-  return div.toFixed(1);
-}
-
-function formatValue(
-  chaosValue: number,
-  mode: CurrencyMode,
-  divineRate: number,
-): string {
-  return mode === "chaos"
-    ? formatChaos(chaosValue)
-    : formatDivine(chaosValue, divineRate);
-}
-
-function CurrencyValue({
-  chaosValue,
-  mode,
-  divineRate,
+function SortableHead({
+  label,
+  sortKeyVal,
+  colIndex,
+  sortKey,
+  sortDir,
+  hoveredCol,
+  onSortToggle,
 }: {
-  chaosValue: number;
-  mode: CurrencyMode;
-  divineRate: number;
+  label: string;
+  sortKeyVal: SortKey;
+  colIndex: number;
+  sortKey: SortKey;
+  sortDir: SortDir;
+  hoveredCol: number | null;
+  onSortToggle: (key: SortKey) => void;
 }) {
-  const icon = mode === "chaos" ? CHAOS_ICON : DIVINE_ICON;
+  const isActive = sortKey === sortKeyVal;
+  const isGlowing = hoveredCol === colIndex;
   return (
-    <span className="inline-flex items-center gap-1">
-      {formatValue(chaosValue, mode, divineRate)}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={icon} alt="" className="h-4 w-4" />
-    </span>
-  );
-}
-
-function ProfitCell({
-  value,
-  mode,
-  divineRate,
-}: {
-  value: number;
-  mode: CurrencyMode;
-  divineRate: number;
-}) {
-  const isPositive = value > 0;
-  const isNegative = value < 0;
-  const prefix = isPositive ? "+" : isNegative ? "" : "";
-  const colorClass = isPositive
-    ? "text-green-400"
-    : isNegative
-      ? "text-red-400"
-      : "text-muted-foreground";
-  const icon = mode === "chaos" ? CHAOS_ICON : DIVINE_ICON;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 text-sm font-semibold tabular-nums ${colorClass}`}
+    <TableHead
+      className={`text-right text-sm font-bold uppercase tracking-wide cursor-pointer select-none transition-all duration-150 hover:text-foreground ${
+        isGlowing
+          ? colGlow
+          : isActive
+            ? colActive
+            : "text-foreground/80"
+      }`}
+      onClick={() => onSortToggle(sortKeyVal)}
     >
-      {prefix}
-      {formatValue(value, mode, divineRate)}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={icon} alt="" className="h-4 w-4" />
-    </span>
+      {label}
+      <SortIndicator active={isActive} dir={sortDir} />
+    </TableHead>
   );
 }
 
-function MarginCell({ setCost, profit }: { setCost: number; profit: number }) {
-  if (setCost <= 0)
-    return <span className="text-muted-foreground">{"\u2014"}</span>;
-  const pct = (profit / setCost) * 100;
-  const isPositive = pct > 0;
-  const isNegative = pct < 0;
-  const colorClass = isPositive
-    ? "text-green-400"
-    : isNegative
-      ? "text-red-400"
-      : "text-muted-foreground";
-  const prefix = isPositive ? "+" : "";
-  const display =
-    Math.abs(pct) >= 10
-      ? `${prefix}${Math.round(pct)}%`
-      : `${prefix}${pct.toFixed(1)}%`;
-  return (
-    <span className={`text-sm font-semibold tabular-nums ${colorClass}`}>
-      {display}
-    </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Sorting
-// ---------------------------------------------------------------------------
-
-type SortKey =
-  | "setChaosPrice"
-  | "chaosProfit"
-  | "rewardChaosPrice"
-  | "cardChaosPrice"
-  | "margin";
-type SortDir = "asc" | "desc";
-
-function getMargin(row: ProfitTableRowDto): number {
-  return row.setChaosPrice > 0
-    ? row.chaosProfit / row.setChaosPrice
-    : -Infinity;
-}
-
-function getSortValue(row: ProfitTableRowDto, key: SortKey): number {
-  switch (key) {
-    case "setChaosPrice":
-      return row.setChaosPrice;
-    case "chaosProfit":
-      return row.chaosProfit;
-    case "rewardChaosPrice":
-      return row.reward.chaosPrice;
-    case "cardChaosPrice":
-      return row.card.chaosPrice;
-    case "margin":
-      return getMargin(row);
-  }
-}
-
-function sortRows(
-  rows: ProfitTableRowDto[],
-  key: SortKey,
-  dir: SortDir,
-): ProfitTableRowDto[] {
-  return [...rows].sort((a, b) => {
-    const diff = getSortValue(a, key) - getSortValue(b, key);
-    if (diff !== 0) return dir === "asc" ? diff : -diff;
-    // Tiebreaker: raw profit (same direction)
-    if (key === "margin") {
-      const profitDiff = a.chaosProfit - b.chaosProfit;
-      return dir === "asc" ? profitDiff : -profitDiff;
-    }
-    return 0;
-  });
-}
-
-// ---------------------------------------------------------------------------
-// Filtering
-// ---------------------------------------------------------------------------
-
-function filterRows(
-  rows: ProfitTableRowDto[],
-  nameFilter: string,
-  profitMin: number,
-  profitMax: number,
-): ProfitTableRowDto[] {
-  return rows.filter((row) => {
-    if (
-      nameFilter &&
-      !row.card.name.toLowerCase().includes(nameFilter.toLowerCase())
-    ) {
-      return false;
-    }
-    if (row.chaosProfit < profitMin) return false;
-    if (profitMax < Infinity && row.chaosProfit > profitMax) return false;
-    return true;
-  });
-}
-
-// ---------------------------------------------------------------------------
-// View presets
-// ---------------------------------------------------------------------------
-
-type ColumnId =
-  | "stack"
-  | "unit"
-  | "setCost"
-  | "reward"
-  | "margin"
-  | "profit"
-  | "actions";
-type ViewPreset = "margin" | "full" | "detailed";
-
-const VIEW_PRESETS: Record<
-  ViewPreset,
-  { label: string; columns: ColumnId[]; defaultSort: SortKey; minWidth: string }
-> = {
-  margin: {
-    label: "Margin",
-    columns: ["stack", "setCost", "margin", "profit", "actions"],
-    defaultSort: "margin",
-    minWidth: "min-w-[700px]",
-  },
-  full: {
-    label: "Full",
-    columns: [
-      "stack",
-      "unit",
-      "setCost",
-      "reward",
-      "margin",
-      "profit",
-      "actions",
-    ],
-    defaultSort: "margin",
-    minWidth: "min-w-[1000px]",
-  },
-  detailed: {
-    label: "Detailed",
-    columns: ["stack", "unit", "setCost", "reward", "profit", "actions"],
-    defaultSort: "chaosProfit",
-    minWidth: "min-w-[900px]",
-  },
-};
-
-// ---------------------------------------------------------------------------
-// Card thumbnail with error fallback
-// ---------------------------------------------------------------------------
-
-function CardThumb({
-  artFilename,
-  name,
+function PlainHead({
+  label,
+  colIndex,
+  hoveredCol,
+  align = "right",
 }: {
-  artFilename: string;
-  name: string;
+  label: string;
+  colIndex: number;
+  hoveredCol: number | null;
+  align?: "left" | "right" | "center";
 }) {
-  const [error, setError] = useState(false);
+  const textAlign =
+    align === "center"
+      ? "text-center"
+      : align === "left"
+        ? "text-left"
+        : "text-right";
   return (
-    <div className="h-[22px] w-[32px] flex-shrink-0">
-      {error ? (
-        <div className="h-full w-full rounded-sm bg-secondary" />
-      ) : (
-        <Image
-          src={`https://web.poecdn.com/image/divination-card/${artFilename}.png`}
-          alt={name}
-          width={32}
-          height={22}
-          className="rounded-sm object-cover"
-          onError={() => setError(true)}
-          unoptimized
-        />
-      )}
-    </div>
+    <TableHead
+      className={`${textAlign} text-sm font-bold uppercase tracking-wide transition-all duration-150 ${hoveredCol === colIndex ? colGlow : "text-foreground/80"}`}
+    >
+      {label}
+    </TableHead>
   );
-}
-
-// ---------------------------------------------------------------------------
-// Table skeleton (loading state)
-// ---------------------------------------------------------------------------
-
-function TableSkeleton() {
-  return (
-    <div className="p-4 sm:p-6">
-      <div className="mb-4 space-y-2">
-        <Skeleton className="h-6 w-40" />
-        <Skeleton className="h-5 w-72" />
-      </div>
-      <div className="space-y-0">
-        <div className="flex gap-4 border-b border-border pb-2 mb-1">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-4 flex-1" />
-          ))}
-        </div>
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="flex gap-4 py-2 border-b border-border/40">
-            {Array.from({ length: 6 }).map((_, j) => (
-              <Skeleton key={j} className="h-4 flex-1" />
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Sort indicator
-// ---------------------------------------------------------------------------
-
-function SortIndicator({ active, dir }: { active: boolean; dir: SortDir }) {
-  if (!active)
-    return <span className="ml-1 opacity-30">{"\u25B2\u25BC"}</span>;
-  return <span className="ml-1">{dir === "asc" ? "\u25B2" : "\u25BC"}</span>;
 }
 
 // ---------------------------------------------------------------------------
@@ -384,6 +162,8 @@ export default function LeaguePage({ params }: LeaguePageProps) {
 
   const loadData = useCallback(() => {
     let cancelled = false;
+    setProfitRange([-100000, 100000]);
+    setNameFilter("");
     setLoading(true);
     setError(null);
 
@@ -392,8 +172,8 @@ export default function LeaguePage({ params }: LeaguePageProps) {
         if (!cancelled) {
           setData(result);
           const profits = result.data.map((r) => r.chaosProfit);
-          const minProfit = Math.min(...profits, 0);
-          const maxProfit = Math.max(...profits, 0);
+          const minProfit = profits.reduce((a, b) => Math.min(a, b), 0);
+          const maxProfit = profits.reduce((a, b) => Math.max(a, b), 0);
           setProfitRange([Math.floor(minProfit), Math.ceil(maxProfit)]);
         }
       })
@@ -414,19 +194,16 @@ export default function LeaguePage({ params }: LeaguePageProps) {
     return loadData();
   }, [loadData]);
 
-  const allProfits = useMemo(() => {
-    if (!data) return [];
-    return data.data.map((r) => r.chaosProfit);
-  }, [data]);
-
-  const minProfitValue = useMemo(() => {
-    if (!data) return -100000;
-    return Math.min(...data.data.map((r) => r.chaosProfit), 0);
-  }, [data]);
-
-  const maxProfitValue = useMemo(() => {
-    if (!data) return 100000;
-    return Math.max(...data.data.map((r) => r.chaosProfit), 0);
+  const { allProfits, minProfitValue, maxProfitValue } = useMemo(() => {
+    if (!data) return { allProfits: [] as number[], minProfitValue: -100000, maxProfitValue: 100000 };
+    let min = 0;
+    let max = 0;
+    const profits = data.data.map((r) => {
+      if (r.chaosProfit < min) min = r.chaosProfit;
+      if (r.chaosProfit > max) max = r.chaosProfit;
+      return r.chaosProfit;
+    });
+    return { allProfits: profits, minProfitValue: min, maxProfitValue: max };
   }, [data]);
 
   const filteredAndSorted = useMemo(() => {
@@ -486,71 +263,13 @@ export default function LeaguePage({ params }: LeaguePageProps) {
   const totalCols = 1 + visibleColumns.length;
 
   // ------------------------------------------------------------------
-  // Sortable header helper
-  // ------------------------------------------------------------------
-
-  const colGlow = "text-primary [text-shadow:0_0_8px_rgba(196,119,42,0.4)]";
-  const colActive = "text-green-400";
-
-  function SortableHead({
-    label,
-    sortKeyVal,
-    colIndex,
-  }: {
-    label: string;
-    sortKeyVal: SortKey;
-    colIndex: number;
-  }) {
-    const isActive = sortKey === sortKeyVal;
-    const isGlowing = hoveredCol === colIndex;
-    return (
-      <TableHead
-        className={`text-right text-sm font-bold uppercase tracking-wide cursor-pointer select-none transition-all duration-150 hover:text-foreground ${
-          isGlowing
-            ? colGlow
-            : isActive
-              ? colActive
-              : "text-foreground/80"
-        }`}
-        onClick={() => handleSortToggle(sortKeyVal)}
-      >
-        {label}
-        <SortIndicator active={isActive} dir={sortDir} />
-      </TableHead>
-    );
-  }
-
-  function PlainHead({
-    label,
-    colIndex,
-    align = "right",
-  }: {
-    label: string;
-    colIndex: number;
-    align?: "left" | "right" | "center";
-  }) {
-    const textAlign =
-      align === "center"
-        ? "text-center"
-        : align === "left"
-          ? "text-left"
-          : "text-right";
-    return (
-      <TableHead
-        className={`${textAlign} text-sm font-bold uppercase tracking-wide transition-all duration-150 ${hoveredCol === colIndex ? colGlow : "text-foreground/80"}`}
-      >
-        {label}
-      </TableHead>
-    );
-  }
-
-  // ------------------------------------------------------------------
   // Column index tracking (dynamic based on visible columns)
   // ------------------------------------------------------------------
 
   // Card is always col 0. Then each visible column gets an incrementing index.
   function colIdx(col: ColumnId): number {
-    return 1 + visibleColumns.indexOf(col);
+    const idx = visibleColumns.indexOf(col);
+    return idx === -1 ? -1 : idx + 1;
   }
 
   // ------------------------------------------------------------------
@@ -705,16 +424,20 @@ export default function LeaguePage({ params }: LeaguePageProps) {
           <TableHeader>
             <TableRow className="border-b-2 border-b-primary/30 bg-card hover:bg-card">
               {/* Card — always visible */}
-              <PlainHead label="Card" colIndex={0} align="left" />
+              <PlainHead label="Card" colIndex={0} align="left" hoveredCol={hoveredCol} />
 
               {hasCol("stack") && (
-                <PlainHead label="Stack" colIndex={colIdx("stack")} />
+                <PlainHead label="Stack" colIndex={colIdx("stack")} hoveredCol={hoveredCol} />
               )}
               {hasCol("unit") && (
                 <SortableHead
                   label="Unit"
                   sortKeyVal="cardChaosPrice"
                   colIndex={colIdx("unit")}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  hoveredCol={hoveredCol}
+                  onSortToggle={handleSortToggle}
                 />
               )}
               {hasCol("setCost") && (
@@ -722,6 +445,10 @@ export default function LeaguePage({ params }: LeaguePageProps) {
                   label="Set Cost"
                   sortKeyVal="setChaosPrice"
                   colIndex={colIdx("setCost")}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  hoveredCol={hoveredCol}
+                  onSortToggle={handleSortToggle}
                 />
               )}
               {hasCol("reward") && (
@@ -729,6 +456,10 @@ export default function LeaguePage({ params }: LeaguePageProps) {
                   label="Reward"
                   sortKeyVal="rewardChaosPrice"
                   colIndex={colIdx("reward")}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  hoveredCol={hoveredCol}
+                  onSortToggle={handleSortToggle}
                 />
               )}
               {hasCol("margin") && (
@@ -736,6 +467,10 @@ export default function LeaguePage({ params }: LeaguePageProps) {
                   label="Margin"
                   sortKeyVal="margin"
                   colIndex={colIdx("margin")}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  hoveredCol={hoveredCol}
+                  onSortToggle={handleSortToggle}
                 />
               )}
               {hasCol("profit") && (
@@ -743,6 +478,10 @@ export default function LeaguePage({ params }: LeaguePageProps) {
                   label="Profit"
                   sortKeyVal="chaosProfit"
                   colIndex={colIdx("profit")}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  hoveredCol={hoveredCol}
+                  onSortToggle={handleSortToggle}
                 />
               )}
               {hasCol("actions") && (
@@ -750,6 +489,7 @@ export default function LeaguePage({ params }: LeaguePageProps) {
                   label="Actions"
                   colIndex={colIdx("actions")}
                   align="center"
+                  hoveredCol={hoveredCol}
                 />
               )}
             </TableRow>

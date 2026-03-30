@@ -3,6 +3,7 @@ name: Kody Code Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [master, develop]
 
 concurrency:
   group: kody-ephemeral
