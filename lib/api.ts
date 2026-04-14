@@ -18,11 +18,11 @@ async function apiFetch<T>(url: string): Promise<T> {
 }
 
 export async function fetchLeagues(): Promise<LeaguesListResponse> {
-  return apiFetch<LeaguesListResponse>(`${API_BASE}/api/prices/leagues`);
+  return apiFetch<LeaguesListResponse>(`${API_BASE}/api/leagues`);
 }
 
 export async function fetchLeagueData(league: string): Promise<LeagueDataResponse> {
   return apiFetch<LeagueDataResponse>(
-    `${API_BASE}/api/prices/${encodeURIComponent(league)}`
+    `${API_BASE}/api/leagues/${encodeURIComponent(league)}`
   );
 }

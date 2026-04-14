@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 export function CardThumb({
   artFilename,
@@ -16,14 +15,14 @@ export function CardThumb({
       {error ? (
         <div className="h-full w-full rounded-sm bg-secondary" />
       ) : (
-        <Image
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           src={`https://web.poecdn.com/image/divination-card/${artFilename}.png`}
           alt={name}
           width={32}
           height={22}
-          className="rounded-sm object-cover"
+          className="h-[22px] w-[32px] rounded-sm object-cover"
           onError={() => setError(true)}
-          unoptimized
         />
       )}
     </div>

@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const apiOrigin = process.env.NEXT_PUBLIC_API_ORIGIN ?? "api.poe.cards";
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -8,7 +10,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' web.poecdn.com",
-      "connect-src 'self' poe-api.justazul.com",
+      `connect-src 'self' ${apiOrigin}`,
       "font-src 'self'",
     ].join("; "),
   },
@@ -18,6 +20,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["127.0.0.1"],
   images: {
     remotePatterns: [
       {
