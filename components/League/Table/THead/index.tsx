@@ -37,32 +37,16 @@ export default function thead({
                 Price (c)
             </Th>
 
-            <Th enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c4">
-                Price (ex)
-            </Th>
-
             <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c5">
                 Set Price (c)
-            </Th>
-
-            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c6">
-                Set Price (ex)
             </Th>
 
             <Th enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c7">
                 Item Price (c)
             </Th>
 
-            <Th enableClick={false} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c8">
-                Item Price (ex)
-            </Th>
-
             <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c9">
                 Profit (c)
-            </Th>
-
-            <Th setSortKey={setSortKey} setSortType={setSortType} enableClick={true} SetMouseOver={setToHover} KeyState={toHover} SortKey={sortKey} SortType={sortType} _Key="c10">
-                Profit (ex)
             </Th>
 
         </tr>

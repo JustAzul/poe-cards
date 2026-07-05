@@ -2,9 +2,7 @@ import { TableData, KeyStates } from './interfaces';
 
 const InternalEnum = {
   c5: 'setchaosprice',
-  c6: 'setexprice',
   c9: 'chaosprofit',
-  c10: 'exprofit',
 };
 
 const SortTable = (Table: Array<TableData> = [], SortKey: KeyStates = 'c9', SortType: 0|1 = 1): Array<TableData> => Table.sort((a, b) => {

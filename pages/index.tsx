@@ -1,77 +1,49 @@
-import { useEffect, useState } from 'react';
+import type { GetStaticProps } from 'next';
+import type { IndexEntry } from '../lib/r2-client';
+import type { Leagues } from '../hooks/interfaces';
 
 import CentralSpinner from '../components/CentralSpinner';
 import Contexts from '../context';
 import Dynamic from 'next/dynamic';
-import { GetServerSideProps } from 'next/types';
 import Layout from '../components/Layout';
-import firebaseAdmin from '../firebase/adminApp';
-import firebaseClient from '../firebase/clientApp';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { getIndex } from '../lib/r2-client';
 
 const SelectLeagueTable = Dynamic(
   () => import('../components/Table'),
   { loading: () => <CentralSpinner /> },
 );
 
+const DEFAULT_HOST = 'poe.cards';
+const INDEX_REVALIDATE_SECONDS = 3600;
+
 interface Props {
   host: string,
-  defaultLeagueData: any
+  leagueDetails: Leagues[],
 }
 
-function parseLeaguesData(Leagues = []) {
-  return Object.values(Leagues);
+function mapIndexToLeagues(entries: IndexEntry[]): Leagues[] {
+  return entries.map(({ name, ladder }) => ({ leagueName: name, ladder }));
 }
 
-function Home({ host, defaultLeagueData }: Props) {
-  const [LeagueDetails, setLeagueDetails] = useState(defaultLeagueData);
-
-  const [leagues, leaguesLoading, leaguesError] = useCollection(
-    // @ts-expect-error im lazy, messing with types later.
-    firebaseClient.firestore().collection('leagues'),
-    {},
-  );
-
-  useEffect(() => {
-    if (!leaguesLoading && !leaguesError && leagues) {
-      const leaguesData = leagues?.docs
-        .find(({ id }) => id === 'all');
-
-      setLeagueDetails(
-        parseLeaguesData(
-          // @ts-expect-error im lazy, messing with types later.
-          leaguesData?.data(),
-        ),
-      );
-    } else setLeagueDetails(defaultLeagueData);
-  }, [leaguesLoading, leaguesError, leagues]);
-
+function Home({ host, leagueDetails }: Props) {
   return (
     <Layout parent={host} title="Pick a League">
-      <Contexts.leagueDetails.Provider value={LeagueDetails}>
+      <Contexts.leagueDetails.Provider value={leagueDetails}>
         <SelectLeagueTable />
       </Contexts.leagueDetails.Provider>
     </Layout>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const Headers = req.headers;
-  const host = Headers['x-forwarded-server'] ?? Headers.host ?? 'poe.cards';
-
-  const defaultLeagueData = (await firebaseAdmin
-    .firestore()
-    .collection('leagues')
-    .doc('all')
-    .get())
-    .data();
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const index = await getIndex();
 
   return {
     props: {
-      host,
-      // @ts-expect-error we are receiving correct data here.
-      defaultLeagueData: parseLeaguesData(defaultLeagueData),
+      host: DEFAULT_HOST,
+      leagueDetails: mapIndexToLeagues(index),
     },
+    revalidate: INDEX_REVALIDATE_SECONDS,
   };
 };
 

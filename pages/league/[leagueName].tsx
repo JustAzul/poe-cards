@@ -6,110 +6,55 @@ import type {
   CurrencyValues as CurrencyValuesType,
   KeyStates,
   LeagueDetails as LeagueDetailsType,
-  TableData,
 } from '../../hooks/interfaces';
-import { NextRouter, useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { CurrencyRateEntry } from '../../lib/mappers/league-dto-mapper';
+import { useState } from 'react';
 
 import CentralSpinner from '../../components/CentralSpinner';
 import Contexts from '../../context';
 import Dynamic from 'next/dynamic';
-import type { GetServerSideProps } from 'next';
 import Nav from '../../components/League/Navbar';
 import PageLoader from '../../components/Loader';
 import SortTable from '../../hooks/sortTable';
-import firebase from '../../firebase/clientApp';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import mapLeagueData from '../../lib/mappers/league-dto-mapper';
+import type { LeagueDataResponse } from '../../lib/r2-client';
+import { getIndex, getLeague } from '../../lib/r2-client';
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
 const LeagueComponent = Dynamic(() => import('../../components/League'), { loading: () => <CentralSpinner /> });
 const LeagueError = Dynamic(() => import('../_error'), { loading: () => <PageLoader detail='Please Wait..' /> });
 
+const DEFAULT_HOST = 'poe.cards';
+const LEAGUE_REVALIDATE_SECONDS = 3600;
+
 const generateSplitsArray = (Value: number = 0) => {
   const arr = [];
   for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
   return arr;
 };
-const GetCurrencyChaosValue = (Data = [], CurrencyName = 'Exalted Orb') => {
+const GetCurrencyChaosValue = (Data: CurrencyRateEntry[] = [], CurrencyName = 'Exalted Orb') => {
   const result = Data.find(({ Name }) => Name === CurrencyName);
-  // @ts-expect-error im lazy, messing with types later.
   return result?.chaosEquivalent || 0;
 };
 
 interface Props {
   host: string,
+  leagueName: string,
+  leagueExists: boolean,
+  leagueDetails?: LeagueDetailsType,
 }
 
-const League = ({ host }: Props) => {
+const League = ({
+  host, leagueName, leagueExists, leagueDetails,
+}: Props) => {
   const [navbarHeight, setNavbarHeight] = useState<number>(40);
-  const [leagueExist, setLeagueExist] = useState<Boolean>(false);
-  const [receivedLeagueData, setReceivedLeagueData] = useState<Boolean>(false);
-  const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType>();
-  const [leagueTable, setLeagueTable] = useState <Array<TableData>>([]);
-
   const [sortKey, setSortKey] = useState<KeyStates>('c9');
   const [sortType, setSortType] = useState<0 | 1>(1);
 
-  const router: NextRouter = useRouter();
-  const { leagueName } = router.query;
-
-  const [leagueItems, leagueItemsLoading, leagueItemsError] = useCollection(
-    // @ts-expect-error im lazy, messing with types later.
-    firebase.firestore().collection('items'),
-    {},
-  );
-
-  useEffect(() => {
-    setReceivedLeagueData(!leagueItemsLoading && !leagueItemsError);
-
-    if (!leagueItemsLoading && !leagueItemsError && !!leagueItems) {
-      const leaguesData = leagueItems?.docs;
-
-      const items = leaguesData.find(({ id }) => id === 'all')?.data();
-      const currency = leaguesData.find(({ id }) => id === 'currency')?.data();
-      const updated = leaguesData.find(({ id }) => id === 'updated')?.data();
-
-      // @ts-expect-error im lazy, messing with types later.
-      const doesLeagueExist = Object.prototype.hasOwnProperty.call(items, leagueName) && Object.prototype.hasOwnProperty.call(currency, leagueName);
-      setLeagueExist(doesLeagueExist);
-
-      if (doesLeagueExist) {
-        const leagueData = {
-          // @ts-expect-error im lazy, messing with types later.
-          Currency: currency[leagueName],
-          // @ts-expect-error im lazy, messing with types later.
-          Items: items[leagueName],
-          // @ts-expect-error im lazy, messing with types later.
-          Updated: updated[leagueName],
-        };
-
-        const o = {
-          ExaltValue: GetCurrencyChaosValue(leagueData.Currency, 'Exalted Orb') || 0,
-          DivineValue: GetCurrencyChaosValue(leagueData.Currency, 'Divine Orb') || 0,
-          AnullValue: GetCurrencyChaosValue(leagueData.Currency, 'Orb of Annulment') || 0,
-          LastUpdated: leagueData.Updated,
-          Table: leagueData.Items,
-        };
-
-        const sortedTable = SortTable(o.Table, sortKey, sortType);
-        setLeagueTable(sortedTable);
-
-        // @ts-expect-error im lazy, messing with types later.
-        o.XMirrorValue = GetCurrencyChaosValue(leagueData.Currency, 'Mirror of Kalandra') || 0;
-        // @ts-expect-error im lazy, messing with types later.
-        o.XMirrorValue /= o.ExaltValue;
-        // @ts-expect-error im lazy, messing with types later.
-        o.XMirrorValue = parseFloat(o.XMirrorValue.toFixed(1));
-
-        // @ts-expect-error im lazy, messing with types later.
-        setLeagueDetails(o);
-      }
-    }
-  }, [leagueItems, leagueItemsLoading, leagueItemsError]);
-
   const {
-    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never',
+    ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', Table = [],
   } = leagueDetails || {};
 
   const currencyValues: CurrencyValuesType = {
@@ -120,16 +65,17 @@ const League = ({ host }: Props) => {
   };
 
   const splitsArray: Array<number> = generateSplitsArray(ExaltValue);
+  const sortedTable = SortTable(Table, sortKey, sortType);
 
   const contextData = {
     sortKey,
     sortType,
     setSortKey,
     setSortType,
-    leagueName: leagueName?.toString() ?? 'undefined',
+    leagueName,
     lastUpdatedDate: LastUpdated,
     navbarHeight,
-    cardsTable: leagueTable,
+    cardsTable: sortedTable,
     currencyValues,
     splitsArray,
   };
@@ -143,26 +89,61 @@ const League = ({ host }: Props) => {
     </Layout>
   );
 
-  return (
-    <>
-      {receivedLeagueData
-        ? (leagueExist
-          ? toRender()
-          : <LeagueError statusCode={404} leagueError={true} />)
-        : <PageLoader detail='Fetching Data..' />
-      }
-    </>
-  );
+  return leagueExists ? toRender() : <LeagueError statusCode={404} leagueError={true} />;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { headers } = req;
-  const host = headers['x-forwarded-server'] || headers.host || 'poe.cards';
+export const getStaticPaths: GetStaticPaths = async () => {
+  const leagues = await getIndex();
+
+  return {
+    paths: leagues.map(({ name }) => ({ params: { leagueName: name } })),
+    fallback: 'blocking',
+  };
+};
+
+function buildLeagueDetails(leagueDataResponse: LeagueDataResponse): LeagueDetailsType {
+  const mapped = mapLeagueData(leagueDataResponse);
+
+  const ExaltValue = GetCurrencyChaosValue(mapped.Currency, 'Exalted Orb') || 0;
+  const DivineValue = GetCurrencyChaosValue(mapped.Currency, 'Divine Orb') || 0;
+  const AnullValue = GetCurrencyChaosValue(mapped.Currency, 'Orb of Annulment') || 0;
+
+  const rawMirrorValue = GetCurrencyChaosValue(mapped.Currency, 'Mirror of Kalandra') || 0;
+  const XMirrorValue = ExaltValue ? parseFloat((rawMirrorValue / ExaltValue).toFixed(1)) : 0;
+
+  return {
+    ExaltValue,
+    DivineValue,
+    AnullValue,
+    XMirrorValue,
+    LastUpdated: mapped.LastUpdated,
+    Table: mapped.Table,
+  };
+}
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const leagueName = params?.leagueName as string;
+  const leagueDataResponse = await getLeague(leagueName);
+
+  if (!leagueDataResponse) {
+    return {
+      props: {
+        host: DEFAULT_HOST,
+        leagueName,
+        leagueExists: false,
+      },
+      revalidate: LEAGUE_REVALIDATE_SECONDS,
+    };
+  }
 
   return {
     props: {
-      host,
+      host: DEFAULT_HOST,
+      leagueName,
+      leagueExists: true,
+      leagueDetails: buildLeagueDetails(leagueDataResponse),
     },
+    revalidate: LEAGUE_REVALIDATE_SECONDS,
   };
 };
 

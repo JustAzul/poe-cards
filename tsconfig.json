@@ -22,9 +22,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "firebase/clientApp.js",
-    "firebase/adminApp.js",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"

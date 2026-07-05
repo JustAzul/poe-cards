@@ -2,7 +2,6 @@ import type { Card, KeyStates, TableData } from '../../../../hooks/interfaces';
 
 import ChaosOrb from '../../../../public/images/ChaosOrb.png';
 import Dynamic from 'next/dynamic';
-import ExaltedOrb from '../../../../public/images/ExaltedOrb.png';
 import Img from './Img';
 import InventoryIcon from '../../../../public/images/InventoryIcon.png';
 import { OverlayTrigger } from 'react-bootstrap';
@@ -27,7 +26,7 @@ function Tr({
 }: Props) {
   const {
     // eslint-disable-next-line no-shadow
-    Card, Reward, chaosprofit, exprofit, isCurrency, setchaosprice, setexprice,
+    Card, Reward, chaosprofit, isCurrency, setchaosprice,
   } = Details;
 
   const GenDivCard = (CardDetails: Card) => (
@@ -92,41 +91,12 @@ function Tr({
                     </Td>
 
                     <Td
-                    Click={doSearch}
-
-                    toSearchDetails={
-                        {
-                          itemName: Card.name,
-                          searchMaxValue: Card.chaosprice,
-                          isCard: true,
-                        }
-                    }
-
-                    setTitle={`${Card.name} Exalted Price`}
-                    SetMouseOver={setToHover}
-                    Class="click"
-                    KeyState={toHover}
-                    _Key="c4"
-                    key={`${Card.name}-c4`} >
-                        {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{Card.exaltedprice}</span>
-                    </Td>
-
-                    <Td
                     setTitle={`${Card.name} Stacked Chaos Value`}
                     SetMouseOver={setToHover}
                     KeyState={toHover}
                     _Key="c5"
                     key={`${Card.name}-c5`} >
                         {<Img artFileName={ChaosOrb} />}<span className="ml-2">{formatNumber(setchaosprice)}</span>
-                    </Td>
-
-                    <Td
-                    setTitle={`${Card.name} Stacked Exalted Value`}
-                    SetMouseOver={setToHover}
-                    KeyState={toHover}
-                    _Key="c6"
-                    key={`${Card.name}-c6`} >
-                        {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{setexprice}</span>
                     </Td>
 
                     <Td
@@ -154,45 +124,12 @@ function Tr({
                     </Td>
 
                     <Td
-                    Click={isCurrency ? undefined : doSearch}
-
-                    toSearchDetails={
-                        {
-                          itemName: Reward.name,
-                          searchMaxValue: Reward.chaosprice,
-                          // @ts-expect-error all good here actualy.
-                          // eslint-disable-next-line eqeqeq
-                          isCard: Card.Details.rewardClass == 6,
-                          // @ts-expect-error all good here actualy.
-                          isCorrupted: Card.Details.isCorrupted || false,
-                        }
-                    }
-
-                    setTitle={`${Reward.name} Exalted Value`}
-                    Class={isCurrency ? undefined : 'click'}
-                    SetMouseOver={setToHover}
-                    KeyState={toHover}
-                    _Key="c8"
-                    key={`${Card.name}-c8`} >
-                        {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{Reward.exaltedprice}</span>
-                    </Td>
-
-                    <Td
                     setTitle={'Chaos Profit'}
                     SetMouseOver={setToHover}
                     KeyState={toHover}
                     _Key="c9"
                     key={`${Card.name}-c9`} >
                         {<Img artFileName={ChaosOrb} />}<span className="ml-2">{formatNumber(chaosprofit)}</span>
-                    </Td>
-
-                    <Td
-                    setTitle={'Exalted Profit'}
-                    SetMouseOver={setToHover}
-                    KeyState={toHover}
-                    _Key="c10"
-                    key={`${Card.name}-c10`} >
-                        {<Img artFileName={ExaltedOrb} />}<span className="ml-2">{exprofit}</span>
                     </Td>
          </tr>
         </OverlayTrigger >

@@ -12,23 +12,19 @@ export type Card = {
     name: string,
     stack: number,
     chaosprice: number,
-    exaltedprice: number,
     Details: CardDetail
   };
 
 export type Reward = {
     name: string,
-    chaosprice: number,
-    exaltedprice: number
+    chaosprice: number
   };
 
 export type TableData = {
     Card: Card,
     Reward: Reward,
     setchaosprice: number,
-    setexprice: number,
     chaosprofit: number,
-    exprofit: number,
     isCurrency: Boolean
   };
 
