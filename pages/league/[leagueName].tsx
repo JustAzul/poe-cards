@@ -19,7 +19,6 @@ import Nav from '../../components/League/Navbar';
 import PageLoader from '../../components/Loader';
 import SortTable from '../../hooks/sortTable';
 import mapLeagueData from '../../lib/mappers/league-dto-mapper';
-import { decodeLeagueName } from '../../lib/league-name';
 import useLeagueSocket from '../../hooks/useLeagueSocket';
 import type { LeagueDataResponse } from '../../lib/r2-client';
 import { getIndex, getLeague } from '../../lib/r2-client';
@@ -132,23 +131,12 @@ function buildLeagueDetails(leagueDataResponse: LeagueDataResponse): LeagueDetai
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const rawLeagueName = params?.leagueName as string;
-  const leagueName = decodeLeagueName(rawLeagueName);
-
-  if (leagueName === null) {
-    // eslint-disable-next-line no-console
-    console.warn('league/[leagueName]: rejected — malformed percent-encoding in route param');
-
-    return {
-      props: {
-        host: DEFAULT_HOST,
-        leagueName: rawLeagueName,
-        leagueExists: false,
-      },
-      revalidate: LEAGUE_REVALIDATE_SECONDS,
-    };
-  }
-
+  // Next's route matcher already URL-decodes dynamic route params before
+  // getStaticProps runs — this is a trusted internal boundary, not raw/
+  // external input, so no decode step belongs here. Decoding again would
+  // double-decode any league name that legitimately contains a literal `%`
+  // (e.g. "100% Delirium"), throwing on `"% D"` as a bogus escape sequence.
+  const leagueName = params?.leagueName as string;
   const leagueDataResponse = await getLeague(leagueName);
 
   if (!leagueDataResponse) {

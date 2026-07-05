@@ -109,10 +109,51 @@ function isValidCurrencyRates(value: unknown): value is LeagueDataResponse['curr
   );
 }
 
+function isValidCardDetails(value: unknown): value is ProfitTableRowDto['card']['details'] {
+  return (
+    isPlainObject(value)
+    && typeof value.artFilename === 'string'
+    && typeof value.rewardName === 'string'
+    && typeof value.rewardClass === 'string'
+    && typeof value.isCorrupted === 'boolean'
+    && typeof value.flavour === 'string'
+  );
+}
+
+function isValidCard(value: unknown): value is ProfitTableRowDto['card'] {
+  return (
+    isPlainObject(value)
+    && typeof value.name === 'string'
+    && typeof value.stack === 'number'
+    && typeof value.chaosPrice === 'number'
+    && isValidCardDetails(value.details)
+  );
+}
+
+function isValidReward(value: unknown): value is ProfitTableRowDto['reward'] {
+  return (
+    isPlainObject(value)
+    && typeof value.name === 'string'
+    && typeof value.chaosPrice === 'number'
+  );
+}
+
+function isValidProfitTableRow(value: unknown): value is ProfitTableRowDto {
+  return (
+    isPlainObject(value)
+    && isValidCard(value.card)
+    && isValidReward(value.reward)
+    && typeof value.setChaosPrice === 'number'
+    && typeof value.chaosProfit === 'number'
+    && typeof value.isCurrency === 'boolean'
+  );
+}
+
 function isValidLeagueDataResponse(value: unknown): value is LeagueDataResponse {
   return (
     isPlainObject(value)
     && Array.isArray(value.data)
+    && value.data.every(isValidProfitTableRow)
     && isValidCurrencyRates(value.currencyRates)
     && typeof value.updatedAt === 'string'
     && typeof value.entryCount === 'number'

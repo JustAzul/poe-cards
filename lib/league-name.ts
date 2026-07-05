@@ -1,23 +1,21 @@
 /**
- * Shared encode/decode boundary for league names used across R2 keys, the
- * revalidate API route, and the `[leagueName]` dynamic route.
+ * Shared encode boundary for league names used when building R2 object keys
+ * (`r2-client.ts`'s `getLeague`) and the revalidate API's target path
+ * (`pages/api/revalidate.ts`).
  *
- * `decodeURIComponent` throws `URIError` on malformed percent-encoding (e.g.
- * a lone `%` in the input) — every inbound boundary must go through the
- * guarded `decodeLeagueName` below instead of calling it raw, so a malformed
- * league name degrades to `null` instead of crashing the request.
+ * There is deliberately no `decodeLeagueName` here: every place this app
+ * receives a league name (the `[leagueName]` dynamic route's `params`, the
+ * revalidate route's JSON body/query) is already a decoded plain string by
+ * the time our code sees it — Next's route matcher and query/body parser
+ * decode ahead of our boundary. Adding a second `decodeURIComponent` pass
+ * on an already-decoded string is a real bug, not defense-in-depth: a name
+ * that legitimately contains a literal `%` (e.g. "100% Delirium") would be
+ * mis-parsed as a percent-escape and throw `URIError`, turning a valid
+ * league into a false 404. If a genuinely raw/undecoded external boundary
+ * is ever introduced, add a guarded decode helper for that specific
+ * boundary then — don't reintroduce a generic one speculatively.
  */
 
 export function encodeLeagueName(name: string): string {
   return encodeURIComponent(name);
-}
-
-export function decodeLeagueName(value: string): string | null {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    // eslint-disable-next-line no-console
-    console.warn('league-name: failed to decode league name — malformed percent-encoding');
-    return null;
-  }
 }
