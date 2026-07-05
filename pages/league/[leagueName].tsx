@@ -77,21 +77,24 @@ const League = ({
   const [leagueExists, setLeagueExists] = useState<boolean>(initialLeagueExists);
   const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType | undefined>(initialLeagueDetails);
 
-  // Next's pages-router reuses this component instance across client-side
-  // navigations between two different league pages (no remount) — without
-  // this, navigating from League A to League B would keep rendering League
-  // A's live-updated state until the next WS ping happened to fire.
-  useEffect(() => {
-    setLeagueExists(initialLeagueExists);
-    setLeagueDetails(initialLeagueDetails);
-  }, [leagueName, initialLeagueExists, initialLeagueDetails]);
-
   // useLeagueSocket fires a refetch both on WS connect/reconnect and on each
   // "updated" message — two calls can be in flight at once, and network timing
   // gives no guarantee the one fired first resolves first. This ref lets a
   // resolving fetch check "is a newer request still in flight?" before applying
   // its result, so an older response can never clobber a newer one.
   const latestRequestIdRef = useRef(0);
+
+  // Next's pages-router reuses this component instance across client-side
+  // navigations between two different league pages (no remount). Bumping the
+  // request id here (not just resetting state) also invalidates any refetch
+  // still in flight for the PREVIOUS league — otherwise a slow response for
+  // League A could resolve after navigating to League B and overwrite its
+  // freshly-set props with League A's data.
+  useEffect(() => {
+    latestRequestIdRef.current += 1;
+    setLeagueExists(initialLeagueExists);
+    setLeagueDetails(initialLeagueDetails);
+  }, [leagueName, initialLeagueExists, initialLeagueDetails]);
 
   const refetchLeagueData = useCallback(async () => {
     const requestId = latestRequestIdRef.current + 1;
