@@ -19,6 +19,7 @@ import Nav from '../../components/League/Navbar';
 import PageLoader from '../../components/Loader';
 import SortTable from '../../hooks/sortTable';
 import mapLeagueData from '../../lib/mappers/league-dto-mapper';
+import { decodeLeagueName } from '../../lib/league-name';
 import useLeagueSocket from '../../hooks/useLeagueSocket';
 import type { LeagueDataResponse } from '../../lib/r2-client';
 import { getIndex, getLeague } from '../../lib/r2-client';
@@ -131,7 +132,23 @@ function buildLeagueDetails(leagueDataResponse: LeagueDataResponse): LeagueDetai
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const leagueName = params?.leagueName as string;
+  const rawLeagueName = params?.leagueName as string;
+  const leagueName = decodeLeagueName(rawLeagueName);
+
+  if (leagueName === null) {
+    // eslint-disable-next-line no-console
+    console.warn('league/[leagueName]: rejected — malformed percent-encoding in route param');
+
+    return {
+      props: {
+        host: DEFAULT_HOST,
+        leagueName: rawLeagueName,
+        leagueExists: false,
+      },
+      revalidate: LEAGUE_REVALIDATE_SECONDS,
+    };
+  }
+
   const leagueDataResponse = await getLeague(leagueName);
 
   if (!leagueDataResponse) {

@@ -1,4 +1,5 @@
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { encodeLeagueName } from './league-name';
 
 export type IndexEntry = {
   name: string,
@@ -81,14 +82,51 @@ function isNotFoundError(error: unknown): boolean {
   return error.name === 'NoSuchKey' || error.name === 'NotFound';
 }
 
-async function getObjectJson<T>(bucket: string, key: string): Promise<T | null> {
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isValidIndexEntry(value: unknown): value is IndexEntry {
+  return (
+    isPlainObject(value)
+    && typeof value.name === 'string'
+    && typeof value.ladder === 'string'
+    && typeof value.updatedAt === 'string'
+  );
+}
+
+function isValidIndex(value: unknown): value is IndexEntry[] {
+  return Array.isArray(value) && value.every(isValidIndexEntry);
+}
+
+function isValidCurrencyRates(value: unknown): value is LeagueDataResponse['currencyRates'] {
+  return (
+    isPlainObject(value)
+    && typeof value.exalted === 'number'
+    && typeof value.divine === 'number'
+    && typeof value.annul === 'number'
+    && typeof value.mirror === 'number'
+  );
+}
+
+function isValidLeagueDataResponse(value: unknown): value is LeagueDataResponse {
+  return (
+    isPlainObject(value)
+    && Array.isArray(value.data)
+    && isValidCurrencyRates(value.currencyRates)
+    && typeof value.updatedAt === 'string'
+    && typeof value.entryCount === 'number'
+  );
+}
+
+async function getObjectRaw(bucket: string, key: string): Promise<unknown | null> {
   const client = createClient();
 
   try {
     const response = await client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
     const body = await streamToString(response.Body);
 
-    return JSON.parse(body) as T;
+    return JSON.parse(body);
   } catch (error: unknown) {
     if (isNotFoundError(error)) return null;
     throw error;
@@ -97,14 +135,31 @@ async function getObjectJson<T>(bucket: string, key: string): Promise<T | null> 
 
 export async function getIndex(): Promise<IndexEntry[]> {
   const bucket = requireEnv('R2_BUCKET');
-  const result = await getObjectJson<IndexEntry[]>(bucket, INDEX_OBJECT_KEY);
+  const raw = await getObjectRaw(bucket, INDEX_OBJECT_KEY);
 
-  return result ?? [];
+  if (raw === null) return [];
+
+  if (!isValidIndex(raw)) {
+    // eslint-disable-next-line no-console
+    console.warn(`r2-client: ${INDEX_OBJECT_KEY} failed shape validation — returning empty index`);
+    return [];
+  }
+
+  return raw;
 }
 
 export async function getLeague(name: string): Promise<LeagueDataResponse | null> {
   const bucket = requireEnv('R2_BUCKET');
-  const key = `leagues/${encodeURIComponent(name)}.json`;
+  const key = `leagues/${encodeLeagueName(name)}.json`;
+  const raw = await getObjectRaw(bucket, key);
 
-  return getObjectJson<LeagueDataResponse>(bucket, key);
+  if (raw === null) return null;
+
+  if (!isValidLeagueDataResponse(raw)) {
+    // eslint-disable-next-line no-console
+    console.warn(`r2-client: ${key} failed shape validation — treating as not found`);
+    return null;
+  }
+
+  return raw;
 }
