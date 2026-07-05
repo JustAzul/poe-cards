@@ -9,7 +9,8 @@ import type {
 } from '../../hooks/interfaces';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { CurrencyRateEntry } from '../../lib/mappers/league-dto-mapper';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import CentralSpinner from '../../components/CentralSpinner';
 import Contexts from '../../context';
@@ -18,6 +19,7 @@ import Nav from '../../components/League/Navbar';
 import PageLoader from '../../components/Loader';
 import SortTable from '../../hooks/sortTable';
 import mapLeagueData from '../../lib/mappers/league-dto-mapper';
+import useLeagueSocket from '../../hooks/useLeagueSocket';
 import type { LeagueDataResponse } from '../../lib/r2-client';
 import { getIndex, getLeague } from '../../lib/r2-client';
 
@@ -49,9 +51,16 @@ interface Props {
 const League = ({
   host, leagueName, leagueExists, leagueDetails,
 }: Props) => {
+  const router = useRouter();
   const [navbarHeight, setNavbarHeight] = useState<number>(40);
   const [sortKey, setSortKey] = useState<KeyStates>('c9');
   const [sortType, setSortType] = useState<0 | 1>(1);
+
+  const refetchLeagueData = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
+
+  useLeagueSocket(leagueName, refetchLeagueData);
 
   const {
     ExaltValue, DivineValue, AnullValue, XMirrorValue, LastUpdated = 'Never', Table = [],
