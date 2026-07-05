@@ -1,5 +1,5 @@
 import type {
-  Card, CardDetail, Reward, TableData,
+  Card, CardDetail, LeagueDetails, Reward, TableData,
 } from '../../hooks/interfaces';
 import type { LeagueDataResponse, ProfitTableRowDto } from '../r2-client';
 
@@ -73,5 +73,34 @@ export default function mapLeagueData(response: LeagueDataResponse): MappedLeagu
     Table: response.data.map(mapRow),
     LastUpdated: response.updatedAt,
     Currency: mapCurrencyRates(response.currencyRates),
+  };
+}
+
+function getCurrencyChaosValue(rates: CurrencyRateEntry[], currencyName: string): number {
+  return rates.find(({ Name }) => Name === currencyName)?.chaosEquivalent || 0;
+}
+
+/**
+ * Final DTO→UI shape consumed by the league page, shared by both the SSG
+ * path (`getStaticProps`) and the live-refetch API route (`/api/league-data`)
+ * so the two never drift into computing currency conversions differently.
+ */
+export function buildLeagueDetails(response: LeagueDataResponse): LeagueDetails {
+  const mapped = mapLeagueData(response);
+
+  const exaltValue = getCurrencyChaosValue(mapped.Currency, CURRENCY_ORB_NAMES.exalted);
+  const divineValue = getCurrencyChaosValue(mapped.Currency, CURRENCY_ORB_NAMES.divine);
+  const annulValue = getCurrencyChaosValue(mapped.Currency, CURRENCY_ORB_NAMES.annul);
+
+  const rawMirrorValue = getCurrencyChaosValue(mapped.Currency, CURRENCY_ORB_NAMES.mirror);
+  const mirrorValue = exaltValue ? parseFloat((rawMirrorValue / exaltValue).toFixed(1)) : 0;
+
+  return {
+    ExaltValue: exaltValue,
+    DivineValue: divineValue,
+    AnullValue: annulValue,
+    XMirrorValue: mirrorValue,
+    LastUpdated: mapped.LastUpdated,
+    Table: mapped.Table,
   };
 }

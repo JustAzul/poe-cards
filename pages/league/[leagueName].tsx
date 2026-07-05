@@ -8,9 +8,7 @@ import type {
   LeagueDetails as LeagueDetailsType,
 } from '../../hooks/interfaces';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { CurrencyRateEntry } from '../../lib/mappers/league-dto-mapper';
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/router';
 
 import CentralSpinner from '../../components/CentralSpinner';
 import Contexts from '../../context';
@@ -18,10 +16,18 @@ import Dynamic from 'next/dynamic';
 import Nav from '../../components/League/Navbar';
 import PageLoader from '../../components/Loader';
 import SortTable from '../../hooks/sortTable';
-import mapLeagueData from '../../lib/mappers/league-dto-mapper';
+import { buildLeagueDetails } from '../../lib/mappers/league-dto-mapper';
 import useLeagueSocket from '../../hooks/useLeagueSocket';
-import type { LeagueDataResponse } from '../../lib/r2-client';
 import { getIndex, getLeague } from '../../lib/r2-client';
+
+type LiveLeagueData = {
+  leagueExists: boolean,
+  leagueDetails?: LeagueDetailsType,
+};
+
+function isLiveLeagueData(value: unknown): value is LiveLeagueData {
+  return typeof value === 'object' && value !== null && typeof (value as LiveLeagueData).leagueExists === 'boolean';
+}
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
 
@@ -36,10 +42,6 @@ const generateSplitsArray = (Value: number = 0) => {
   for (let i = 1; i < 10; i++) arr.push(Value * (i / 10));
   return arr;
 };
-const GetCurrencyChaosValue = (Data: CurrencyRateEntry[] = [], CurrencyName = 'Exalted Orb') => {
-  const result = Data.find(({ Name }) => Name === CurrencyName);
-  return result?.chaosEquivalent || 0;
-};
 
 interface Props {
   host: string,
@@ -49,16 +51,38 @@ interface Props {
 }
 
 const League = ({
-  host, leagueName, leagueExists, leagueDetails,
+  host, leagueName, leagueExists: initialLeagueExists, leagueDetails: initialLeagueDetails,
 }: Props) => {
-  const router = useRouter();
   const [navbarHeight, setNavbarHeight] = useState<number>(40);
   const [sortKey, setSortKey] = useState<KeyStates>('c9');
   const [sortType, setSortType] = useState<0 | 1>(1);
+  const [leagueExists, setLeagueExists] = useState<boolean>(initialLeagueExists);
+  const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType | undefined>(initialLeagueDetails);
 
-  const refetchLeagueData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
+  const refetchLeagueData = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/league-data?leagueName=${encodeURIComponent(leagueName)}`);
+      if (!response.ok) {
+        // eslint-disable-next-line no-console
+        console.warn(`League: live refetch failed with status ${response.status}`);
+        return;
+      }
+
+      const data: unknown = await response.json();
+      if (!isLiveLeagueData(data)) {
+        // eslint-disable-next-line no-console
+        console.warn('League: live refetch returned an unexpected shape, ignoring');
+        return;
+      }
+
+      setLeagueExists(data.leagueExists);
+      setLeagueDetails(data.leagueDetails);
+    } catch (error: unknown) {
+      const reason = error instanceof Error ? error.message : String(error);
+      // eslint-disable-next-line no-console
+      console.warn(`League: live refetch threw (${reason})`);
+    }
+  }, [leagueName]);
 
   useLeagueSocket(leagueName, refetchLeagueData);
 
@@ -109,26 +133,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   };
 };
-
-function buildLeagueDetails(leagueDataResponse: LeagueDataResponse): LeagueDetailsType {
-  const mapped = mapLeagueData(leagueDataResponse);
-
-  const ExaltValue = GetCurrencyChaosValue(mapped.Currency, 'Exalted Orb') || 0;
-  const DivineValue = GetCurrencyChaosValue(mapped.Currency, 'Divine Orb') || 0;
-  const AnullValue = GetCurrencyChaosValue(mapped.Currency, 'Orb of Annulment') || 0;
-
-  const rawMirrorValue = GetCurrencyChaosValue(mapped.Currency, 'Mirror of Kalandra') || 0;
-  const XMirrorValue = ExaltValue ? parseFloat((rawMirrorValue / ExaltValue).toFixed(1)) : 0;
-
-  return {
-    ExaltValue,
-    DivineValue,
-    AnullValue,
-    XMirrorValue,
-    LastUpdated: mapped.LastUpdated,
-    Table: mapped.Table,
-  };
-}
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // Next's route matcher already URL-decodes dynamic route params before
