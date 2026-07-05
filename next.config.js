@@ -4,7 +4,10 @@ module.exports = {
   },
   async headers() {
     const workerWsOrigin = process.env.NEXT_PUBLIC_WS_URL;
-    const connectSrc = workerWsOrigin ? `'self' ${workerWsOrigin}` : "'self'";
+    const analyticsOrigins = "https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://googleads.g.doubleclick.net";
+    const connectSrc = workerWsOrigin
+      ? `'self' ${workerWsOrigin} ${analyticsOrigins}`
+      : `'self' ${analyticsOrigins}`;
 
     return [
       {
