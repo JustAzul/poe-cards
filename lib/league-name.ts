@@ -16,6 +16,7 @@
  * boundary then — don't reintroduce a generic one speculatively.
  */
 
+// eslint-disable-next-line import/prefer-default-export -- named import used at both call sites
 export function encodeLeagueName(name: string): string {
   return encodeURIComponent(name);
 }
