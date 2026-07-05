@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 
 const INITIAL_BACKOFF_MS = 1000;
 const MAX_BACKOFF_MS = 30000;
+const MALFORMED_MESSAGE_LOG_LIMIT = 200;
 
 type UpdateMessage = {
   type: string,
@@ -57,8 +58,11 @@ export default function useLeagueSocket(leagueName: string, onUpdate: () => void
         try {
           const parsed: unknown = JSON.parse(event.data);
           if (isUpdateMessage(parsed)) onUpdateRef.current();
-        } catch {
-          // ignore malformed messages
+        } catch (error: unknown) {
+          const rawPreview = String(event.data).slice(0, MALFORMED_MESSAGE_LOG_LIMIT);
+          const reason = error instanceof Error ? error.message : String(error);
+          // eslint-disable-next-line no-console
+          console.warn(`useLeagueSocket: received malformed WS message, ignoring (${reason}). Preview: ${rawPreview}`);
         }
       };
 

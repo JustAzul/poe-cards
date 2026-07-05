@@ -1,17 +1,18 @@
-const WORKER_WS_ORIGIN = 'wss://poe-cards-realtime.justazul.workers.dev';
-
 module.exports = {
   images: {
     domains: ['web.poecdn.com'],
   },
   async headers() {
+    const workerWsOrigin = process.env.NEXT_PUBLIC_WS_URL;
+    const connectSrc = workerWsOrigin ? `'self' ${workerWsOrigin}` : "'self'";
+
     return [
       {
         source: '/:path*',
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `connect-src 'self' ${WORKER_WS_ORIGIN};`,
+            value: `connect-src ${connectSrc};`,
           },
         ],
       },
