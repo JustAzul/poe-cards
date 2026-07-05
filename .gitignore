@@ -33,6 +33,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # Ignore Cursor rules and config
 .cursor/
 
