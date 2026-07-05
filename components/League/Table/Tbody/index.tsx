@@ -1,7 +1,7 @@
 import * as gtag from '../../../../lib/gtag';
 
-import type { KeyStates, TableData } from '../../../../hooks/interfaces';
-import { useContext, useEffect, useState } from 'react';
+import type { KeyStates } from '../../../../hooks/interfaces';
+import { useContext, useMemo } from 'react';
 
 import Contexts from '../../../../context';
 import SortTable from '../../../../hooks/sortTable';
@@ -120,14 +120,15 @@ export default function thead({
     cardsTable, leagueName, sortKey, sortType,
   } = useContext(Contexts.leaguePageData);
 
-  const [LeagueItems, setLeagueItems] = useState<Array<TableData>>(cardsTable);
-
-  useEffect(() => {
-    if (cardsTable.length > 1) {
-      const SortedTable = SortTable(cardsTable, sortKey, sortType);
-      setLeagueItems(SortedTable);
-    }
-  }, [sortKey, sortType]);
+  // Derived, not copied-once-then-cached: recomputes whenever the underlying
+  // data changes (a live WS update) as well as when sort changes. A `useState`
+  // seeded once from `cardsTable` and only refreshed on sort would silently
+  // keep rendering stale rows after a live update — cardsTable itself must be
+  // a dependency, not just sortKey/sortType.
+  const LeagueItems = useMemo(
+    () => (cardsTable.length > 1 ? SortTable(cardsTable, sortKey, sortType) : cardsTable),
+    [cardsTable, sortKey, sortType],
+  );
 
   return (
         <>

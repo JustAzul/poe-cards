@@ -8,7 +8,9 @@ import type {
   LeagueDetails as LeagueDetailsType,
 } from '../../hooks/interfaces';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { useCallback, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 
 import CentralSpinner from '../../components/CentralSpinner';
 import Contexts from '../../context';
@@ -20,13 +22,29 @@ import { buildLeagueDetails } from '../../lib/mappers/league-dto-mapper';
 import useLeagueSocket from '../../hooks/useLeagueSocket';
 import { getIndex, getLeague } from '../../lib/r2-client';
 
-type LiveLeagueData = {
-  leagueExists: boolean,
-  leagueDetails?: LeagueDetailsType,
-};
+type LiveLeagueData =
+  | { leagueExists: true, leagueDetails: LeagueDetailsType }
+  | { leagueExists: false, leagueDetails?: undefined };
+
+function isLeagueDetailsShape(value: unknown): value is LeagueDetailsType {
+  if (typeof value !== 'object' || value === null) return false;
+  const candidate = value as Partial<LeagueDetailsType>;
+  return (
+    typeof candidate.ExaltValue === 'number'
+    && typeof candidate.DivineValue === 'number'
+    && typeof candidate.AnullValue === 'number'
+    && typeof candidate.XMirrorValue === 'number'
+    && typeof candidate.LastUpdated === 'string'
+    && Array.isArray(candidate.Table)
+  );
+}
 
 function isLiveLeagueData(value: unknown): value is LiveLeagueData {
-  return typeof value === 'object' && value !== null && typeof (value as LiveLeagueData).leagueExists === 'boolean';
+  if (typeof value !== 'object' || value === null) return false;
+  const candidate = value as { leagueExists?: unknown, leagueDetails?: unknown };
+
+  if (candidate.leagueExists === true) return isLeagueDetailsShape(candidate.leagueDetails);
+  return candidate.leagueExists === false;
 }
 
 const Layout = Dynamic(() => import('../../components/Layout'), { loading: () => <CentralSpinner /> });
@@ -59,7 +77,26 @@ const League = ({
   const [leagueExists, setLeagueExists] = useState<boolean>(initialLeagueExists);
   const [leagueDetails, setLeagueDetails] = useState<LeagueDetailsType | undefined>(initialLeagueDetails);
 
+  // Next's pages-router reuses this component instance across client-side
+  // navigations between two different league pages (no remount) — without
+  // this, navigating from League A to League B would keep rendering League
+  // A's live-updated state until the next WS ping happened to fire.
+  useEffect(() => {
+    setLeagueExists(initialLeagueExists);
+    setLeagueDetails(initialLeagueDetails);
+  }, [leagueName, initialLeagueExists, initialLeagueDetails]);
+
+  // useLeagueSocket fires a refetch both on WS connect/reconnect and on each
+  // "updated" message — two calls can be in flight at once, and network timing
+  // gives no guarantee the one fired first resolves first. This ref lets a
+  // resolving fetch check "is a newer request still in flight?" before applying
+  // its result, so an older response can never clobber a newer one.
+  const latestRequestIdRef = useRef(0);
+
   const refetchLeagueData = useCallback(async () => {
+    const requestId = latestRequestIdRef.current + 1;
+    latestRequestIdRef.current = requestId;
+
     try {
       const response = await fetch(`/api/league-data?leagueName=${encodeURIComponent(leagueName)}`);
       if (!response.ok) {
@@ -72,6 +109,12 @@ const League = ({
       if (!isLiveLeagueData(data)) {
         // eslint-disable-next-line no-console
         console.warn('League: live refetch returned an unexpected shape, ignoring');
+        return;
+      }
+
+      if (latestRequestIdRef.current !== requestId) {
+        // A newer refetch was triggered while this one was in flight — its
+        // result (once it resolves) is the one that should win, not this one.
         return;
       }
 
