@@ -15,7 +15,7 @@ export type ProfitTableRowDto = {
     details: {
       artFilename: string,
       rewardName: string,
-      rewardClass: string,
+      rewardClass: number | null,
       isCorrupted: boolean,
       flavour: string,
     },
@@ -109,12 +109,12 @@ function isValidCurrencyRates(value: unknown): value is LeagueDataResponse['curr
   );
 }
 
-function isValidCardDetails(value: unknown): value is ProfitTableRowDto['card']['details'] {
+export function isValidCardDetails(value: unknown): value is ProfitTableRowDto['card']['details'] {
   return (
     isPlainObject(value)
     && typeof value.artFilename === 'string'
     && typeof value.rewardName === 'string'
-    && typeof value.rewardClass === 'string'
+    && (value.rewardClass === null || typeof value.rewardClass === 'number')
     && typeof value.isCorrupted === 'boolean'
     && typeof value.flavour === 'string'
   );
@@ -149,7 +149,7 @@ function isValidProfitTableRow(value: unknown): value is ProfitTableRowDto {
   );
 }
 
-function isValidLeagueDataResponse(value: unknown): value is LeagueDataResponse {
+export function isValidLeagueDataResponse(value: unknown): value is LeagueDataResponse {
   return (
     isPlainObject(value)
     && Array.isArray(value.data)

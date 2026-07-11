@@ -3,7 +3,7 @@ export type CardDetail = {
     CardName: string,
     CardStack: number,
     RewardName: string,
-    rewardClass: string,
+    rewardClass: number | null,
     isCorrupted: Boolean,
     Flavour: string
   };
