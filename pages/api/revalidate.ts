@@ -51,10 +51,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const leagueName = leagueNameCandidate as string | undefined;
 
   try {
-    await res.revalidate('/');
-
+    // '/' only reflects index.json, which changes exclusively at finalize (the
+    // index-update notification, with no leagueName) — revalidate it there,
+    // not on every per-league notification.
     if (leagueName) {
       await res.revalidate(`/league/${encodeLeagueName(leagueName)}`);
+    } else {
+      await res.revalidate('/');
     }
 
     return res.status(200).json({ revalidated: true });
